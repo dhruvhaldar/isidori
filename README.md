@@ -36,7 +36,7 @@ This project covers the following topics from the syllabus:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/isidori.git
+   git clone https://github.com/dhruvhaldar/isidori.git
    cd isidori
    ```
 
