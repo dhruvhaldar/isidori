@@ -7,6 +7,8 @@ test.describe('Isidori E2E', () => {
     await expect(page.locator('h1')).toContainText('Geometric Control Theory');
     const img = page.locator('img[alt="Disturbance Decoupling Demo"]');
     await expect(img).toBeVisible();
+    await expect(page.locator('footer')).toContainText('Dhruv Haldar');
+    await expect(page.locator('footer')).toContainText('MIT License');
   });
 
   test('Linear Systems page computes V*', async ({ page }) => {
