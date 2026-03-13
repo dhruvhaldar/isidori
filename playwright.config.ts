@@ -19,8 +19,8 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'python -m uvicorn api.index:app --port 8000',
-      port: 8000,
+      command: 'python -m uvicorn api.index:app --port 8001',
+      port: 8001,
       reuseExistingServer: !process.env.CI,
       cwd: '.',
     },

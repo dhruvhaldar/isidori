@@ -18,7 +18,7 @@ export default function Home() {
           <Link href="/linear">
             <Button>Get Started</Button>
           </Link>
-          <Link href="https://github.com/yourusername/isidori" target="_blank">
+          <Link href="https://github.com/dhruvhaldar/isidori" target="_blank">
             <Button variant="outline">GitHub</Button>
           </Link>
         </div>

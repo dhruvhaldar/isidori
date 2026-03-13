@@ -68,7 +68,11 @@ This project covers the following topics from the syllabus:
 
 1. Start the backend server (ensure the virtual environment is activated):
    ```bash
-   python api/index.py
+   # Windows
+   .\venv\Scripts\python -m uvicorn api.index:app --port 8001
+
+   # macOS/Linux
+   ./venv/bin/python -m uvicorn api.index:app --port 8001
    ```
 
 2. Start the frontend development server:
