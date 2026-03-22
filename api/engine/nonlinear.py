@@ -1,4 +1,33 @@
 import sympy as sp
+import ast
+
+def safe_sympify(expr_str):
+    """
+    Safely parses an expression string to prevent arbitrary code execution
+    when passed to sympy.sympify().
+    """
+    if not isinstance(expr_str, str):
+        return sp.sympify(expr_str)
+
+    if "__" in expr_str:
+        raise ValueError("Unsafe expression: contains double underscores")
+
+    try:
+        tree = ast.parse(expr_str, mode='eval')
+        import builtins
+        builtin_names = set(dir(builtins))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Attribute):
+                raise ValueError("Unsafe expression: attribute access is not allowed")
+            elif isinstance(node, ast.Call):
+                if not isinstance(node.func, ast.Name):
+                    raise ValueError("Unsafe expression: complex function calls are not allowed")
+                if node.func.id in builtin_names and node.func.id not in {'abs', 'max', 'min', 'round', 'sum', 'complex', 'float', 'int'}:
+                    raise ValueError(f"Unsafe expression: builtin {node.func.id} is not allowed")
+    except SyntaxError:
+        raise ValueError("Invalid syntax in expression")
+
+    return sp.sympify(expr_str)
 
 def lie_derivative(func, vector_field, variables):
     """
@@ -17,9 +46,9 @@ def compute_relative_degree(f_exprs, g_exprs, h_expr, var_names):
     """
     # Parse inputs
     variables = [sp.Symbol(name) for name in var_names]
-    f = [sp.sympify(expr) for expr in f_exprs]
-    g = [sp.sympify(expr) for expr in g_exprs]
-    h = sp.sympify(h_expr)
+    f = [safe_sympify(expr) for expr in f_exprs]
+    g = [safe_sympify(expr) for expr in g_exprs]
+    h = safe_sympify(h_expr)
     
     n = len(variables)
     
