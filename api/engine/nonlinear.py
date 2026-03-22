@@ -35,8 +35,12 @@ def compute_relative_degree(f_exprs, g_exprs, h_expr, var_names):
         # Compute L_g L_f^{r-1} h
         lg_lf_h = lie_derivative(lf_h, g, variables)
         
-        # Simplify to check if zero
-        lg_lf_h_simp = sp.simplify(lg_lf_h)
+        # Expand first for faster zero check, fallback to simplify
+        lg_lf_h_expand = sp.expand(lg_lf_h)
+        if lg_lf_h_expand == 0:
+            lg_lf_h_simp = 0
+        else:
+            lg_lf_h_simp = sp.simplify(lg_lf_h)
         
         if lg_lf_h_simp != 0:
             return {
@@ -46,9 +50,12 @@ def compute_relative_degree(f_exprs, g_exprs, h_expr, var_names):
             }
         
         # If zero, compute next L_f^r h
+        # Expanding the intermediate expression significantly speeds up subsequent differentiations
+        lf_h_expand = sp.expand(lf_h)
+        history.append(lf_h_expand) # Store L_f^{r-1} h
+
         # L_f^r h = L_f (L_f^{r-1} h)
-        next_lf_h = lie_derivative(lf_h, f, variables)
-        history.append(sp.simplify(lf_h)) # Store L_f^{r-1} h
+        next_lf_h = lie_derivative(lf_h_expand, f, variables)
         lf_h = next_lf_h
         
     return {
