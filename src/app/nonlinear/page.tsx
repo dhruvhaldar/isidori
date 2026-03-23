@@ -16,10 +16,12 @@ export default function NonlinearSystemsPage() {
   
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCompute = async () => {
     setError(null);
     setResult(null);
+    setIsLoading(true);
     try {
       const varsList = variables.split(",").map(s => s.trim()).filter(s => s);
       const fList = f.split(",").map(s => s.trim()).filter(s => s);
@@ -35,6 +37,8 @@ export default function NonlinearSystemsPage() {
       setResult(res.data);
     } catch (err: any) {
       setError(err.response?.data?.detail || "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,26 +63,28 @@ export default function NonlinearSystemsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label>State Variables</Label>
-              <Input value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" />
+              <Label htmlFor="state-variables">State Variables</Label>
+              <Input id="state-variables" value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" />
             </div>
             
             <div className="space-y-2">
-              <Label>Vector Field f(x)</Label>
-              <Textarea value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" />
+              <Label htmlFor="vector-field-f">Vector Field f(x)</Label>
+              <Textarea id="vector-field-f" value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" />
             </div>
             
             <div className="space-y-2">
-              <Label>Vector Field g(x)</Label>
-              <Textarea value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" />
+              <Label htmlFor="vector-field-g">Vector Field g(x)</Label>
+              <Textarea id="vector-field-g" value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" />
             </div>
             
             <div className="space-y-2">
-              <Label>Output Function h(x)</Label>
-              <Input value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" />
+              <Label htmlFor="output-function-h">Output Function h(x)</Label>
+              <Input id="output-function-h" value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" />
             </div>
             
-            <Button onClick={handleCompute} className="w-full">Compute Relative Degree</Button>
+            <Button onClick={handleCompute} className="w-full" disabled={isLoading}>
+              {isLoading ? "Computing..." : "Compute Relative Degree"}
+            </Button>
           </CardContent>
         </Card>
 
@@ -86,7 +92,7 @@ export default function NonlinearSystemsPage() {
           <CardHeader>
             <CardTitle>Results</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent aria-live="polite">
             {error && (
                <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                  {error}
