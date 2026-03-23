@@ -4,7 +4,10 @@ from pydantic import BaseModel
 from typing import List, Optional, Any
 import numpy as np
 import sympy as sp
+import logging
 from .engine.linear import compute_v_star, check_disturbance_decoupling, compute_feedback_matrix
+
+logger = logging.getLogger(__name__)
 from .engine.nonlinear import compute_relative_degree
 
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
@@ -48,7 +51,8 @@ def calculate_v_star(data: LinearSystemInput):
         
         return {"V_star": V_star.tolist()}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.error(f"Error in /api/vstar: {str(e)}")
+        raise HTTPException(status_code=400, detail="An error occurred during V* computation.")
 
 @app.post("/api/ddp")
 def check_ddp(data: LinearSystemInput):
@@ -71,8 +75,11 @@ def check_ddp(data: LinearSystemInput):
             result["F"] = F.tolist()
             
         return result
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.error(f"Error in /api/ddp: {str(e)}")
+        raise HTTPException(status_code=400, detail="An error occurred during DDP check.")
 
 @app.post("/api/nonlinear/reldeg")
 def calculate_reldeg(data: NonlinearSystemInput):
@@ -80,7 +87,8 @@ def calculate_reldeg(data: NonlinearSystemInput):
         result = compute_relative_degree(data.f, data.g, data.h, data.vars)
         return result
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.error(f"Error in /api/nonlinear/reldeg: {str(e)}")
+        raise HTTPException(status_code=400, detail="An error occurred during relative degree computation.")
 
 @app.post("/api/simulate")
 def simulate_system(data: LinearSystemInput):
@@ -145,4 +153,5 @@ def simulate_system(data: LinearSystemInput):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        logger.error(f"Error in /api/simulate: {str(e)}")
+        raise HTTPException(status_code=400, detail="An error occurred during simulation.")
