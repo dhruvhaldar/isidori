@@ -32,6 +32,7 @@ export default function SimulatePage() {
 
   const [simData, setSimData] = useState<any[]>([]);
   const [ddpStatus, setDdpStatus] = useState<boolean | null>(null);
+  const [isSimulating, setIsSimulating] = useState(false);
 
   useEffect(() => {
     // Only resize if dimensions change significantly, but here we just handle manual input.
@@ -60,6 +61,7 @@ export default function SimulatePage() {
   };
 
   const handleSimulate = async () => {
+    setIsSimulating(true);
     try {
       const res = await axios.post("/api/simulate", { A, B, C, E });
       const { time, y, d, is_ddp_solved } = res.data;
@@ -75,6 +77,8 @@ export default function SimulatePage() {
     } catch (err) {
       console.error(err);
       alert("Error during simulation");
+    } finally {
+      setIsSimulating(false);
     }
   };
 
@@ -95,10 +99,10 @@ export default function SimulatePage() {
            </CardHeader>
            <CardContent className="space-y-4">
              <div className="grid grid-cols-4 gap-2">
-                <div className="space-y-1"><Label>n</Label><Input type="number" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label>m</Label><Input type="number" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label>p</Label><Input type="number" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label>q</Label><Input type="number" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
              </div>
              
              <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
@@ -106,7 +110,7 @@ export default function SimulatePage() {
              <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
              <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
              
-             <Button onClick={handleSimulate} className="w-full">Simulate Response</Button>
+             <Button onClick={handleSimulate} className="w-full" disabled={isSimulating} aria-busy={isSimulating}>{isSimulating ? "Simulating..." : "Simulate Response"}</Button>
            </CardContent>
         </Card>
         
