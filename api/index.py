@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Any
+import os
 import numpy as np
 import sympy as sp
 import logging
@@ -12,10 +13,13 @@ from .engine.nonlinear import compute_relative_degree
 
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 
-# Allow all origins for dev
+# Secure CORS configuration
+# Defaults to localhost for dev, can be configured via environment variable
+origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
