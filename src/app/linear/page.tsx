@@ -25,6 +25,8 @@ export default function LinearSystemsPage() {
 
   const [vStar, setVStar] = useState<number[][] | null>(null);
   const [ddpResult, setDdpResult] = useState<{ is_solvable: boolean, V_star: number[][], F?: number[][] } | null>(null);
+  const [isComputingVStar, setIsComputingVStar] = useState(false);
+  const [isCheckingDDP, setIsCheckingDDP] = useState(false);
 
   useEffect(() => {
     setA(old => resizeMatrix(old, n, n));
@@ -44,22 +46,28 @@ export default function LinearSystemsPage() {
   };
 
   const handleComputeVStar = async () => {
+    setIsComputingVStar(true);
     try {
       const res = await axios.post("/api/vstar", { A, B, C });
       setVStar(res.data.V_star);
     } catch (err) {
       console.error(err);
       alert("Error computing V*");
+    } finally {
+      setIsComputingVStar(false);
     }
   };
 
   const handleCheckDDP = async () => {
+    setIsCheckingDDP(true);
     try {
       const res = await axios.post("/api/ddp", { A, B, C, E });
       setDdpResult(res.data);
     } catch (err) {
       console.error(err);
       alert("Error checking DDP");
+    } finally {
+      setIsCheckingDDP(false);
     }
   };
 
@@ -80,20 +88,20 @@ export default function LinearSystemsPage() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
-              <Label>States (n)</Label>
-              <Input type="number" min="1" value={n} onChange={(e) => setN(parseInt(e.target.value) || 1)} />
+              <Label htmlFor="states-n">States (n)</Label>
+              <Input id="states-n" type="number" min="1" value={n} onChange={(e) => setN(parseInt(e.target.value) || 1)} />
             </div>
             <div className="space-y-2">
-              <Label>Inputs (m)</Label>
-              <Input type="number" min="1" value={m} onChange={(e) => setM(parseInt(e.target.value) || 1)} />
+              <Label htmlFor="inputs-m">Inputs (m)</Label>
+              <Input id="inputs-m" type="number" min="1" value={m} onChange={(e) => setM(parseInt(e.target.value) || 1)} />
             </div>
             <div className="space-y-2">
-              <Label>Outputs (p)</Label>
-              <Input type="number" min="1" value={p} onChange={(e) => setP(parseInt(e.target.value) || 1)} />
+              <Label htmlFor="outputs-p">Outputs (p)</Label>
+              <Input id="outputs-p" type="number" min="1" value={p} onChange={(e) => setP(parseInt(e.target.value) || 1)} />
             </div>
             <div className="space-y-2">
-              <Label>Disturbances (q)</Label>
-              <Input type="number" min="1" value={q} onChange={(e) => setQ(parseInt(e.target.value) || 1)} />
+              <Label htmlFor="disturbances-q">Disturbances (q)</Label>
+              <Input id="disturbances-q" type="number" min="1" value={q} onChange={(e) => setQ(parseInt(e.target.value) || 1)} />
             </div>
           </div>
         </CardContent>
@@ -118,7 +126,7 @@ export default function LinearSystemsPage() {
               <CardTitle>Controlled Invariance (V*)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button onClick={handleComputeVStar} className="w-full">Compute V*</Button>
+              <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>{isComputingVStar ? "Computing V*..." : "Compute V*"}</Button>
               {vStar && (
                 <div className="mt-4">
                   <Label>V* Basis Matrix ({vStar.length}x{vStar[0]?.length || 0})</Label>
@@ -138,7 +146,7 @@ export default function LinearSystemsPage() {
               <CardTitle>Disturbance Decoupling (DDP)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button onClick={handleCheckDDP} variant="secondary" className="w-full">Check DDP Solvability</Button>
+              <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>{isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}</Button>
               {ddpResult && (
                 <div className="mt-4 space-y-2">
                   <div className={`p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
