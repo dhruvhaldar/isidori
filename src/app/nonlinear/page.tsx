@@ -82,7 +82,7 @@ export default function NonlinearSystemsPage() {
               <Input id="output-function-h" value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" />
             </div>
             
-            <Button onClick={handleCompute} className="w-full" disabled={isLoading}>
+            <Button onClick={handleCompute} className="w-full" disabled={isLoading} aria-busy={isLoading}>
               {isLoading ? "Computing..." : "Compute Relative Degree"}
             </Button>
           </CardContent>
