@@ -7,3 +7,8 @@
 **Vulnerability:** The FastAPI backend had CORS configured with `allow_origins=["*"]` while `allow_credentials=True`.
 **Learning:** This combination allows any attacker website to make authenticated cross-origin requests by having the browser reflect the Origin header. Fastapi/Starlette explicitly forbids this in newer versions.
 **Prevention:** Hardcode sensible defaults for development (e.g., localhost) and use environment variables (e.g., `CORS_ORIGINS`) to allow operators to securely define allowed origins in production. Never combine `*` with credentials.
+
+## 2024-05-24 - [HIGH] Denial of Service via Large Matrix Computations
+**Vulnerability:** The computational endpoints for linear systems (`/api/vstar`, `/api/ddp`, `/api/simulate`) did not validate the dimensions of the input matrices `A`, `B`, `C`, and `E`. An attacker could submit extremely large matrices (e.g., 2000x2000), causing the server to consume excessive CPU resources and tie up worker threads, leading to a Denial of Service (DoS).
+**Learning:** Computational algorithms, especially those involving matrix operations (like SVD, pseudoinverses, or iterative intersections), have time complexities that scale poorly (often O(n^3)). Unbounded inputs directly translate to unbounded CPU usage.
+**Prevention:** Always enforce strict boundary limits on the dimensions of input data before processing them with heavy algorithms. I implemented a Pydantic `model_validator` to limit matrix dimensions to 100x100.

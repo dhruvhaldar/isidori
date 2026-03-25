@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 from typing import List, Optional, Any
 import os
 import numpy as np
@@ -28,17 +28,46 @@ app.add_middleware(
 class MatrixInput(BaseModel):
     matrix: List[List[float]]
 
+    @model_validator(mode='after')
+    def check_dimensions(self) -> 'MatrixInput':
+        max_dim = 100
+        if len(self.matrix) > max_dim or (len(self.matrix) > 0 and len(self.matrix[0]) > max_dim):
+            raise ValueError(f"Matrix exceeds maximum dimension of {max_dim}x{max_dim}")
+        return self
+
 class LinearSystemInput(BaseModel):
     A: List[List[float]]
     B: List[List[float]]
     C: List[List[float]]
     E: Optional[List[List[float]]] = None # Disturbance matrix
 
+    @model_validator(mode='after')
+    def check_dimensions(self) -> 'LinearSystemInput':
+        max_dim = 100
+        for mat_name, mat in [('A', self.A), ('B', self.B), ('C', self.C), ('E', self.E)]:
+            if mat is not None:
+                if len(mat) > max_dim or (len(mat) > 0 and len(mat[0]) > max_dim):
+                    raise ValueError(f"Matrix {mat_name} exceeds maximum dimension of {max_dim}x{max_dim}")
+        return self
+
 class NonlinearSystemInput(BaseModel):
     f: List[str]
     g: List[str]
     h: str
     vars: List[str]
+
+    @model_validator(mode='after')
+    def check_dimensions(self) -> 'NonlinearSystemInput':
+        max_vars = 100
+        max_expr_len = 500
+        if len(self.vars) > max_vars:
+            raise ValueError(f"Number of variables exceeds maximum of {max_vars}")
+        if len(self.f) > max_vars or len(self.g) > max_vars:
+            raise ValueError(f"Vector fields f and g cannot have more than {max_vars} components")
+        for expr in self.f + self.g + [self.h]:
+            if len(expr) > max_expr_len:
+                raise ValueError(f"Expression exceeds maximum length of {max_expr_len} characters")
+        return self
 
 @app.get("/api/health")
 def health_check():
