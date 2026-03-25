@@ -26,7 +26,8 @@ def kernel(M, tol=None):
     """Returns an orthonormal basis for the null space of M."""
     if tol is None:
         tol = tolerance(M)
-    u, s, vh = np.linalg.svd(M)
+    # ⚡ Bolt: Only compute full matrices if M is wide. For tall matrices, economy SVD provides the full null space without computing the massive, unused U matrix.
+    u, s, vh = np.linalg.svd(M, full_matrices=(M.shape[0] < M.shape[1]))
     r = np.sum(s > tol)
     return vh[r:, :].T
 
