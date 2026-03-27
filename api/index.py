@@ -31,7 +31,7 @@ class MatrixInput(BaseModel):
     @model_validator(mode='after')
     def check_dimensions(self) -> 'MatrixInput':
         max_dim = 100
-        if len(self.matrix) > max_dim or (len(self.matrix) > 0 and len(self.matrix[0]) > max_dim):
+        if len(self.matrix) > max_dim or any(len(row) > max_dim for row in self.matrix):
             raise ValueError(f"Matrix exceeds maximum dimension of {max_dim}x{max_dim}")
         return self
 
@@ -46,7 +46,7 @@ class LinearSystemInput(BaseModel):
         max_dim = 100
         for mat_name, mat in [('A', self.A), ('B', self.B), ('C', self.C), ('E', self.E)]:
             if mat is not None:
-                if len(mat) > max_dim or (len(mat) > 0 and len(mat[0]) > max_dim):
+                if len(mat) > max_dim or any(len(row) > max_dim for row in mat):
                     raise ValueError(f"Matrix {mat_name} exceeds maximum dimension of {max_dim}x{max_dim}")
         return self
 
