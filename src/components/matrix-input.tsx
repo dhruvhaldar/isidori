@@ -1,6 +1,5 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 interface MatrixInputProps {
   label: string;
@@ -22,8 +21,8 @@ export function MatrixInput({ label, rows, cols, value, onChange, readOnly = fal
   // We assume value is correct size for now.
   
   return (
-    <div className="space-y-2">
-      <Label>{label} ({rows}x{cols})</Label>
+    <fieldset className="space-y-2">
+      <legend className="text-sm font-medium leading-none mb-2">{label} ({rows}x{cols})</legend>
       <div 
         className="grid gap-2"
         style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
@@ -44,6 +43,6 @@ export function MatrixInput({ label, rows, cols, value, onChange, readOnly = fal
           ))
         )}
       </div>
-    </div>
+    </fieldset>
   );
 }
