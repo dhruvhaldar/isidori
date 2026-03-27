@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +25,9 @@ export default function LinearSystemsPage() {
   const [E, setE] = useState(createMatrix(n, q));
 
   const [vStar, setVStar] = useState<number[][] | null>(null);
+  const [vStarError, setVStarError] = useState<string | null>(null);
   const [ddpResult, setDdpResult] = useState<{ is_solvable: boolean, V_star: number[][], F?: number[][] } | null>(null);
+  const [ddpError, setDdpError] = useState<string | null>(null);
   const [isComputingVStar, setIsComputingVStar] = useState(false);
   const [isCheckingDDP, setIsCheckingDDP] = useState(false);
 
@@ -47,12 +50,13 @@ export default function LinearSystemsPage() {
 
   const handleComputeVStar = async () => {
     setIsComputingVStar(true);
+    setVStarError(null);
     try {
       const res = await axios.post("/api/vstar", { A, B, C });
       setVStar(res.data.V_star);
     } catch (err) {
       console.error(err);
-      alert("Error computing V*");
+      setVStarError("Error computing V*");
     } finally {
       setIsComputingVStar(false);
     }
@@ -60,12 +64,13 @@ export default function LinearSystemsPage() {
 
   const handleCheckDDP = async () => {
     setIsCheckingDDP(true);
+    setDdpError(null);
     try {
       const res = await axios.post("/api/ddp", { A, B, C, E });
       setDdpResult(res.data);
     } catch (err) {
       console.error(err);
-      alert("Error checking DDP");
+      setDdpError("Error checking DDP");
     } finally {
       setIsCheckingDDP(false);
     }
@@ -125,8 +130,16 @@ export default function LinearSystemsPage() {
             <CardHeader>
               <CardTitle>Controlled Invariance (V*)</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>{isComputingVStar ? "Computing V*..." : "Compute V*"}</Button>
+            <CardContent className="space-y-4" aria-live="polite">
+              <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>
+                {isComputingVStar && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isComputingVStar ? "Computing V*..." : "Compute V*"}
+              </Button>
+              {vStarError && (
+                <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                  {vStarError}
+                </div>
+              )}
               {vStar && (
                 <div className="mt-4">
                   <Label>V* Basis Matrix ({vStar.length}x{vStar[0]?.length || 0})</Label>
@@ -145,8 +158,16 @@ export default function LinearSystemsPage() {
             <CardHeader>
               <CardTitle>Disturbance Decoupling (DDP)</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>{isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}</Button>
+            <CardContent className="space-y-4" aria-live="polite">
+              <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>
+                {isCheckingDDP && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
+              </Button>
+              {ddpError && (
+                <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                  {ddpError}
+                </div>
+              )}
               {ddpResult && (
                 <div className="mt-4 space-y-2">
                   <div className={`p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>

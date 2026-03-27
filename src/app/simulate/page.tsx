@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +33,7 @@ export default function SimulatePage() {
 
   const [simData, setSimData] = useState<any[]>([]);
   const [ddpStatus, setDdpStatus] = useState<boolean | null>(null);
+  const [simError, setSimError] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
   useEffect(() => {
@@ -62,6 +64,7 @@ export default function SimulatePage() {
 
   const handleSimulate = async () => {
     setIsSimulating(true);
+    setSimError(null);
     try {
       const res = await axios.post("/api/simulate", { A, B, C, E });
       const { time, y, d, is_ddp_solved } = res.data;
@@ -76,7 +79,7 @@ export default function SimulatePage() {
       setDdpStatus(is_ddp_solved);
     } catch (err) {
       console.error(err);
-      alert("Error during simulation");
+      setSimError("Error during simulation");
     } finally {
       setIsSimulating(false);
     }
@@ -110,7 +113,17 @@ export default function SimulatePage() {
              <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
              <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
              
-             <Button onClick={handleSimulate} className="w-full" disabled={isSimulating} aria-busy={isSimulating}>{isSimulating ? "Simulating..." : "Simulate Response"}</Button>
+             <div aria-live="polite" className="space-y-4">
+               <Button onClick={handleSimulate} className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
+                 {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                 {isSimulating ? "Simulating..." : "Simulate Response"}
+               </Button>
+               {simError && (
+                 <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                   {simError}
+                 </div>
+               )}
+             </div>
            </CardContent>
         </Card>
         
