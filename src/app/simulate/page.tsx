@@ -102,10 +102,10 @@ export default function SimulatePage() {
            </CardHeader>
            <CardContent className="space-y-4">
              <div className="grid grid-cols-4 gap-2">
-                <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" min="1" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
+                <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" min="1" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
              </div>
              
              <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
