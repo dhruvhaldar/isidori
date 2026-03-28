@@ -16,14 +16,29 @@ def safe_sympify(expr_str):
         tree = ast.parse(expr_str, mode='eval')
         import builtins
         builtin_names = set(dir(builtins))
+        ALLOWED_MATH_FUNCS = {
+            'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'atan2',
+            'sinh', 'cosh', 'tanh', 'exp', 'log', 'sqrt', 'sign', 'Piecewise'
+        }
+
         for node in ast.walk(tree):
             if isinstance(node, ast.Attribute):
                 raise ValueError("Unsafe expression: attribute access is not allowed")
             elif isinstance(node, ast.Call):
                 if not isinstance(node.func, ast.Name):
                     raise ValueError("Unsafe expression: complex function calls are not allowed")
-                if node.func.id in builtin_names and node.func.id not in {'abs', 'max', 'min', 'round', 'sum', 'complex', 'float', 'int'}:
-                    raise ValueError(f"Unsafe expression: builtin {node.func.id} is not allowed")
+
+                func_name = node.func.id
+                if func_name in builtin_names:
+                    if func_name not in {'abs', 'max', 'min', 'round', 'sum', 'complex', 'float', 'int'}:
+                        raise ValueError(f"Unsafe expression: builtin {func_name} is not allowed")
+                elif func_name not in ALLOWED_MATH_FUNCS:
+                    raise ValueError(f"Unsafe expression: function {func_name} is not allowed")
+            elif isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
+                if isinstance(node.right, ast.Constant) and isinstance(node.right.value, (int, float)):
+                    if abs(node.right.value) > 100:
+                        raise ValueError("Unsafe expression: exponent too large")
+
     except SyntaxError:
         raise ValueError("Invalid syntax in expression")
 
