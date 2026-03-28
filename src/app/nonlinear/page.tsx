@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -83,6 +84,7 @@ export default function NonlinearSystemsPage() {
             </div>
             
             <Button onClick={handleCompute} className="w-full" disabled={isLoading} aria-busy={isLoading}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isLoading ? "Computing..." : "Compute Relative Degree"}
             </Button>
           </CardContent>

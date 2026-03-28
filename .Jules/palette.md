@@ -5,3 +5,7 @@
 ## 2024-05-24 - Missing Async Loading States
 **Learning:** This app heavily relies on complex math computations executed asynchronously via API endpoints (V* computation, DDP checking, simulation), but previously lacked loading state feedback or `aria-busy` indicators. This causes severe accessibility/UX issues since screen readers and typical users cannot determine if an action is processing or failed silently.
 **Action:** When adding new analytical or computation-heavy features to this app, ensure `isLoading` or specific computation states are implemented to visually (disabled button, text change) and programmatically (`aria-busy`) denote the pending operation.
+
+## 2024-05-18 - Improve Loading Feedback & Input Validation
+**Learning:** For async operations, missing visual loading indicators (like spinners) causes user confusion, especially when operations take noticeable time. Furthermore, unbounded number inputs in forms can lead to application crashes (e.g., `RangeError` when resizing matrices below 1). Small `<input type="number" min="1">` constraints drastically improve input robustness.
+**Action:** Always include visual loading indicators (like `Loader2` combined with `isLoading` states) for computational buttons. Ensure dimension inputs default to sensible minimums (`min="1"`) to avoid application crashes or bad states.
