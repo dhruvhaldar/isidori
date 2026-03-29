@@ -39,6 +39,38 @@ def safe_sympify(expr_str):
                     if abs(node.right.value) > 100:
                         raise ValueError("Unsafe expression: exponent too large")
 
+        def get_pure_constant_value(n):
+            if isinstance(n, ast.Constant):
+                return n.value if isinstance(n.value, (int, float)) else None
+            elif isinstance(n, ast.UnaryOp):
+                val = get_pure_constant_value(n.operand)
+                if val is not None:
+                    if isinstance(n.op, ast.USub): return -val
+                    if isinstance(n.op, ast.UAdd): return val
+            elif isinstance(n, ast.BinOp):
+                left = get_pure_constant_value(n.left)
+                right = get_pure_constant_value(n.right)
+                if left is not None and right is not None:
+                    if isinstance(n.op, ast.Add): return left + right
+                    if isinstance(n.op, ast.Sub): return left - right
+                    if isinstance(n.op, ast.Mult): return left * right
+                    if isinstance(n.op, ast.Div): return left / right if right != 0 else 0
+                    if isinstance(n.op, ast.Pow):
+                        if abs(left) > 100 or abs(right) > 100:
+                            raise ValueError("Unsafe expression: constant exponentiation too large")
+                        try:
+                            res = left ** right
+                            return res.real if isinstance(res, complex) else res
+                        except OverflowError:
+                            raise ValueError("Unsafe expression: constant exponentiation overflow")
+            return None
+
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.BinOp, ast.UnaryOp, ast.Constant)):
+                val = get_pure_constant_value(node)
+                if val is not None and abs(val) > 100:
+                    raise ValueError("Unsafe expression: constant sub-expression evaluates to a large number")
+
     except SyntaxError:
         raise ValueError("Invalid syntax in expression")
 
