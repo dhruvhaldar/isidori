@@ -39,28 +39,25 @@ def intersection(A, B, tol=1e-10):
     if A.size == 0: return np.zeros((A.shape[0], 0))
     if B.size == 0: return np.zeros((B.shape[0], 0))
     
-    # Concatenate [A, -B]
-    M = np.hstack([A, -B])
+    # ⚡ Bolt: Use orthogonal projection instead of SVD on concatenated [A, -B]
+    # Assuming B is an orthonormal basis (which it usually is in this context),
+    # A x \in B iff the projection of A x orthogonal to B is zero.
+    # The component of A orthogonal to B is A - B(B^T A).
+    # Its null space gives the coefficients for A.
     
-    # Null space of [A, -B] gives coefficients [u; v] such that Au - Bv = 0 => Au = Bv
-    # The intersection is spanned by Au.
-    
-    # However, for numerical stability with subspaces, we can use SVD on [A B] ? 
-    # Or use the null space method.
-    
-    K = kernel(M, tol)
+    # Ensure B is orthonormal (if not, make it so)
+    # This check is relatively cheap compared to a large SVD
+    if not np.allclose(B.T @ B, np.eye(B.shape[1]), atol=1e-8):
+        B = basis(B, tol)
+
+    proj_A_perp = A - B @ (B.T @ A)
+    K = kernel(proj_A_perp, tol)
     
     if K.size == 0:
         return np.zeros((A.shape[0], 0))
         
-    # K has rows corresponding to A (nA columns) and B (nB columns)
-    nA = A.shape[1]
-    
-    # Coefficients for A
-    CoeffsA = K[:nA, :]
-    
     # Intersection basis in original coordinates
-    Int = A @ CoeffsA
+    Int = A @ K
     
     return basis(Int, tol) # Orthonormalize
 
@@ -80,14 +77,14 @@ def inverse_image(A, S, tol=1e-10):
         # If S is {0}, we want kernel(A)
         return kernel(A, tol)
     
-    M = np.hstack([A, -S])
-    K = kernel(M, tol)
+    # ⚡ Bolt: Use orthogonal projection instead of SVD on concatenated [A, -S]
+    # Assuming S is an orthonormal basis, A x \in S iff the projection of A x
+    # orthogonal to S is zero.
     
-    # K contains [x; y]. We want x.
-    n = A.shape[1]
-    X_coeffs = K[:n, :]
-    
-    # The vectors x are the first n rows of the kernel vectors.
-    # However, we need to extract a basis for these x vectors.
-    return basis(X_coeffs, tol)
+    # Ensure S is orthonormal
+    if not np.allclose(S.T @ S, np.eye(S.shape[1]), atol=1e-8):
+        S = basis(S, tol)
+
+    proj_A_perp = A - S @ (S.T @ A)
+    return kernel(proj_A_perp, tol)
 
