@@ -33,8 +33,8 @@ export default function RootLayout({
         <main className="flex-1 container py-6">
           {children}
         </main>
-        <footer style={{ marginTop: "2rem", textAlign: "center", color: "var(--dark-text-color)", padding: "1rem 0" }}>
-          &copy; 2026 <a href="https://dhruvhaldar.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: "#272e3f", fontWeight: "bold", textDecoration: "none" }}>Dhruv Haldar</a>. MIT License. | <a href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository (opens in a new tab)" style={{ color: "#272e3f", fontWeight: "bold", textDecoration: "none" }}>GitHub</a>
+        <footer className="mt-8 text-center text-muted-foreground py-4">
+          &copy; 2026 <a href="https://dhruvhaldar.vercel.app/" target="_blank" rel="noopener noreferrer" className="font-bold text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transition-colors">Dhruv Haldar</a>. MIT License. | <a href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository (opens in a new tab)" className="font-bold text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transition-colors">GitHub</a>
         </footer>
       </body>
     </html>
