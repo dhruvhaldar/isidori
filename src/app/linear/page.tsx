@@ -151,6 +151,11 @@ export default function LinearSystemsPage() {
                   </p>
                 </div>
               )}
+              {!vStar && !vStarError && !isComputingVStar && (
+                <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4">
+                  <p>Compute V* to view basis matrix.</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -181,6 +186,11 @@ export default function LinearSystemsPage() {
                       </pre>
                     </div>
                   )}
+                </div>
+              )}
+              {!ddpResult && !ddpError && !isCheckingDDP && (
+                <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4">
+                  <p>Check DDP to see solvability.</p>
                 </div>
               )}
             </CardContent>
