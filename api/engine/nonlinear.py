@@ -63,9 +63,38 @@ def safe_sympify(expr_str):
                             return res.real if isinstance(res, complex) else res
                         except OverflowError:
                             raise ValueError("Unsafe expression: constant exponentiation overflow")
+            # If the node contains any Name or Call, it's not a pure constant
             return None
 
+        # Prevent computationally explosive variable powers that cause Denial of Service in SymPy.
+        # We allow constants (<= 100), variables, basic arithmetic, function calls (like sin(x)),
+        # and even nested powers, provided they do not evaluate to massive constants.
+        # The main risk is an attacker providing a huge constant exponent masquerading as a complex AST.
+        def check_exponent_complexity(n, depth=0):
+            if depth > 10:
+                raise ValueError("Unsafe expression: exponent too complex")
+            if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)):
+                if abs(n.value) > 100:
+                    raise ValueError("Unsafe expression: exponent constant too large")
+            elif isinstance(n, ast.UnaryOp):
+                check_exponent_complexity(n.operand, depth + 1)
+            elif isinstance(n, ast.BinOp):
+                check_exponent_complexity(n.left, depth + 1)
+                check_exponent_complexity(n.right, depth + 1)
+            elif isinstance(n, ast.Call):
+                for arg in n.args:
+                    check_exponent_complexity(arg, depth + 1)
+
         for node in ast.walk(tree):
+            if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
+                # First, ensure the exponent doesn't contain explicitly huge constants or massive depth
+                check_exponent_complexity(node.right)
+
+                # Second, ensure the exponent doesn't evaluate to a huge constant through arithmetic
+                val = get_pure_constant_value(node.right)
+                if val is not None and abs(val) > 100:
+                    raise ValueError("Unsafe expression: exponent sub-expression evaluates to a large number")
+
             if isinstance(node, (ast.BinOp, ast.UnaryOp, ast.Constant)):
                 val = get_pure_constant_value(node)
                 if val is not None and abs(val) > 100:
