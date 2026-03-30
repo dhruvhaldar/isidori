@@ -12,3 +12,7 @@
 ## 2026-03-29 - Refactor inline footer styles for contrast and accessibility
 **Learning:** Hardcoded inline styles (like `color: "#272e3f"`) break accessibility in dark mode themes by failing WCAG contrast guidelines and prevent hover/focus states from working cleanly.
 **Action:** Always use semantic Tailwind utility classes (e.g., `text-foreground`, `hover:underline`, `focus-visible:ring-2`) for consistent theming and proper keyboard accessibility.
+
+## 2026-03-30 - Skip Links for Next.js Layouts
+**Learning:** Next.js single-page application navigations can trap keyboard users in the header on every navigation unless there is an accessible way to skip to the main content. The main container must also be explicitly made focusable via tabIndex={-1} so that the browser correctly shifts focus away from the skip link.
+**Action:** Always include a 'Skip to main content' link as the first element in the body of the root layout, and ensure the main tag has id='main-content' and tabIndex={-1} with outline-none applied.
