@@ -73,17 +73,23 @@ def safe_sympify(expr_str):
         def check_exponent_complexity(n, depth=0):
             if depth > 10:
                 raise ValueError("Unsafe expression: exponent too complex")
-            if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)):
-                if abs(n.value) > 100:
+            if isinstance(n, ast.Constant):
+                if isinstance(n.value, (int, float)) and abs(n.value) > 100:
                     raise ValueError("Unsafe expression: exponent constant too large")
             elif isinstance(n, ast.UnaryOp):
                 check_exponent_complexity(n.operand, depth + 1)
             elif isinstance(n, ast.BinOp):
+                if isinstance(n.op, ast.Pow):
+                    raise ValueError("Unsafe expression: nested exponentiation is not allowed")
                 check_exponent_complexity(n.left, depth + 1)
                 check_exponent_complexity(n.right, depth + 1)
             elif isinstance(n, ast.Call):
                 for arg in n.args:
                     check_exponent_complexity(arg, depth + 1)
+            elif isinstance(n, ast.Name):
+                pass
+            else:
+                raise ValueError("Unsafe expression: unsupported node type in exponent")
 
         for node in ast.walk(tree):
             if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
