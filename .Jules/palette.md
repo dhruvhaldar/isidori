@@ -16,3 +16,7 @@
 ## 2026-03-30 - Skip Links for Next.js Layouts
 **Learning:** Next.js single-page application navigations can trap keyboard users in the header on every navigation unless there is an accessible way to skip to the main content. The main container must also be explicitly made focusable via tabIndex={-1} so that the browser correctly shifts focus away from the skip link.
 **Action:** Always include a 'Skip to main content' link as the first element in the body of the root layout, and ensure the main tag has id='main-content' and tabIndex={-1} with outline-none applied.
+
+## 2026-03-31 - Native Forms for Input Validation and Keyboard Accessibility
+**Learning:** Using simple `div` tags and React `onClick` handlers for data-entry forms prevents native browser validation (like the `required` attribute) from functioning correctly and breaks the expected keyboard UX (submitting a form by pressing 'Enter'). This forces users to manually tab to the submit button.
+**Action:** Always wrap data-entry fields and their associated submit button in a native `<form>` element with an `onSubmit` handler, and ensure the submit button has `type="submit"`. This guarantees built-in HTML5 validation works and allows users to submit the form seamlessly using the 'Enter' key.
