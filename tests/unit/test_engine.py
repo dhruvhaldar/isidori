@@ -114,3 +114,15 @@ def test_relative_degree_undefined():
     res = compute_relative_degree(f, g, h, vars)
     
     assert res["relative_degree"] is None
+
+def test_relative_degree_large_variable_name():
+    from pydantic import ValidationError
+    from api.index import NonlinearSystemInput
+
+    # Unbounded variable length should raise a validation error
+    data = {"f": ["x"], "g": ["x"], "h": "x", "vars": ["x" * 100]}
+
+    with pytest.raises(ValidationError) as exc_info:
+        NonlinearSystemInput(**data)
+
+    assert "Variable name exceeds maximum length" in str(exc_info.value)
