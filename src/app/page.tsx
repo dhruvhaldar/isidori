@@ -15,12 +15,16 @@ export default function Home() {
           Compute invariant subspaces, check disturbance decoupling, and verify relative degree.
         </p>
         <div className="flex w-full items-center justify-start gap-2 py-2">
-          <Link href="/linear">
-            <Button>Get Started</Button>
-          </Link>
-          <Link href="https://github.com/dhruvhaldar/isidori" target="_blank">
-            <Button variant="outline">GitHub</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/linear">
+              Get Started
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer">
+              GitHub<span className="sr-only">(opens in a new tab)</span>
+            </Link>
+          </Button>
         </div>
       </section>
 
