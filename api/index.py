@@ -60,8 +60,11 @@ class NonlinearSystemInput(BaseModel):
     def check_dimensions(self) -> 'NonlinearSystemInput':
         max_vars = 100
         max_expr_len = 500
+        max_var_len = 50
         if len(self.vars) > max_vars:
             raise ValueError(f"Number of variables exceeds maximum of {max_vars}")
+        if any(len(v) > max_var_len for v in self.vars):
+            raise ValueError(f"Variable name exceeds maximum length of {max_var_len} characters")
         if len(self.f) > max_vars or len(self.g) > max_vars:
             raise ValueError(f"Vector fields f and g cannot have more than {max_vars} components")
         for expr in self.f + self.g + [self.h]:
