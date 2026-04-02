@@ -23,3 +23,6 @@
 ## 2026-04-01 - Accessible Next.js Link Buttons & Mobile Navigation
 **Learning:** In Next.js App Router, wrapping a `<Button>` component inside a `<Link>` element creates invalid HTML (`<a><button>` nested interactive elements) which degrades accessibility and causes hydration errors. Also, relying solely on `hidden md:flex` for top navigation without a mobile menu fallback makes the application completely unusable on mobile devices.
 **Action:** Use the `asChild` prop on Radix/shadcn-ui `<Button>` components when wrapping Next.js `<Link>` components (e.g. `<Button asChild><Link>...</Link></Button>`). Use horizontal scrolling (`overflow-x-auto whitespace-nowrap scrollbar-hide`) as a lightweight alternative to building complex mobile hamburger menus when navigation items are few.
+## 2026-04-02 - Enhance Form Accessibility and Loading States
+**Learning:** SVG loading icons inside buttons are sometimes announced unnecessarily by screen readers. Furthermore, light-mode background color tokens (e.g. bg-green-100) fail contrast checks when the app switches to dark mode.
+**Action:** Always add `aria-hidden="true"` to decorative SVGs (like spinners) inside interactive elements. Always pair fixed color token classes with their `dark:` mode equivalents to ensure visual accessibility across themes.
