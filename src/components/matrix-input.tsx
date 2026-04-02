@@ -35,8 +35,8 @@ export function MatrixInput({ label, rows, cols, value, onChange, readOnly = fal
               step="any"
               value={value[r] && value[r][c] !== undefined ? value[r][c] : 0}
               onChange={(e) => handleChange(r, c, e.target.value)}
-              disabled={readOnly}
-              className="text-center h-8 px-1"
+              readOnly={readOnly}
+              className={`text-center h-8 px-1 ${readOnly ? "bg-muted cursor-default" : ""}`}
               aria-label={`${label} row ${r + 1} column ${c + 1}`}
               title={`${label} row ${r + 1} column ${c + 1}`}
             />

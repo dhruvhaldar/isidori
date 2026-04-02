@@ -23,3 +23,7 @@
 ## 2026-04-01 - Accessible Next.js Link Buttons & Mobile Navigation
 **Learning:** In Next.js App Router, wrapping a `<Button>` component inside a `<Link>` element creates invalid HTML (`<a><button>` nested interactive elements) which degrades accessibility and causes hydration errors. Also, relying solely on `hidden md:flex` for top navigation without a mobile menu fallback makes the application completely unusable on mobile devices.
 **Action:** Use the `asChild` prop on Radix/shadcn-ui `<Button>` components when wrapping Next.js `<Link>` components (e.g. `<Button asChild><Link>...</Link></Button>`). Use horizontal scrolling (`overflow-x-auto whitespace-nowrap scrollbar-hide`) as a lightweight alternative to building complex mobile hamburger menus when navigation items are few.
+
+## 2026-04-02 - Structured Read-Only Inputs vs Disabled State
+**Learning:** Using `disabled` on input fields drops the opacity to 50%, which fails WCAG contrast guidelines in dark mode and completely prevents users from highlighting or copying the output data. Additionally, dumping raw arrays using `JSON.stringify` into `<pre>` tags creates a developer-centric UI that breaks visual consistency for end-users.
+**Action:** When creating read-only input fields (like output matrices), use the `readOnly` attribute combined with visual cues (like `bg-muted` and `cursor-default`) rather than `disabled`. Always reuse existing structured UI components (like `<MatrixInput>`) in a read-only state to present complex data instead of raw JSON dumps.

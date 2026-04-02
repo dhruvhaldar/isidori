@@ -100,30 +100,32 @@ export default function SimulatePage() {
            <CardHeader>
              <CardTitle>System Configuration</CardTitle>
            </CardHeader>
-           <CardContent className="space-y-4">
-             <div className="grid grid-cols-4 gap-2">
-                <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" min="1" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
-                <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" min="1" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
-             </div>
-             
-             <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
-             <MatrixInput label="B" rows={n} cols={m} value={B} onChange={setB} />
-             <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
-             <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
-             
-             <div aria-live="polite" className="space-y-4">
-               <Button onClick={handleSimulate} className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
-                 {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                 {isSimulating ? "Simulating..." : "Simulate Response"}
-               </Button>
-               {simError && (
-                 <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
-                   {simError}
-                 </div>
-               )}
-             </div>
+           <CardContent>
+             <form onSubmit={(e) => { e.preventDefault(); handleSimulate(); }} className="space-y-4">
+               <div className="grid grid-cols-4 gap-2">
+                  <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" min="1" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" min="1" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
+               </div>
+
+               <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
+               <MatrixInput label="B" rows={n} cols={m} value={B} onChange={setB} />
+               <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
+               <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
+
+               <div aria-live="polite" className="space-y-4">
+                 <Button type="submit" className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
+                   {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                   {isSimulating ? "Simulating..." : "Simulate Response"}
+                 </Button>
+                 {simError && (
+                   <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                     {simError}
+                   </div>
+                 )}
+               </div>
+             </form>
            </CardContent>
         </Card>
         
