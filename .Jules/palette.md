@@ -23,3 +23,6 @@
 ## 2026-04-01 - Accessible Next.js Link Buttons & Mobile Navigation
 **Learning:** In Next.js App Router, wrapping a `<Button>` component inside a `<Link>` element creates invalid HTML (`<a><button>` nested interactive elements) which degrades accessibility and causes hydration errors. Also, relying solely on `hidden md:flex` for top navigation without a mobile menu fallback makes the application completely unusable on mobile devices.
 **Action:** Use the `asChild` prop on Radix/shadcn-ui `<Button>` components when wrapping Next.js `<Link>` components (e.g. `<Button asChild><Link>...</Link></Button>`). Use horizontal scrolling (`overflow-x-auto whitespace-nowrap scrollbar-hide`) as a lightweight alternative to building complex mobile hamburger menus when navigation items are few.
+## 2026-04-02 - Ensure Accessible Visual Feedback
+**Learning:** Relying solely on color (e.g., green/red backgrounds) to indicate success or failure violates WCAG guidelines because color-blind users or users in certain themes (like dark mode) may not perceive the difference. Poorly contrasted text in dark mode further compounds this.
+**Action:** Always pair color-coded status indicators with clear iconography (e.g., Lucide React icons like CircleCheck, CircleX, TriangleAlert) and ensure proper dark-mode contrast classes (e.g., dark:bg-green-900/20) are applied.

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, CircleCheck, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -108,22 +108,24 @@ export default function SimulatePage() {
                 <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" min="1" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
              </div>
              
-             <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
-             <MatrixInput label="B" rows={n} cols={m} value={B} onChange={setB} />
-             <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
-             <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
-             
-             <div aria-live="polite" className="space-y-4">
-               <Button onClick={handleSimulate} className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
-                 {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                 {isSimulating ? "Simulating..." : "Simulate Response"}
-               </Button>
-               {simError && (
-                 <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
-                   {simError}
-                 </div>
-               )}
-             </div>
+             <form onSubmit={(e) => { e.preventDefault(); handleSimulate(); }} className="space-y-4">
+               <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
+               <MatrixInput label="B" rows={n} cols={m} value={B} onChange={setB} />
+               <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
+               <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
+
+               <div aria-live="polite" className="space-y-4">
+                 <Button type="submit" className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
+                   {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                   {isSimulating ? "Simulating..." : "Simulate Response"}
+                 </Button>
+                 {simError && (
+                   <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                     {simError}
+                   </div>
+                 )}
+               </div>
+             </form>
            </CardContent>
         </Card>
         
@@ -135,12 +137,16 @@ export default function SimulatePage() {
                 Output y(t) vs Disturbance d(t) (Sine wave)
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent aria-live="polite">
               {simData.length > 0 ? (
                 <div className="space-y-4">
                    <SystemChart data={simData} />
-                   <div className={`p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
-                     {ddpStatus ? "DDP Solved & Applied" : "DDP Not Solvable (Open Loop / Best Effort)"}
+                   <div className={`flex items-center justify-center gap-2 p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"}`}>
+                     {ddpStatus ? (
+                       <><CircleCheck className="h-5 w-5" aria-hidden="true" /> DDP Solved & Applied</>
+                     ) : (
+                       <><TriangleAlert className="h-5 w-5" aria-hidden="true" /> DDP Not Solvable (Open Loop / Best Effort)</>
+                     )}
                    </div>
                    <p className="text-xs text-muted-foreground">
                      If DDP is solvable, the output should remain close to zero despite the disturbance.

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, CircleCheck, CircleX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -175,8 +175,12 @@ export default function LinearSystemsPage() {
               )}
               {ddpResult && (
                 <div className="mt-4 space-y-2">
-                  <div className={`p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                    {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}
+                  <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>
+                    {ddpResult.is_solvable ? (
+                      <><CircleCheck className="h-5 w-5" aria-hidden="true" /> Solvable</>
+                    ) : (
+                      <><CircleX className="h-5 w-5" aria-hidden="true" /> Not Solvable</>
+                    )}
                   </div>
                   {ddpResult.is_solvable && ddpResult.F && (
                     <div>
