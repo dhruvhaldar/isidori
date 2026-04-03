@@ -23,3 +23,7 @@
 ## 2026-04-01 - Accessible Next.js Link Buttons & Mobile Navigation
 **Learning:** In Next.js App Router, wrapping a `<Button>` component inside a `<Link>` element creates invalid HTML (`<a><button>` nested interactive elements) which degrades accessibility and causes hydration errors. Also, relying solely on `hidden md:flex` for top navigation without a mobile menu fallback makes the application completely unusable on mobile devices.
 **Action:** Use the `asChild` prop on Radix/shadcn-ui `<Button>` components when wrapping Next.js `<Link>` components (e.g. `<Button asChild><Link>...</Link></Button>`). Use horizontal scrolling (`overflow-x-auto whitespace-nowrap scrollbar-hide`) as a lightweight alternative to building complex mobile hamburger menus when navigation items are few.
+
+## 2026-04-02 - Structured UI for Mathematical Output
+**Learning:** When outputting complex mathematical data (like matrices or vectors) in the UI, rendering raw developer-centric formats like `JSON.stringify()` provides a poor, confusing user experience. The outputs look like code rather than a seamless part of the interface.
+**Action:** Always reuse existing structured UI components (such as a `<MatrixInput>` component configured in a `readOnly` state) for rendering mathematical results. This maintains visual consistency across inputs and outputs and presents the data in an intuitive format for the user.

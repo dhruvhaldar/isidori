@@ -142,10 +142,14 @@ export default function LinearSystemsPage() {
               )}
               {vStar && (
                 <div className="mt-4">
-                  <Label>V* Basis Matrix ({vStar.length}x{vStar[0]?.length || 0})</Label>
-                  <pre className="bg-secondary p-2 rounded-md overflow-x-auto text-xs">
-                    {JSON.stringify(vStar, null, 2)}
-                  </pre>
+                  {vStar.length > 0 && vStar[0]?.length > 0 ? (
+                    <MatrixInput label="V* Basis Matrix" rows={vStar.length} cols={vStar[0].length} value={vStar} readOnly onChange={() => {}} />
+                  ) : (
+                    <div>
+                      <Label>V* Basis Matrix (0x0)</Label>
+                      <pre className="bg-secondary p-2 rounded-md overflow-x-auto text-xs">[]</pre>
+                    </div>
+                  )}
                   <p className="text-sm text-muted-foreground mt-2">
                     Columns represent basis vectors for V*. If empty, V* is trivial or zero.
                   </p>
@@ -179,11 +183,8 @@ export default function LinearSystemsPage() {
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}
                   </div>
                   {ddpResult.is_solvable && ddpResult.F && (
-                    <div>
-                      <Label>Feedback Matrix F</Label>
-                      <pre className="bg-secondary p-2 rounded-md overflow-x-auto text-xs">
-                        {JSON.stringify(ddpResult.F, null, 2)}
-                      </pre>
+                    <div className="mt-4">
+                      <MatrixInput label="Feedback Matrix F" rows={ddpResult.F.length} cols={ddpResult.F[0]?.length || 0} value={ddpResult.F} readOnly onChange={() => {}} />
                     </div>
                   )}
                 </div>
