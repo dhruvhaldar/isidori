@@ -155,36 +155,27 @@ def simulate_system(data: LinearSystemInput):
         # Initial state (can be zero or small perturbation)
         x = np.zeros(A.shape[0])
         
-        # Disturbance signal (e.g., sine wave)
-        # d(t) = sin(t)
-        def disturbance(t):
-            return np.sin(t)
-            
-        # Store results
-        y_out = []
-        x_out = []
-        d_out = []
-        
-        # System matrix with feedback
+        # ⚡ Bolt: Pre-allocate numpy arrays to track variables and vectorize matrix computations
+        # against the final array instead of appending to lists and doing element-wise matrix multiplications.
+        # This significantly reduces loop overhead and leverages BLAS optimization.
         A_cl = A + B @ F
         
-        for t in time:
-            d_val = disturbance(t)
-            # Simple Euler integration
-            # dx = (A_cl x + E d)
-            dx = A_cl @ x + E.flatten() * d_val
+        num_steps = len(time)
+        x_out_opt = np.zeros((num_steps, A.shape[0]))
+        d_out_opt = np.sin(time)
+        E_flat = E.flatten()
+
+        for i in range(num_steps):
+            dx = A_cl @ x + E_flat * d_out_opt[i]
             x = x + dx * dt
+            x_out_opt[i] = x
             
-            y_val = C @ x
-            
-            x_out.append(x.tolist())
-            y_out.append(y_val.tolist())
-            d_out.append(d_val)
+        y_out_opt = (C @ x_out_opt.T).T
             
         return {
             "time": time.tolist(),
-            "y": y_out,
-            "d": d_out,
+            "y": y_out_opt.tolist(),
+            "d": d_out_opt.tolist(),
             "is_ddp_solved": bool(is_solvable)
         }
 
