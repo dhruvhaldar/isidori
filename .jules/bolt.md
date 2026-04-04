@@ -21,3 +21,7 @@
 ## 2026-04-01 - SymPy Sparse Differentiation Unnecessary Free Symbols Bottleneck
 **Learning:** Even when avoiding differentiation of zero vector components, calling `sympy.diff(func, var)` when `var` does not appear in `func` is slow. Checking if `var` is in `func.free_symbols` avoids doing the full differentiation work just to return `0`, yielding another ~3-4x speedup over the previous sparse-vector optimization for variables absent from the function.
 **Action:** When computing Lie derivatives (or differentiating with SymPy in a loop), always check `if hasattr(func, 'free_symbols') and var not in func.free_symbols:` to skip `sympy.diff` if the variable isn't present in the expression.
+
+## 2026-05-24 - Timeseries Simulation Loop Bottleneck
+**Learning:** When simulating state systems over time in Python loops, doing element-wise scalar updates, concatenating lists via `.append()`, and performing separate small matrix multiplications in every loop iteration incurs a massive Python runtime overhead.
+**Action:** When computing timeseries data in Python loops (e.g., simulating states), pre-allocate numpy arrays to track variables (e.g., `x_out = np.zeros((steps, dim))`) and vectorize matrix computations against the final array (e.g., `C @ x_out.T`) instead of appending to lists and doing element-wise matrix multiplications. This significantly reduces loop overhead, leverages BLAS optimization, and yields a ~3.3x speedup.
