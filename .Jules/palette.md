@@ -23,3 +23,7 @@
 ## 2026-04-01 - Accessible Next.js Link Buttons & Mobile Navigation
 **Learning:** In Next.js App Router, wrapping a `<Button>` component inside a `<Link>` element creates invalid HTML (`<a><button>` nested interactive elements) which degrades accessibility and causes hydration errors. Also, relying solely on `hidden md:flex` for top navigation without a mobile menu fallback makes the application completely unusable on mobile devices.
 **Action:** Use the `asChild` prop on Radix/shadcn-ui `<Button>` components when wrapping Next.js `<Link>` components (e.g. `<Button asChild><Link>...</Link></Button>`). Use horizontal scrolling (`overflow-x-auto whitespace-nowrap scrollbar-hide`) as a lightweight alternative to building complex mobile hamburger menus when navigation items are few.
+
+## 2026-04-02 - Accessible Status Badges
+**Learning:** Relying solely on background and text colors (like red/green) to indicate mathematical solvability or status results fails WCAG accessibility guidelines, preventing colorblind users from discerning the result. In addition, hardcoded specific colors can lack proper contrast in dark mode.
+**Action:** Always pair color-coded status badges with descriptive iconography (e.g., using Lucide React icons like `CheckCircle` or `AlertTriangle`). Furthermore, always provide `dark:` variants to maintain sufficient contrast across themes.
