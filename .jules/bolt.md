@@ -25,3 +25,11 @@
 ## 2026-04-05 - Simulation Loop Vectorization
 **Learning:** When simulating state space models in Python, using list appends and re-evaluating properties like `E.flatten()` inside the simulation loop is slow.
 **Action:** Pre-allocate numpy arrays for state tracking, pre-compute input signals, flatten matrices before the loop, and use vectorized operations outside the loop to calculate outputs. This reduces loop overhead and leverages BLAS optimizations for a ~2x speedup.
+
+## 2024-05-18 - Euler Simulation Loop Bottleneck
+**Learning:** In Python numerical simulation loops (e.g., simple Euler integration), repeatedly calculating `A_cl @ x + E_flat * d_val` and adding to `x` inside a loop of 10,000+ steps causes significant overhead due to scalar multiplications and matrix additions that could be factored out.
+**Action:** Precompute loop-invariant matrices for the simulation step outside the main loop, such as `A_step = np.eye(dim) + A_cl * dt` and `E_step = E_flat * dt`, and then run `x = A_step @ x + E_step * d_out[i]` inside the loop. This reduces the number of operations per step and speeds up the simulation by ~1.7x.
+
+## 2024-05-18 - Intersection Basis Orthonormality Regressions
+**Learning:** When computing the intersection of two subspaces `A` and `B` using the null space kernel `K` of the concatenated matrix or orthogonal projection, it is tempting to skip a final orthonormalization (e.g., returning `A @ K` instead of `basis(A @ K)`) under the false assumption that multiplying an orthonormal matrix by an orthonormal basis of a kernel yields an orthonormal result. The components of `K` often have scaled norms depending on the null space computation, making `A @ K` mathematically incorrect without normalization.
+**Action:** Never skip the final orthonormalization step (e.g., `basis(Int, tol)`) when returning the basis for a subspace intersection unless the mathematical guarantee is absolute and thoroughly tested against arbitrary matrices.
