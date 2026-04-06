@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -132,7 +132,7 @@ export default function LinearSystemsPage() {
             </CardHeader>
             <CardContent className="space-y-4" aria-live="polite">
               <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>
-                {isComputingVStar && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isComputingVStar && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                 {isComputingVStar ? "Computing V*..." : "Compute V*"}
               </Button>
               {vStarError && (
@@ -165,7 +165,7 @@ export default function LinearSystemsPage() {
             </CardHeader>
             <CardContent className="space-y-4" aria-live="polite">
               <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>
-                {isCheckingDDP && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isCheckingDDP && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                 {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
               </Button>
               {ddpError && (
@@ -175,7 +175,8 @@ export default function LinearSystemsPage() {
               )}
               {ddpResult && (
                 <div className="mt-4 space-y-2">
-                  <div className={`p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                  <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>
+                    {ddpResult.is_solvable ? <CheckCircle aria-hidden="true" className="w-5 h-5" /> : <XCircle aria-hidden="true" className="w-5 h-5" />}
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}
                   </div>
                   {ddpResult.is_solvable && ddpResult.F && (

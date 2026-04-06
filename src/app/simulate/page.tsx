@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -115,7 +115,7 @@ export default function SimulatePage() {
              
              <div aria-live="polite" className="space-y-4">
                <Button onClick={handleSimulate} className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
-                 {isSimulating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                 {isSimulating && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                  {isSimulating ? "Simulating..." : "Simulate Response"}
                </Button>
                {simError && (
@@ -139,7 +139,8 @@ export default function SimulatePage() {
               {simData.length > 0 ? (
                 <div className="space-y-4">
                    <SystemChart data={simData} />
-                   <div className={`p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
+                   <div className={`flex items-center justify-center gap-2 p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"}`}>
+                     {ddpStatus ? <CheckCircle aria-hidden="true" className="w-4 h-4" /> : <AlertTriangle aria-hidden="true" className="w-4 h-4" />}
                      {ddpStatus ? "DDP Solved & Applied" : "DDP Not Solvable (Open Loop / Best Effort)"}
                    </div>
                    <p className="text-xs text-muted-foreground">
