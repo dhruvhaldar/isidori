@@ -27,3 +27,7 @@
 ## 2026-04-02 - Accessible Status Badges
 **Learning:** Relying solely on background and text colors (like red/green) to indicate mathematical solvability or status results fails WCAG accessibility guidelines, preventing colorblind users from discerning the result. In addition, hardcoded specific colors can lack proper contrast in dark mode.
 **Action:** Always pair color-coded status badges with descriptive iconography (e.g., using Lucide React icons like `CheckCircle` or `AlertTriangle`). Furthermore, always provide `dark:` variants to maintain sufficient contrast across themes.
+
+## 2026-04-06 - Render Mathematical Data with UI Components
+**Learning:** When outputting structured mathematical data like matrices to users, raw formats like JSON.stringify() are developer-centric and offer poor UX and readability.
+**Action:** Use existing semantic, structured input components (like MatrixInput in readOnly mode) to display structured data output to maintain visual consistency and clarity.
