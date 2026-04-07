@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 
 interface MatrixInputProps {
@@ -10,12 +10,40 @@ interface MatrixInputProps {
   readOnly?: boolean;
 }
 
-export function MatrixInput({ label, rows, cols, value, onChange, readOnly = false }: MatrixInputProps) {
-  const handleChange = (r: number, c: number, val: string) => {
-    const newValue = value.map(row => [...row]);
+// ⚡ Bolt: Memoize individual cells to prevent O(N*M) re-renders when a single value changes.
+const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, label: string }) => (
+  <Input
+    type="number"
+    step="any"
+    value={val}
+    onChange={(e) => onChange(r, c, e.target.value)}
+    readOnly={readOnly}
+    className={`text-center h-8 px-1 ${readOnly ? "bg-muted cursor-default focus-visible:ring-0 focus-visible:ring-offset-0" : ""}`}
+    aria-label={`${label} row ${r + 1} column ${c + 1}`}
+    title={`${label} row ${r + 1} column ${c + 1}`}
+  />
+));
+MatrixCell.displayName = "MatrixCell";
+
+// ⚡ Bolt: Memoize the entire MatrixInput so unrelated matrices don't re-render
+// when one matrix is modified on the parent page.
+export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, value, onChange, readOnly = false }: MatrixInputProps) {
+
+  // ⚡ Bolt: Use refs to create a stable handleChange reference,
+  // allowing MatrixCell to be effectively memoized.
+  const valueRef = useRef(value);
+  const onChangeRef = useRef(onChange);
+
+  useEffect(() => {
+    valueRef.current = value;
+    onChangeRef.current = onChange;
+  }, [value, onChange]);
+
+  const handleChange = useCallback((r: number, c: number, val: string) => {
+    const newValue = valueRef.current.map(row => [...row]);
     newValue[r][c] = parseFloat(val);
-    onChange(newValue);
-  };
+    onChangeRef.current(newValue);
+  }, []);
 
   // Ensure value matches rows/cols, if not, parent should fix it or we just render safe
   // We assume value is correct size for now.
@@ -29,20 +57,18 @@ export function MatrixInput({ label, rows, cols, value, onChange, readOnly = fal
       >
         {Array.from({ length: rows }).map((_, r) =>
           Array.from({ length: cols }).map((_, c) => (
-            <Input
+            <MatrixCell
               key={`${r}-${c}`}
-              type="number"
-              step="any"
-              value={value[r] && value[r][c] !== undefined ? value[r][c] : 0}
-              onChange={(e) => handleChange(r, c, e.target.value)}
+              r={r}
+              c={c}
+              val={value[r] && value[r][c] !== undefined ? value[r][c] : 0}
               readOnly={readOnly}
-              className={`text-center h-8 px-1 ${readOnly ? "bg-muted cursor-default focus-visible:ring-0 focus-visible:ring-offset-0" : ""}`}
-              aria-label={`${label} row ${r + 1} column ${c + 1}`}
-              title={`${label} row ${r + 1} column ${c + 1}`}
+              onChange={handleChange}
+              label={label}
             />
           ))
         )}
       </div>
     </fieldset>
   );
-}
+});
