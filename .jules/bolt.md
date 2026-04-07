@@ -33,3 +33,7 @@
 ## 2024-05-18 - Intersection Basis Orthonormality Regressions
 **Learning:** When computing the intersection of two subspaces `A` and `B` using the null space kernel `K` of the concatenated matrix or orthogonal projection, it is tempting to skip a final orthonormalization (e.g., returning `A @ K` instead of `basis(A @ K)`) under the false assumption that multiplying an orthonormal matrix by an orthonormal basis of a kernel yields an orthonormal result. The components of `K` often have scaled norms depending on the null space computation, making `A @ K` mathematically incorrect without normalization.
 **Action:** Never skip the final orthonormalization step (e.g., `basis(Int, tol)`) when returning the basis for a subspace intersection unless the mathematical guarantee is absolute and thoroughly tested against arbitrary matrices.
+
+## 2026-04-07 - React Matrix Input Re-render Bottleneck
+**Learning:** In React form interfaces handling multi-dimensional matrices, passing unstable `onChange` closures to individual cell inputs causes $O(N \times M)$ component re-renders per keystroke. Furthermore, modifying one matrix on a page triggers re-renders of all other matrices because they share the parent's state.
+**Action:** Extract cells into `React.memo` components, stabilize the `onChange` handler using `useRef` and `useCallback` to track the latest state, and wrap the entire `MatrixInput` component in `React.memo` to skip rendering unmodified matrices.
