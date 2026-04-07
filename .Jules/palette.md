@@ -31,3 +31,7 @@
 ## 2026-04-06 - Render Mathematical Data with UI Components
 **Learning:** When outputting structured mathematical data like matrices to users, raw formats like JSON.stringify() are developer-centric and offer poor UX and readability.
 **Action:** Use existing semantic, structured input components (like MatrixInput in readOnly mode) to display structured data output to maintain visual consistency and clarity.
+
+## 2026-04-07 - Feature Card Click Targets
+**Learning:** When using large Card components to describe features on a landing page, wrapping the entire Card in a Link (with hover and focus states) rather than relying on a small "Learn More" button dramatically improves the clickable area (applying Fitts's Law) and provides a more intuitive navigation experience for users.
+**Action:** Always wrap structural overview cards in routing components (like Next.js <Link>) when their primary purpose is to act as gateways to deeper content pages.

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Network, FunctionSquare, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -29,46 +30,61 @@ export default function Home() {
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Linear Systems</CardTitle>
-            <CardDescription>Geometric concepts for linear systems.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
-              <li>Invariance and controlled invariance (V*)</li>
-              <li>Disturbance decoupling (DDP)</li>
-              <li>System inversion</li>
-            </ul>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Nonlinear Systems</CardTitle>
-            <CardDescription>Tools for nonlinear analysis.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
-              <li>Relative degree</li>
-              <li>Lie derivatives</li>
-              <li>Zero dynamics</li>
-              <li>Input-output linearization</li>
-            </ul>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Simulation</CardTitle>
-            <CardDescription>Visualize system behavior.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
-              <li>Time response simulation</li>
-              <li>Disturbance rejection verification</li>
-              <li>Tracking performance</li>
-            </ul>
-          </CardContent>
-        </Card>
+        <Link href="/linear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+          <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Network className="w-5 h-5 text-primary" />
+                Linear Systems
+              </CardTitle>
+              <CardDescription>Geometric concepts for linear systems.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
+                <li>Invariance and controlled invariance (V*)</li>
+                <li>Disturbance decoupling (DDP)</li>
+                <li>System inversion</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/nonlinear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+          <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FunctionSquare className="w-5 h-5 text-primary" />
+                Nonlinear Systems
+              </CardTitle>
+              <CardDescription>Tools for nonlinear analysis.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
+                <li>Relative degree</li>
+                <li>Lie derivatives</li>
+                <li>Zero dynamics</li>
+                <li>Input-output linearization</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/simulate" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl md:col-span-2 lg:col-span-1">
+          <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LineChart className="w-5 h-5 text-primary" />
+                Simulation
+              </CardTitle>
+              <CardDescription>Visualize system behavior.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
+                <li>Time response simulation</li>
+                <li>Disturbance rejection verification</li>
+                <li>Tracking performance</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       <section className="py-8">
