@@ -81,6 +81,8 @@ def safe_sympify(expr_str):
             elif isinstance(n, ast.BinOp):
                 if isinstance(n.op, ast.Pow):
                     raise ValueError("Unsafe expression: nested exponentiation is not allowed")
+                if not isinstance(n.op, (ast.Add, ast.Sub, ast.Mult, ast.Div)):
+                    raise ValueError(f"Unsafe expression: unsupported binary operation in exponent")
                 check_exponent_complexity(n.left, depth + 1)
                 check_exponent_complexity(n.right, depth + 1)
             elif isinstance(n, ast.Call):
