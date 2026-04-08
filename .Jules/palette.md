@@ -35,3 +35,7 @@
 ## 2026-04-07 - Feature Card Click Targets
 **Learning:** When using large Card components to describe features on a landing page, wrapping the entire Card in a Link (with hover and focus states) rather than relying on a small "Learn More" button dramatically improves the clickable area (applying Fitts's Law) and provides a more intuitive navigation experience for users.
 **Action:** Always wrap structural overview cards in routing components (like Next.js <Link>) when their primary purpose is to act as gateways to deeper content pages.
+
+## 2026-04-08 - Empty State Visual Polish
+**Learning:** Relying on plain text and dashed borders for empty states, especially for complex components like charts, feels unfinished and unintuitive. Adding a descriptive decorative icon and subtle background styling creates a more polished, intentional layout that guides the user.
+**Action:** When designing empty states for data visualizations or dynamic result areas, enhance plain text with a descriptive decorative icon (e.g., from lucide-react) and subtle background styling to create a polished, intentional layout.
