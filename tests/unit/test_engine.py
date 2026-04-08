@@ -126,3 +126,21 @@ def test_relative_degree_large_variable_name():
         NonlinearSystemInput(**data)
 
     assert "Variable name exceeds maximum length" in str(exc_info.value)
+
+def test_sympify_dos_protection():
+    from api.engine.nonlinear import safe_sympify
+
+    # Valid expressions should parse fine
+    safe_sympify("x**(y*z)")
+    safe_sympify("x**(y+z)")
+    safe_sympify("x**int(5)")
+
+    # Nested exponentiation should be rejected
+    with pytest.raises(ValueError, match="Unsafe expression: nested exponentiation is not allowed"):
+        safe_sympify("x**(y**z)")
+
+    # Unsupported binary operations in exponents should be rejected
+    with pytest.raises(ValueError, match="Unsafe expression: unsupported binary operation in exponent"):
+        # We can simulate unsupported binary operations using python bitwise/shift operators
+        # Sympy's safe_sympify uses python's ast to parse, and things like bitwise shifts are ast.LShift
+        safe_sympify("x**(y<<z)")
