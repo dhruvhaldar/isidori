@@ -140,7 +140,11 @@ def test_sympify_dos_protection():
         safe_sympify("x**(y**z)")
 
     # Unsupported binary operations in exponents should be rejected
-    with pytest.raises(ValueError, match="Unsafe expression: unsupported binary operation in exponent"):
+    with pytest.raises(ValueError, match="Unsafe expression: unsupported binary operation"):
         # We can simulate unsupported binary operations using python bitwise/shift operators
         # Sympy's safe_sympify uses python's ast to parse, and things like bitwise shifts are ast.LShift
         safe_sympify("x**(y<<z)")
+
+    # Unsupported binary operations anywhere in the expression should be rejected
+    with pytest.raises(ValueError, match="Unsafe expression: unsupported binary operation"):
+        safe_sympify("x << y")

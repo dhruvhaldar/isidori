@@ -34,10 +34,13 @@ def safe_sympify(expr_str):
                         raise ValueError(f"Unsafe expression: builtin {func_name} is not allowed")
                 elif func_name not in ALLOWED_MATH_FUNCS:
                     raise ValueError(f"Unsafe expression: function {func_name} is not allowed")
-            elif isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
-                if isinstance(node.right, ast.Constant) and isinstance(node.right.value, (int, float)):
-                    if abs(node.right.value) > 10:
-                        raise ValueError("Unsafe expression: exponent too large")
+            elif isinstance(node, ast.BinOp):
+                if not isinstance(node.op, (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow)):
+                    raise ValueError(f"Unsafe expression: unsupported binary operation")
+                if isinstance(node.op, ast.Pow):
+                    if isinstance(node.right, ast.Constant) and isinstance(node.right.value, (int, float)):
+                        if abs(node.right.value) > 10:
+                            raise ValueError("Unsafe expression: exponent too large")
 
         def get_pure_constant_value(n):
             if isinstance(n, ast.Constant):
