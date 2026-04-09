@@ -41,3 +41,6 @@
 ## 2026-04-08 - Vectorized Disturbance Multiplication in Simulation Loops
 **Learning:** In the `api/index.py` simulation loop, executing `E_step * d_out[i]` inside the 10,000-iteration loop performed unnecessary repeated scalar-to-vector multiplications.
 **Action:** Always pre-compute and broadcast such scalar multiplications outside the loop. Using `E_d = d_out[:, np.newaxis] * E_step` created a pre-scaled matrix of disturbances, shifting the heavy lifting to C/C++ backend extensions and speeding up the Python `for` loop iteration by ~33%.
+## 2024-04-09 - Reuse SVD Results to Avoid Redundant Tolerance SVD Computations
+**Learning:** Functions computing mathematical subspace ranks, bases, and kernels often require dynamic tolerance checks involving the 2-norm (largest singular value) of the matrix. Calling `np.linalg.norm(M, 2)` internally triggers an SVD. If the parent function itself needs an SVD, calculating the tolerance via the standard helper computes SVD *twice* per operation.
+**Action:** When a function computes `u, s, vh = np.linalg.svd(...)`, calculate the tolerance inline using the already-computed maximum singular value (`s[0]`) instead of deferring to a helper function that blindly calls `np.linalg.norm`.
