@@ -7,27 +7,30 @@ def tolerance(M):
 
 def rank(M, tol=None):
     """Computes the rank of a matrix."""
-    if tol is None:
-        tol = tolerance(M)
     # ⚡ Bolt: compute_uv=False avoids computing eigenvectors when only singular values are needed (~2x speedup)
     s = np.linalg.svd(M, compute_uv=False)
+    # ⚡ Bolt: Avoid calling tolerance(M) which computes a redundant SVD. Reuse singular values instead (~2x speedup).
+    if tol is None:
+        tol = max(M.shape) * (s[0] if len(s) > 0 else 0) * np.finfo(M.dtype).eps
     return np.sum(s > tol)
 
 def basis(M, tol=None):
     """Returns an orthonormal basis for the range (column space) of M."""
-    if tol is None:
-        tol = tolerance(M)
     # ⚡ Bolt: full_matrices=False computes economy-size SVD, drastically faster for rectangular matrices (~6x speedup)
     u, s, vh = np.linalg.svd(M, full_matrices=False)
+    # ⚡ Bolt: Avoid calling tolerance(M) which computes a redundant SVD. Reuse singular values instead (~2x speedup).
+    if tol is None:
+        tol = max(M.shape) * (s[0] if len(s) > 0 else 0) * np.finfo(M.dtype).eps
     r = np.sum(s > tol)
     return u[:, :r]
 
 def kernel(M, tol=None):
     """Returns an orthonormal basis for the null space of M."""
-    if tol is None:
-        tol = tolerance(M)
     # ⚡ Bolt: Only compute full matrices if M is wide. For tall matrices, economy SVD provides the full null space without computing the massive, unused U matrix.
     u, s, vh = np.linalg.svd(M, full_matrices=(M.shape[0] < M.shape[1]))
+    # ⚡ Bolt: Avoid calling tolerance(M) which computes a redundant SVD. Reuse singular values instead (~2x speedup).
+    if tol is None:
+        tol = max(M.shape) * (s[0] if len(s) > 0 else 0) * np.finfo(M.dtype).eps
     r = np.sum(s > tol)
     return vh[r:, :].T
 
