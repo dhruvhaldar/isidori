@@ -39,3 +39,6 @@
 ## 2026-04-08 - Empty State Visual Polish
 **Learning:** Relying on plain text and dashed borders for empty states, especially for complex components like charts, feels unfinished and unintuitive. Adding a descriptive decorative icon and subtle background styling creates a more polished, intentional layout that guides the user.
 **Action:** When designing empty states for data visualizations or dynamic result areas, enhance plain text with a descriptive decorative icon (e.g., from lucide-react) and subtle background styling to create a polished, intentional layout.
+## 2026-04-09 - Never suppress focus rings on read-only inputs
+**Learning:** Suppressing focus rings (using `focus-visible:ring-0`) on `readOnly` inputs prevents keyboard users from knowing which input they are focused on. While disabled inputs skip focus entirely, read-only inputs intentionally accept focus so users can copy their values.
+**Action:** When using read-only inputs (e.g., `readOnly={true}`), never suppress the focus ring. Read-only inputs must remain focusable for keyboard users to navigate and copy text, and removing the focus indicator violates WCAG accessibility guidelines.
