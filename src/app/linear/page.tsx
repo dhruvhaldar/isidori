@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, Layers, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -156,7 +156,8 @@ export default function LinearSystemsPage() {
                 </div>
               )}
               {!vStar && !vStarError && !isComputingVStar && (
-                <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4">
+                <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
+                  <Layers aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
                   <p>Compute V* to view basis matrix.</p>
                 </div>
               )}
@@ -198,7 +199,8 @@ export default function LinearSystemsPage() {
                 </div>
               )}
               {!ddpResult && !ddpError && !isCheckingDDP && (
-                <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4">
+                <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
+                  <Settings2 aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
                   <p>Check DDP to see solvability.</p>
                 </div>
               )}

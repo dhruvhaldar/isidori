@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, FunctionSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -139,7 +139,8 @@ export default function NonlinearSystemsPage() {
             )}
             
             {!result && !error && (
-              <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
+              <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg text-muted-foreground bg-muted/10 gap-2">
+                <FunctionSquare aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
                 <p>Run computation to see results.</p>
               </div>
             )}
