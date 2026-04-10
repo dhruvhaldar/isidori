@@ -44,3 +44,7 @@
 ## 2024-04-09 - Reuse SVD Results to Avoid Redundant Tolerance SVD Computations
 **Learning:** Functions computing mathematical subspace ranks, bases, and kernels often require dynamic tolerance checks involving the 2-norm (largest singular value) of the matrix. Calling `np.linalg.norm(M, 2)` internally triggers an SVD. If the parent function itself needs an SVD, calculating the tolerance via the standard helper computes SVD *twice* per operation.
 **Action:** When a function computes `u, s, vh = np.linalg.svd(...)`, calculate the tolerance inline using the already-computed maximum singular value (`s[0]`) instead of deferring to a helper function that blindly calls `np.linalg.norm`.
+
+## 2026-04-10 - Geometric Subspace Early Returns Bottleneck
+**Learning:** During iterative algorithms like `compute_v_star`, intermediate subspaces can grow to span the full space ($\mathbb{R}^n$). When this happens, passing them to generalized geometric operators (like `intersection`, `inverse_image`, and `sum_spaces`) unnecessarily triggers expensive SVD calculations to find orthogonal projections and kernels, which can be trivially mathematically bypassed.
+**Action:** Add early return checks in subspace utility functions: if a subspace matrix has the same number of columns as rows (`shape[1] == shape[0]`), immediately return the trivial result (e.g., `A

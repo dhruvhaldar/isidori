@@ -42,6 +42,10 @@ def intersection(A, B, tol=1e-10):
     if A.size == 0: return np.zeros((A.shape[0], 0))
     if B.size == 0: return np.zeros((B.shape[0], 0))
     
+    # ⚡ Bolt: Early return for full spaces to bypass SVD operations
+    if A.shape[1] == A.shape[0]: return B
+    if B.shape[1] == B.shape[0]: return A
+
     # ⚡ Bolt: Use orthogonal projection instead of SVD on concatenated [A, -B]
     # Assuming B is an orthonormal basis (which it usually is in this context),
     # A x \in B iff the projection of A x orthogonal to B is zero.
@@ -69,6 +73,10 @@ def sum_spaces(A, B, tol=1e-10):
     if A.size == 0: return basis(B, tol)
     if B.size == 0: return basis(A, tol)
 
+    # ⚡ Bolt: Early return for full spaces to bypass SVD operations
+    if A.shape[1] == A.shape[0]: return A
+    if B.shape[1] == B.shape[0]: return B
+
     # ⚡ Bolt: Fast sum using orthogonal projection (~2.7x speedup)
     # If A is an orthonormal basis, project B onto the orthogonal complement of A.
     # Finding the basis of this projection avoids a large SVD on the concatenated matrix [A, B].
@@ -91,6 +99,10 @@ def inverse_image(A, S, tol=1e-10):
         # If S is {0}, we want kernel(A)
         return kernel(A, tol)
     
+    # ⚡ Bolt: Early return if S is the full space to bypass SVD operations
+    if S.shape[1] == A.shape[0]:
+        return np.eye(A.shape[1])
+
     # ⚡ Bolt: Use orthogonal projection instead of SVD on concatenated [A, -S]
     # Assuming S is an orthonormal basis, A x \in S iff the projection of A x
     # orthogonal to S is zero.
