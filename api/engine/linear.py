@@ -54,10 +54,10 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     # perfectly recovers E avoids computing two expensive SVDs (for ImE and [V* ImE]).
     # This yields a ~2x performance speedup for DDP check loops.
     projection = V_star @ (V_star.T @ E)
-    diff_norm = np.linalg.norm(E - projection, ord=2)
+    diff_norm = np.linalg.norm(E - projection, ord='fro')
     
     # Use consistent tolerance bounds
-    tolerance_val = tol * max(E.shape) * max(1, np.linalg.norm(E, ord=2))
+    tolerance_val = tol * max(E.shape) * max(1, np.linalg.norm(E, ord='fro'))
     is_solvable = bool(diff_norm < tolerance_val)
     
     F = None
