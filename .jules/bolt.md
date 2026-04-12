@@ -51,3 +51,12 @@
 ## 2024-04-11 - Frobenius Norm vs 2-Norm Bottleneck
 **Learning:** Calling `np.linalg.norm(M, 2)` computes the largest singular value of `M`, which under the hood performs a full Singular Value Decomposition (SVD). When used to define dynamic tolerances or checks in iterative algorithms (e.g., `check_disturbance_decoupling`, `tolerance(M)`), this introduces a massive performance bottleneck.
 **Action:** Replace `ord=2` with `ord='fro'` (Frobenius norm) for tolerance bounds and magnitude checks when a strict maximum singular value is not mathematically required. Since $||M||_2 \le ||M||_F \le \sqrt{r} ||M||_2$, the Frobenius norm serves as a safe, conservative upper bound that calculates instantly without requiring an SVD, yielding a ~400x speedup for the norm calculation itself.
+
+
+## 2024-05-18 - Failed Optimization: Orthogonal Projection Requires Orthomormal Basis
+**Learning:** When optimizing least squares problems like $[V^*, B] [X; Y]^T = A V^*$ in geometric control via orthogonal projection (e.g., using `(I - V_star V_star^T) B`), the mathematical assumption that $V^*$ is strictly orthonormal MUST hold. If the basis returned by the algorithm is mathematically valid but not strictly orthonormal (e.g. scaled lengths), the projection fails silently, returning mathematically incorrect feedback matrices.
+**Action:** Never substitute augmented least-squares solves with orthogonal projections unless you either manually orthogonalize the basis first (via QR/SVD, which negates the performance gain) or are absolutely certain the upstream algorithm enforces strict orthonormality.
+
+## 2024-05-18 - Safe Orthogonal Projection for Feedback Matrix
+**Learning:** In geometric control, finding a feedback matrix $F$ often involves solving linear equations like $[V^*, B] [X; Y]^T = A V^*$. Appending bases to solve for coefficients that are later discarded (like $X$) wastes computation by making the least squares problem unnecessarily large.
+**Action:** Project $B$ and $A V^*$ onto the orthogonal complement of $V^*$ (e.g., `B_proj = B - V_star @ (V_star.T @ B)`). This isolates the component that must be matched by $B$, reducing the linear system size from $n \times (k+m)$ to $n \times m$ and significantly speeding up the calculation. Crucially, strictly enforce that $V^*$ is orthonormal before projecting (`np.allclose(V.T @ V, np.eye)`), otherwise the math fails silently.
