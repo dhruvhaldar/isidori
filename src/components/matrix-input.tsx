@@ -1,5 +1,7 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
+import { Copy, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface MatrixInputProps {
   label: string;
@@ -45,12 +47,44 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
     onChangeRef.current(newValue);
   }, []);
 
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(JSON.stringify(value));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [value]);
+
   // Ensure value matches rows/cols, if not, parent should fix it or we just render safe
   // We assume value is correct size for now.
   
   return (
-    <fieldset className="space-y-2">
-      <legend className="text-sm font-medium leading-none mb-2">{label} ({rows}x{cols})</legend>
+    <fieldset className="space-y-2 relative">
+      <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none">
+        <span>{label} ({rows}x{cols})</span>
+        {readOnly && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-6 px-2 text-xs"
+            onClick={handleCopy}
+            aria-label={`Copy ${label} matrix to clipboard`}
+          >
+            {copied ? (
+              <>
+                <Check aria-hidden="true" className="w-3 h-3 mr-1" />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy aria-hidden="true" className="w-3 h-3 mr-1" />
+                Copy
+              </>
+            )}
+          </Button>
+        )}
+      </legend>
       <div 
         className="grid gap-2"
         style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
