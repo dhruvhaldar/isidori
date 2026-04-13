@@ -46,3 +46,7 @@
 ## 2026-04-10 - Enhance Empty States with Descriptive Icons
 **Learning:** Plain text empty states can feel unpolished and lack intentionality. Users benefit from visual cues that indicate an area is reserved for future content.
 **Action:** Enhance plain text empty states with a descriptive decorative icon (e.g., from lucide-react) and subtle background styling (e.g., `bg-muted/10`, `border-dashed`) to create a polished, intentional layout.
+
+## 2026-04-12 - Accessible Legend Layouts
+**Learning:** When adding layout elements (like a "Copy" button) next to a `<legend>`, wrapping the `<legend>` inside a `<div className="flex...">` container invalidates the HTML. According to specifications, a `<legend>` must be the **direct first child** of a `<fieldset>` for screen readers to properly associate the group name with the inputs.
+**Action:** When styling `<fieldset>` and `<legend>` elements (e.g., using Tailwind flexbox for alignment), ensure the `<legend>` remains the direct first child. Apply the layout utility classes directly to the `<legend>` (e.g., `<legend className="w-full flex justify-between items-center...">`) and wrap its text content in a `<span>` if necessary.
