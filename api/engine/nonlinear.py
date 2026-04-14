@@ -1,6 +1,8 @@
 import sympy as sp
 import ast
+import functools
 
+@functools.lru_cache(maxsize=1024)
 def safe_sympify(expr_str):
     """
     Safely parses an expression string to prevent arbitrary code execution
