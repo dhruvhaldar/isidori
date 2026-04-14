@@ -69,17 +69,20 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             size="sm"
             className="h-6 px-2 text-xs"
             onClick={handleCopy}
-            aria-label={`Copy ${label} matrix to clipboard`}
+            aria-live="polite"
           >
+            <span className="sr-only">
+              {copied ? `Copied ${label} matrix` : `Copy ${label} matrix to clipboard`}
+            </span>
             {copied ? (
               <>
                 <Check aria-hidden="true" className="w-3 h-3 mr-1" />
-                Copied
+                <span aria-hidden="true">Copied</span>
               </>
             ) : (
               <>
                 <Copy aria-hidden="true" className="w-3 h-3 mr-1" />
-                Copy
+                <span aria-hidden="true">Copy</span>
               </>
             )}
           </Button>
