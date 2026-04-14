@@ -15,7 +15,7 @@ test.describe('Isidori E2E', () => {
     await page.goto('/linear');
     page.on('dialog', dialog => console.log(`Dialog message: ${dialog.message()}`));
     await page.click('text=Compute V*');
-    await expect(page.locator('text=V* Basis Matrix')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('legend').filter({ hasText: 'V* Basis Matrix' })).toBeVisible({ timeout: 10000 });
   });
 
   test.skip('Nonlinear Systems page computes relative degree', async ({ page }) => {
