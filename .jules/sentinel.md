@@ -59,3 +59,8 @@
 **Vulnerability:** The Next.js frontend was missing the `Content-Security-Policy` header and exposed the `X-Powered-By: Next.js` header, which could leak information about the technology stack and leave the application vulnerable to XSS attacks (Defense in Depth).
 **Learning:** Next.js allows injecting security headers via the `headers()` async function in `next.config.js`. However, it does not set `Content-Security-Policy` by default, and `X-Powered-By` must be explicitly disabled via `poweredByHeader: false`.
 **Prevention:** Always verify that `next.config.js` sets a robust `Content-Security-Policy` in its `securityHeaders` array and explicitly includes `poweredByHeader: false` in the `nextConfig` object.
+
+## 2026-04-14 - [Medium] Security Enhancement: Missing Backend Security Headers
+**Vulnerability:** The FastAPI backend did not set any HTTP security headers in its API responses. If an API endpoint is accessed directly in a browser or framed, it could be susceptible to MIME-sniffing or clickjacking attacks (Defense in Depth).
+**Learning:** Security headers should be applied at all layers. While the Next.js frontend has its own security headers in `next.config.js`, the Python FastAPI backend was missing them.
+**Prevention:** Always verify that backend APIs use middleware (like `BaseHTTPMiddleware` in FastAPI) to explicitly set security headers such as `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security`, and `Content-Security-Policy`.
