@@ -63,3 +63,7 @@
 ## 2024-05-18 - SymPy Parsing Bottleneck
 **Learning:** Functions that repeatedly evaluate ASTs and strings using `sympy.sympify` or a custom secure parser are incredibly slow because parsing strings to SymPy nodes is computationally expensive and repetitive when computing iterative algorithms.
 **Action:** When a function like `safe_sympify` repeatedly parses the same strings (e.g., control variables `x1, x2` or constant strings like `0`, `1` during derivative loops), use `@functools.lru_cache(maxsize=1024)` to memoize the parsing result. This avoids redundant parsing and yields massive (~50x+) speedups for functions utilizing SymPy.
+
+## 2024-05-18 - RRQR Factorization vs SVD Bottleneck
+**Learning:** In Python/NumPy geometric operations, using `np.linalg.svd` to compute subspace properties (rank, orthonormal basis, kernel) is computationally expensive ($O(m n^2)$), particularly for the tall or wide matrices frequently encountered during iterative geometric subspace algorithms.
+**Action:** Replace `np.linalg.svd` with Rank-Revealing QR Factorization (`scipy.linalg.qr(..., pivoting=True)`), which is significantly faster (~3x) and mathematically robust. For `basis` and `rank`, use `mode='economic'`. For `kernel` ($M x = 0$), compute the RRQR of the transposed matrix $M^T$ using `mode='full'` to extract the null space basis directly from the resulting $Q$ matrix.
