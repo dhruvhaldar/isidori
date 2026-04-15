@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Network, FunctionSquare, LineChart } from "lucide-react";
+import { Network, FunctionSquare, LineChart, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -22,8 +22,10 @@ export default function Home() {
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer">
-              GitHub<span className="sr-only">(opens in a new tab)</span>
+            <Link href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" className="gap-2">
+              GitHub
+              <ExternalLink aria-hidden="true" className="w-4 h-4" />
+              <span className="sr-only">(opens in a new tab)</span>
             </Link>
           </Button>
         </div>

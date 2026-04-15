@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -37,7 +38,7 @@ export default function RootLayout({
           {children}
         </main>
         <footer className="mt-8 text-center text-muted-foreground py-4">
-          &copy; 2026 <a href="https://dhruvhaldar.vercel.app/" target="_blank" rel="noopener noreferrer" className="font-bold text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transition-colors">Dhruv Haldar</a>. MIT License. | <a href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository (opens in a new tab)" className="font-bold text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transition-colors">GitHub</a>
+          &copy; 2026 <a href="https://dhruvhaldar.vercel.app/" target="_blank" rel="noopener noreferrer" className="font-bold text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transition-colors inline-flex items-center gap-1">Dhruv Haldar <ExternalLink className="w-3 h-3" aria-hidden="true" /><span className="sr-only">(opens in a new tab)</span></a>. MIT License. | <a href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" className="font-bold text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transition-colors inline-flex items-center gap-1">GitHub <ExternalLink className="w-3 h-3" aria-hidden="true" /><span className="sr-only">(opens in a new tab)</span></a>
         </footer>
       </body>
     </html>
