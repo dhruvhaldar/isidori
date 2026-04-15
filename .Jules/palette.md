@@ -50,3 +50,6 @@
 ## 2026-04-12 - Accessible Legend Layouts
 **Learning:** When adding layout elements (like a "Copy" button) next to a `<legend>`, wrapping the `<legend>` inside a `<div className="flex...">` container invalidates the HTML. According to specifications, a `<legend>` must be the **direct first child** of a `<fieldset>` for screen readers to properly associate the group name with the inputs.
 **Action:** When styling `<fieldset>` and `<legend>` elements (e.g., using Tailwind flexbox for alignment), ensure the `<legend>` remains the direct first child. Apply the layout utility classes directly to the `<legend>` (e.g., `<legend className="w-full flex justify-between items-center...">`) and wrap its text content in a `<span>` if necessary.
+## 2026-04-15 - External Link Indicators
+**Learning:** Links that open in a new tab (`target="_blank"`) without visual or semantic indicators can be disorienting for users, especially those using screen readers, as they may unexpectedly lose their context or back-button history.
+**Action:** When creating external links, always provide both visual and semantic cues by including an external link icon (e.g., `ExternalLink` from `lucide-react`) with `aria-hidden="true"` and a screen-reader-only `<span>` containing text like '(opens in a new tab)'.
