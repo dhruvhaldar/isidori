@@ -24,7 +24,9 @@ def safe_sympify(expr_str):
         }
 
         for node in ast.walk(tree):
-            if isinstance(node, ast.Attribute):
+            if isinstance(node, (ast.List, ast.Tuple, ast.Set, ast.Dict, ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+                raise ValueError("Unsafe expression: container types are not allowed")
+            elif isinstance(node, ast.Attribute):
                 raise ValueError("Unsafe expression: attribute access is not allowed")
             elif isinstance(node, ast.Call):
                 if not isinstance(node.func, ast.Name):
