@@ -53,3 +53,7 @@
 ## 2026-04-15 - External Link Indicators
 **Learning:** Links that open in a new tab (`target="_blank"`) without visual or semantic indicators can be disorienting for users, especially those using screen readers, as they may unexpectedly lose their context or back-button history.
 **Action:** When creating external links, always provide both visual and semantic cues by including an external link icon (e.g., `ExternalLink` from `lucide-react`) with `aria-hidden="true"` and a screen-reader-only `<span>` containing text like '(opens in a new tab)'.
+
+## 2026-04-16 - Visual and Semantic Active Navigation Links
+**Learning:** Navigation links without active states make it difficult for users to determine their current location within an application. Relying solely on visual changes (like bold text or color changes) is insufficient for screen reader users.
+**Action:** Always provide both visual (e.g., `font-bold text-foreground`) and semantic (e.g., `aria-current="page"`) active states on navigation links corresponding to the current route. In Next.js App Router, this can be achieved using a Client Component with the `usePathname` hook.

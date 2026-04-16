@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NavLinks } from "@/components/nav-links";
 
 export const metadata: Metadata = {
   title: "Isidori - Geometric Control Theory",
@@ -27,9 +28,7 @@ export default function RootLayout({
                 <span className="font-bold inline-block">Isidori</span>
               </Link>
               <nav className="flex items-center space-x-6 text-sm font-medium">
-                <Link className="transition-colors hover:text-foreground/80 text-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm" href="/linear">Linear Systems</Link>
-                <Link className="transition-colors hover:text-foreground/80 text-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm" href="/nonlinear">Nonlinear Systems</Link>
-                <Link className="transition-colors hover:text-foreground/80 text-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm" href="/simulate">Simulation</Link>
+                <NavLinks />
               </nav>
             </div>
           </div>
