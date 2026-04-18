@@ -67,3 +67,7 @@
 ## 2024-05-18 - RRQR Factorization vs SVD Bottleneck
 **Learning:** In Python/NumPy geometric operations, using `np.linalg.svd` to compute subspace properties (rank, orthonormal basis, kernel) is computationally expensive ($O(m n^2)$), particularly for the tall or wide matrices frequently encountered during iterative geometric subspace algorithms.
 **Action:** Replace `np.linalg.svd` with Rank-Revealing QR Factorization (`scipy.linalg.qr(..., pivoting=True)`), which is significantly faster (~3x) and mathematically robust. For `basis` and `rank`, use `mode='economic'`. For `kernel` ($M x = 0$), compute the RRQR of the transposed matrix $M^T$ using `mode='full'` to extract the null space basis directly from the resulting $Q$ matrix.
+
+## 2024-05-18 - Early Return for Subspace Containment
+**Learning:** In Python/NumPy geometric subspace intersection calculations (`intersection(A, B)`), when subspace A is fully contained within subspace B ($A \subseteq B$), the orthogonal projection of A onto the orthogonal complement of B evaluates to zero. If this containment is verified (e.g., the Frobenius norm of the projection is below tolerance), computing the null space kernel of the projection is redundant and mathematically returns the identity.
+**Action:** Optimize performance by checking if the Frobenius norm of the orthogonal projection ($A - B @ B^T @ A$) is below the tolerance threshold. If so, return $A$ immediately to bypass the expensive Rank-Revealing QR (RRQR) kernel computations.

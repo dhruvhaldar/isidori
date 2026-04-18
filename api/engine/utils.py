@@ -70,6 +70,14 @@ def intersection(A, B, tol=1e-10):
         B = basis(B, tol)
 
     proj_A_perp = A - B @ (B.T @ A)
+
+    # ⚡ Bolt: Early return if A is fully contained in B.
+    # If the Frobenius norm of the orthogonal projection is ~0, A is a subspace of B.
+    # Returning A immediately avoids an expensive RRQR kernel computation.
+    tolerance_val = tol * max(proj_A_perp.shape) * max(1.0, np.linalg.norm(A, ord='fro'))
+    if np.linalg.norm(proj_A_perp, ord='fro') < tolerance_val:
+        return A
+
     K = kernel(proj_A_perp, tol)
     
     if K.size == 0:
