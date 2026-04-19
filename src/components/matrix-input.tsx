@@ -17,8 +17,9 @@ const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label }: { r: nu
   <Input
     type="number"
     step="any"
-    value={val}
+    value={Number.isNaN(val) ? "" : val}
     onChange={(e) => onChange(r, c, e.target.value)}
+    onFocus={(e) => e.target.select()}
     readOnly={readOnly}
     className={`text-center h-8 px-1 ${readOnly ? "bg-muted cursor-default" : ""}`}
     aria-label={`${label} row ${r + 1} column ${c + 1}`}
