@@ -148,3 +148,7 @@ def test_sympify_dos_protection():
     # Unsupported binary operations anywhere in the expression should be rejected
     with pytest.raises(ValueError, match="Unsafe expression: unsupported binary operation"):
         safe_sympify("x << y")
+
+    # F-strings should be rejected
+    with pytest.raises(ValueError, match="Unsafe expression: f-strings are not allowed"):
+        safe_sympify("f'test'")
