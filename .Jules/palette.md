@@ -57,3 +57,7 @@
 ## 2026-04-16 - Visual and Semantic Active Navigation Links
 **Learning:** Navigation links without active states make it difficult for users to determine their current location within an application. Relying solely on visual changes (like bold text or color changes) is insufficient for screen reader users.
 **Action:** Always provide both visual (e.g., `font-bold text-foreground`) and semantic (e.g., `aria-current="page"`) active states on navigation links corresponding to the current route. In Next.js App Router, this can be achieved using a Client Component with the `usePathname` hook.
+
+## 2026-04-17 - React Matrix Number Input UX
+**Learning:** In React applications with controlled numeric inputs, parsing empty strings can result in `NaN`, which causes buggy UI behavior when rendered back into the `<input>`. Additionally, users updating dense data matrices (like mathematical fields) often want to quickly replace values without manually deleting '0'.
+**Action:** Always map `NaN` back to an empty string in the value prop (`value={Number.isNaN(val) ? "" : val}`). Improve the UX for dense numeric data-entry forms by adding `onFocus={(e) => e.target.select()}` to the inputs, mimicking spreadsheet behavior and allowing users to immediately overwrite the existing values.
