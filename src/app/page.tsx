@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Network, FunctionSquare, LineChart, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -93,10 +94,11 @@ export default function Home() {
         <h2 className="text-2xl font-bold tracking-tight mb-4">Disturbance Decoupling Example</h2>
         <Card className="overflow-hidden">
            <div className="aspect-[2/1] relative w-full">
-             <img 
+             <Image
                src="/graphs/ddp_demo.png" 
                alt="Disturbance Decoupling Demo" 
-               className="object-contain w-full h-full bg-white"
+               fill
+               className="object-contain bg-white"
              />
            </div>
            <CardContent className="pt-4">

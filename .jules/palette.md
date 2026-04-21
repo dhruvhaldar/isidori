@@ -5,3 +5,11 @@
 ## 2024-05-24 - [Spreadsheet UX in Form Inputs]
 **Learning:** Controlled React numeric inputs that receive empty strings can accidentally parse them as `NaN`. Also, requiring users to manually backspace before typing over a zero is a common friction point in grid/matrix data entry.
 **Action:** Use `value={Number.isNaN(val) ? "" : val}` to gracefully map `NaN` to an empty string. Add `onFocus={(e) => e.target.select()}` to mimic spreadsheet behavior, allowing instant overwriting on focus.
+
+## 2026-04-21 - Optimize Images with next/image
+**Learning:** Next.js heavily recommends using `next/image` to handle image loading which prevents layout shift and natively optimizes images. Skipping it triggers  lint warnings.
+**Action:** Use `<Image>` instead of `<img>`, specifying `fill` along with existing parent `relative` classes.
+
+## 2026-04-21 - Optimize Images with next/image
+**Learning:** Next.js heavily recommends using next/image to handle image loading which prevents layout shift and natively optimizes images. Skipping it triggers lint warnings.
+**Action:** Use <Image> instead of <img>, specifying fill along with existing parent relative classes.
