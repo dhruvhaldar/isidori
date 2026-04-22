@@ -13,3 +13,7 @@
 ## 2026-04-21 - Optimize Images with next/image
 **Learning:** Next.js heavily recommends using next/image to handle image loading which prevents layout shift and natively optimizes images. Skipping it triggers lint warnings.
 **Action:** Use <Image> instead of <img>, specifying fill along with existing parent relative classes.
+
+## 2026-04-22 - [Mathematical Input Readability & Semantic Result Labels]
+**Learning:** Mathematical variables and expressions are difficult to read in standard sans-serif fonts, as characters like '1', 'l', and 'I' blend together. Additionally, using standalone `<Label>` components for read-only result headers violates HTML semantics and causes screen reader confusion because they lack an associated form control.
+**Action:** Apply `font-mono` to input fields that handle mathematical expressions to align with code-input patterns and improve legibility. Replace standalone `<Label>` components in read-only results with semantically correct heading tags (e.g., `<h3 className="text-sm font-medium leading-none">`) that preserve visual styling.

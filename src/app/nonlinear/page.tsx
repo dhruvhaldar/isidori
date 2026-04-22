@@ -66,22 +66,22 @@ export default function NonlinearSystemsPage() {
             <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleCompute(); }}>
               <div className="space-y-2">
                 <Label htmlFor="state-variables">State Variables <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Input id="state-variables" required value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" />
+                <Input id="state-variables" required value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="vector-field-f">Vector Field f(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Textarea id="vector-field-f" required value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" />
+                <Textarea id="vector-field-f" required value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" className="font-mono" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="vector-field-g">Vector Field g(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Textarea id="vector-field-g" required value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" />
+                <Textarea id="vector-field-g" required value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" className="font-mono" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="output-function-h">Output Function h(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Input id="output-function-h" required value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" />
+                <Input id="output-function-h" required value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" className="font-mono" />
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading} aria-busy={isLoading}>
@@ -112,7 +112,7 @@ export default function NonlinearSystemsPage() {
                 
                 {result.Lg_Lf_h && (
                   <div className="space-y-2">
-                     <Label>L_g L_f^(r-1) h (Decoupling Matrix):</Label>
+                     <h3 className="text-sm font-medium leading-none">L_g L_f^(r-1) h (Decoupling Matrix):</h3>
                      <div className="p-3 bg-secondary rounded-md font-mono text-sm overflow-x-auto">
                        {result.Lg_Lf_h}
                      </div>
@@ -121,7 +121,7 @@ export default function NonlinearSystemsPage() {
                 
                 {result.Lie_derivatives && (
                   <div className="space-y-2">
-                    <Label>Lie Derivatives (L_f^k h):</Label>
+                    <h3 className="text-sm font-medium leading-none">Lie Derivatives (L_f^k h):</h3>
                     <ul className="space-y-1">
                       {result.Lie_derivatives.map((expr: string, i: number) => (
                         <li key={i} className="p-2 bg-secondary/50 rounded text-sm font-mono overflow-x-auto">
