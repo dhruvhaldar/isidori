@@ -19,10 +19,10 @@ function createMatrix(rows: number, cols: number) {
 }
 
 export default function SimulatePage() {
-  const [n, setN] = useState(2);
-  const [m, setM] = useState(1);
-  const [p, setP] = useState(1);
-  const [q, setQ] = useState(1);
+  const [n, setN] = useState<number | "">(2);
+  const [m, setM] = useState<number | "">(1);
+  const [p, setP] = useState<number | "">(1);
+  const [q, setQ] = useState<number | "">(1);
 
   // Default values for the example DDP system
   // A=[[0, 1], [2, 0]], B=[[0], [1]], C=[[1, -1]], E=[[1], [1]]
@@ -46,10 +46,10 @@ export default function SimulatePage() {
 
   // Update matrices when dimensions change
   useEffect(() => {
-     setA(old => resizeMatrix(old, n, n));
-     setB(old => resizeMatrix(old, n, m));
-     setC(old => resizeMatrix(old, p, n));
-     setE(old => resizeMatrix(old, n, q));
+     setA(old => resizeMatrix(old, Number(n) || 1, Number(n) || 1));
+     setB(old => resizeMatrix(old, Number(n) || 1, Number(m) || 1));
+     setC(old => resizeMatrix(old, Number(p) || 1, Number(n) || 1));
+     setE(old => resizeMatrix(old, Number(n) || 1, Number(q) || 1));
   }, [n, m, p, q]);
 
   const resizeMatrix = (mat: number[][], rows: number, cols: number) => {
@@ -106,16 +106,16 @@ export default function SimulatePage() {
            <CardContent>
              <form className="space-y-4" onSubmit={handleSimulate}>
                <div className="grid grid-cols-4 gap-2">
-                  <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onChange={e => setN(parseInt(e.target.value)||1)} /></div>
-                  <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onChange={e => setM(parseInt(e.target.value)||1)} /></div>
-                  <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" min="1" value={p} onChange={e => setP(parseInt(e.target.value)||1)} /></div>
-                  <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" min="1" value={q} onChange={e => setQ(parseInt(e.target.value)||1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={e => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={e => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" min="1" value={p} onFocus={(e) => e.target.select()} onChange={e => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
+                  <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q)</Label><Input id="disturbances-q" type="number" min="1" value={q} onFocus={(e) => e.target.select()} onChange={e => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
                </div>
 
-               <MatrixInput label="A" rows={n} cols={n} value={A} onChange={setA} />
-               <MatrixInput label="B" rows={n} cols={m} value={B} onChange={setB} />
-               <MatrixInput label="C" rows={p} cols={n} value={C} onChange={setC} />
-               <MatrixInput label="E (Disturbance)" rows={n} cols={q} value={E} onChange={setE} />
+               <MatrixInput label="A" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
+               <MatrixInput label="B" rows={Number(n) || 1} cols={Number(m) || 1} value={B} onChange={setB} />
+               <MatrixInput label="C" rows={Number(p) || 1} cols={Number(n) || 1} value={C} onChange={setC} />
+               <MatrixInput label="E (Disturbance)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
 
                <div aria-live="polite" className="space-y-4">
                  <Button type="submit" className="w-full" disabled={isSimulating} aria-busy={isSimulating}>

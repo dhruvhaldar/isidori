@@ -17,3 +17,7 @@
 ## 2026-04-22 - [Mathematical Input Readability & Semantic Result Labels]
 **Learning:** Mathematical variables and expressions are difficult to read in standard sans-serif fonts, as characters like '1', 'l', and 'I' blend together. Additionally, using standalone `<Label>` components for read-only result headers violates HTML semantics and causes screen reader confusion because they lack an associated form control.
 **Action:** Apply `font-mono` to input fields that handle mathematical expressions to align with code-input patterns and improve legibility. Replace standalone `<Label>` components in read-only results with semantically correct heading tags (e.g., `<h3 className="text-sm font-medium leading-none">`) that preserve visual styling.
+
+## 2026-04-23 - [Spreadsheet UX in Dimension Inputs]
+**Learning:** Default numeric form inputs that snap to "1" on backspace present a frustrating UX. It prevents users from quickly clearing and typing a new number. A spreadsheet-like entry is preferred.
+**Action:** Use `useState<number | "">` and `onFocus={(e) => e.target.select()}` to let users select and overwrite values immediately. Use ternary assignment in the `onChange` logic to gracefully handle empty inputs, mapping to empty string instead of `NaN` or a forced fallback.
