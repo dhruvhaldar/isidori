@@ -14,15 +14,15 @@ function createMatrix(rows: number, cols: number) {
 }
 
 export default function LinearSystemsPage() {
-  const [n, setN] = useState(2);
-  const [m, setM] = useState(1);
-  const [p, setP] = useState(1);
-  const [q, setQ] = useState(1); // Disturbance dim
+  const [n, setN] = useState<number | "">(2);
+  const [m, setM] = useState<number | "">(1);
+  const [p, setP] = useState<number | "">(1);
+  const [q, setQ] = useState<number | "">(1); // Disturbance dim
 
-  const [A, setA] = useState(createMatrix(n, n));
-  const [B, setB] = useState(createMatrix(n, m));
-  const [C, setC] = useState(createMatrix(p, n));
-  const [E, setE] = useState(createMatrix(n, q));
+  const [A, setA] = useState(createMatrix(Number(n) || 1, Number(n) || 1));
+  const [B, setB] = useState(createMatrix(Number(n) || 1, Number(m) || 1));
+  const [C, setC] = useState(createMatrix(Number(p) || 1, Number(n) || 1));
+  const [E, setE] = useState(createMatrix(Number(n) || 1, Number(q) || 1));
 
   const [vStar, setVStar] = useState<number[][] | null>(null);
   const [vStarError, setVStarError] = useState<string | null>(null);
@@ -32,10 +32,10 @@ export default function LinearSystemsPage() {
   const [isCheckingDDP, setIsCheckingDDP] = useState(false);
 
   useEffect(() => {
-    setA(old => resizeMatrix(old, n, n));
-    setB(old => resizeMatrix(old, n, m));
-    setC(old => resizeMatrix(old, p, n));
-    setE(old => resizeMatrix(old, n, q));
+    setA(old => resizeMatrix(old, Number(n) || 1, Number(n) || 1));
+    setB(old => resizeMatrix(old, Number(n) || 1, Number(m) || 1));
+    setC(old => resizeMatrix(old, Number(p) || 1, Number(n) || 1));
+    setE(old => resizeMatrix(old, Number(n) || 1, Number(q) || 1));
   }, [n, m, p, q]);
 
   const resizeMatrix = (mat: number[][], rows: number, cols: number) => {
@@ -94,19 +94,19 @@ export default function LinearSystemsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label htmlFor="states-n">States (n)</Label>
-              <Input id="states-n" type="number" min="1" value={n} onChange={(e) => setN(parseInt(e.target.value) || 1)} />
+              <Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={(e) => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="inputs-m">Inputs (m)</Label>
-              <Input id="inputs-m" type="number" min="1" value={m} onChange={(e) => setM(parseInt(e.target.value) || 1)} />
+              <Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={(e) => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="outputs-p">Outputs (p)</Label>
-              <Input id="outputs-p" type="number" min="1" value={p} onChange={(e) => setP(parseInt(e.target.value) || 1)} />
+              <Input id="outputs-p" type="number" min="1" value={p} onFocus={(e) => e.target.select()} onChange={(e) => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="disturbances-q">Disturbances (q)</Label>
-              <Input id="disturbances-q" type="number" min="1" value={q} onChange={(e) => setQ(parseInt(e.target.value) || 1)} />
+              <Input id="disturbances-q" type="number" min="1" value={q} onFocus={(e) => e.target.select()} onChange={(e) => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
             </div>
           </div>
         </CardContent>
@@ -118,10 +118,10 @@ export default function LinearSystemsPage() {
             <CardTitle>System Matrices</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <MatrixInput label="A (System Matrix)" rows={n} cols={n} value={A} onChange={setA} />
-            <MatrixInput label="B (Input Matrix)" rows={n} cols={m} value={B} onChange={setB} />
-            <MatrixInput label="C (Output Matrix)" rows={p} cols={n} value={C} onChange={setC} />
-            <MatrixInput label="E (Disturbance Matrix)" rows={n} cols={q} value={E} onChange={setE} />
+            <MatrixInput label="A (System Matrix)" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
+            <MatrixInput label="B (Input Matrix)" rows={Number(n) || 1} cols={Number(m) || 1} value={B} onChange={setB} />
+            <MatrixInput label="C (Output Matrix)" rows={Number(p) || 1} cols={Number(n) || 1} value={C} onChange={setC} />
+            <MatrixInput label="E (Disturbance Matrix)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
           </CardContent>
         </Card>
 
