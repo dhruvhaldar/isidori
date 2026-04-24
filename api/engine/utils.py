@@ -66,7 +66,7 @@ def intersection(A, B, tol=1e-10):
     
     # Ensure B is orthonormal (if not, make it so)
     # This check is relatively cheap compared to a large SVD
-    if not np.allclose(B.T @ B, np.eye(B.shape[1]), atol=1e-8):
+    if np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') >= 1e-8:
         B = basis(B, tol)
 
     proj_A_perp = A - B @ (B.T @ A)
@@ -99,7 +99,7 @@ def sum_spaces(A, B, tol=1e-10):
     # ⚡ Bolt: Fast sum using orthogonal projection (~2.7x speedup)
     # If A is an orthonormal basis, project B onto the orthogonal complement of A.
     # Finding the basis of this projection avoids a large SVD on the concatenated matrix [A, B].
-    if np.allclose(A.T @ A, np.eye(A.shape[1]), atol=1e-8):
+    if np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8:
         B_perp = B - A @ (A.T @ B)
 
         # ⚡ Bolt: Early return if B is fully contained in A (~2.4x speedup for subset case)
@@ -134,7 +134,7 @@ def inverse_image(A, S, tol=1e-10):
     # orthogonal to S is zero.
     
     # Ensure S is orthonormal
-    if not np.allclose(S.T @ S, np.eye(S.shape[1]), atol=1e-8):
+    if np.linalg.norm(S.T @ S - np.eye(S.shape[1]), ord='fro') >= 1e-8:
         S = basis(S, tol)
 
     proj_A_perp = A - S @ (S.T @ A)

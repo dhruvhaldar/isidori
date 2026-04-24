@@ -128,7 +128,7 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     # bypassing the need to compute the unused X coefficients.
     
     # Strictly enforce orthonormality before orthogonal projection to prevent math errors
-    if not np.allclose(V_star.T @ V_star, np.eye(k), atol=1e-8):
+    if np.linalg.norm(V_star.T @ V_star - np.eye(k), ord='fro') >= 1e-8:
         V_star = basis(V_star, tol)
 
     A_V_star = A @ V_star
