@@ -154,7 +154,7 @@ export default function SimulatePage() {
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg text-muted-foreground bg-muted/10 gap-2">
-                  <LineChart className="w-8 h-8 text-muted-foreground/50" />
+                  <LineChart aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
                   <p>Run simulation to view plot</p>
                 </div>
               )}

@@ -21,3 +21,7 @@
 ## 2026-04-23 - [Spreadsheet UX in Dimension Inputs]
 **Learning:** Default numeric form inputs that snap to "1" on backspace present a frustrating UX. It prevents users from quickly clearing and typing a new number. A spreadsheet-like entry is preferred.
 **Action:** Use `useState<number | "">` and `onFocus={(e) => e.target.select()}` to let users select and overwrite values immediately. Use ternary assignment in the `onChange` logic to gracefully handle empty inputs, mapping to empty string instead of `NaN` or a forced fallback.
+
+## 2026-04-24 - [Matrix Cell Input UX]
+**Learning:** Default HTML number inputs render up/down 'spin buttons'. In tightly packed grids or matrices (like `MatrixInput`), these spin buttons can overlap or misalign with the typed numbers, creating a confusing and ugly UX. Additionally, numbers are easier to scan in a matrix when aligned properly with a monospace font.
+**Action:** Apply `font-mono` and use CSS/Tailwind rules (`[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`) to completely hide native spin buttons on matrix inputs.
