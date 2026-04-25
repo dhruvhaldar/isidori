@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2, CheckCircle, XCircle, Layers, Settings2 } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, Layers, Settings2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -136,8 +136,9 @@ export default function LinearSystemsPage() {
                 {isComputingVStar ? "Computing V*..." : "Compute V*"}
               </Button>
               {vStarError && (
-                <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
-                  {vStarError}
+                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                  <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                  <span>{vStarError}</span>
                 </div>
               )}
               {vStar && (
@@ -174,8 +175,9 @@ export default function LinearSystemsPage() {
                 {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
               </Button>
               {ddpError && (
-                <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
-                  {ddpError}
+                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                  <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                  <span>{ddpError}</span>
                 </div>
               )}
               {ddpResult && (

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { Loader2, FunctionSquare } from "lucide-react";
+import { Loader2, FunctionSquare, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -98,8 +98,9 @@ export default function NonlinearSystemsPage() {
           </CardHeader>
           <CardContent aria-live="polite">
             {error && (
-               <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                 {error}
+               <div className="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                 <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                 <span>{error}</span>
                </div>
             )}
             
