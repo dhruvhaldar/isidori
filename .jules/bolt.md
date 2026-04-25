@@ -80,3 +80,7 @@
 ## 2026-04-24 - Strict Orthonormality Check Bottleneck
 **Learning:** Checking strict mathematical equivalency like orthonormality (`A.T @ A == I`) using `np.allclose(..., atol=1e-8)` inside hot loops in iterative algorithms is extremely slow because `np.allclose` handles complex types, NaN checks, and element-wise absolute comparisons.
 **Action:** Replace `np.allclose(A.T @ A, np.eye(A.shape[1]), atol=1e-8)` with checking the Frobenius norm of the difference: `np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8`. This compiles down directly to highly optimized BLAS routines and bypasses `numpy`'s slow universal function overhead, yielding a ~4x speedup per check.
+
+## 2026-05-15 - QR Factorization Avoid Q Matrix Computation
+**Learning:** When using `scipy.linalg.qr` to compute properties like matrix rank that only depend on the upper triangular matrix `R` (and potentially the pivoting vector), using `mode='economic'` still computes an economy-sized `Q` matrix. Computing `Q` is an expensive operation that is entirely discarded.
+**Action:** Always use `mode='r'` when `Q` is not needed (e.g., for `rank` computations). This instructs LAPACK to only return `R` (and the permutation array `P` if `pivoting=True`), yielding approximately a ~2x speedup over `mode='economic'`.
