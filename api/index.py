@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, ConfigDict, model_validator
 from typing import List, Optional, Any
 import os
 import numpy as np
@@ -39,6 +39,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 app.add_middleware(SecurityHeadersMiddleware)
 
 class MatrixInput(BaseModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     matrix: List[List[float]]
 
     @model_validator(mode='after')
@@ -49,6 +50,7 @@ class MatrixInput(BaseModel):
         return self
 
 class LinearSystemInput(BaseModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     A: List[List[float]]
     B: List[List[float]]
     C: List[List[float]]
