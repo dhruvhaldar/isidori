@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Loader2, CheckCircle, AlertTriangle, LineChart } from "lucide-react";
+import { Loader2, CheckCircle, AlertTriangle, LineChart, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -123,8 +123,9 @@ export default function SimulatePage() {
                    {isSimulating ? "Simulating..." : "Simulate Response"}
                  </Button>
                  {simError && (
-                   <div className="p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
-                     {simError}
+                   <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                     <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                     <span>{simError}</span>
                    </div>
                  )}
                </div>

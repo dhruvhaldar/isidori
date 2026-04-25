@@ -25,3 +25,7 @@
 ## 2026-04-24 - [Matrix Cell Input UX]
 **Learning:** Default HTML number inputs render up/down 'spin buttons'. In tightly packed grids or matrices (like `MatrixInput`), these spin buttons can overlap or misalign with the typed numbers, creating a confusing and ugly UX. Additionally, numbers are easier to scan in a matrix when aligned properly with a monospace font.
 **Action:** Apply `font-mono` and use CSS/Tailwind rules (`[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`) to completely hide native spin buttons on matrix inputs.
+
+## 2026-04-25 - [Error State Accessibility]
+**Learning:** Using only color (like a red background) to indicate error states in `role="alert"` messages violates WCAG guidelines because it fails to convey information to users who are color blind.
+**Action:** Always pair color-coded feedback in alerts with clear iconography (e.g., using `AlertCircle` from lucide-react) to ensure the status is communicated through multiple visual channels.
