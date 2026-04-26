@@ -29,3 +29,6 @@
 ## 2026-04-25 - [Error State Accessibility]
 **Learning:** Using only color (like a red background) to indicate error states in `role="alert"` messages violates WCAG guidelines because it fails to convey information to users who are color blind.
 **Action:** Always pair color-coded feedback in alerts with clear iconography (e.g., using `AlertCircle` from lucide-react) to ensure the status is communicated through multiple visual channels.
+## 2025-03-02 - React API Error Rendering Crash
+**Learning:** Rendering raw API error responses (like `err.response?.data?.detail`) directly in React state causes a crash ("Objects are not valid as a React child") if the backend (e.g., FastAPI/Pydantic) returns an array of validation error objects for a 422 Unprocessable Entity.
+**Action:** Always parse and format API error details (checking `Array.isArray`) into readable strings before setting them in React error states to prevent application crashes and provide actionable UI feedback.

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MatrixInput } from "@/components/matrix-input";
+import { formatErrorDetail } from "@/lib/error-formatter";
 
 function createMatrix(rows: number, cols: number) {
   return Array(rows).fill(0).map(() => Array(cols).fill(0));
@@ -56,7 +57,7 @@ export default function LinearSystemsPage() {
       setVStar(res.data.V_star);
     } catch (err) {
       console.error(err);
-      setVStarError("Error computing V*");
+      setVStarError(formatErrorDetail(err, "Error computing V*"));
     } finally {
       setIsComputingVStar(false);
     }
@@ -70,7 +71,7 @@ export default function LinearSystemsPage() {
       setDdpResult(res.data);
     } catch (err) {
       console.error(err);
-      setDdpError("Error checking DDP");
+      setDdpError(formatErrorDetail(err, "Error checking DDP"));
     } finally {
       setIsCheckingDDP(false);
     }
