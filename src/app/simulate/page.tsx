@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MatrixInput } from "@/components/matrix-input";
+import { formatErrorDetail } from "@/lib/error-formatter";
 // Need to import chart component dynamically to avoid SSR issues with recharts?
 // Recharts usually works fine with Next.js App Router if "use client" is present.
 import dynamic from 'next/dynamic';
@@ -82,7 +83,7 @@ export default function SimulatePage() {
       setDdpStatus(is_ddp_solved);
     } catch (err) {
       console.error(err);
-      setSimError("Error during simulation");
+      setSimError(formatErrorDetail(err, "Error during simulation"));
     } finally {
       setIsSimulating(false);
     }
