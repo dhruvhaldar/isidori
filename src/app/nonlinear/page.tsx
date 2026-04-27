@@ -99,14 +99,14 @@ export default function NonlinearSystemsPage() {
           </CardHeader>
           <CardContent aria-live="polite">
             {error && (
-               <div className="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+               <div className="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                  <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                  <span>{error}</span>
                </div>
             )}
             
             {result && (
-              <div className="space-y-4">
+              <div className="space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <span className="font-semibold">Relative Degree (r):</span>
                   <span className="text-2xl font-bold">{result.relative_degree !== null ? result.relative_degree : "Undefined"}</span>

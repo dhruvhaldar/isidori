@@ -137,13 +137,13 @@ export default function LinearSystemsPage() {
                 {isComputingVStar ? "Computing V*..." : "Compute V*"}
               </Button>
               {vStarError && (
-                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                   <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                   <span>{vStarError}</span>
                 </div>
               )}
               {vStar && (
-                <div className="mt-4 space-y-2">
+                <div className="mt-4 space-y-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
                   <MatrixInput
                     label="V* Basis Matrix"
                     rows={vStar.length}
@@ -176,13 +176,13 @@ export default function LinearSystemsPage() {
                 {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
               </Button>
               {ddpError && (
-                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400" role="alert">
+                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                   <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                   <span>{ddpError}</span>
                 </div>
               )}
               {ddpResult && (
-                <div className="mt-4 space-y-2">
+                <div className="mt-4 space-y-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
                   <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>
                     {ddpResult.is_solvable ? <CheckCircle aria-hidden="true" className="w-5 h-5" /> : <XCircle aria-hidden="true" className="w-5 h-5" />}
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}

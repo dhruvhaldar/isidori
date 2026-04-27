@@ -32,3 +32,6 @@
 ## 2025-03-02 - React API Error Rendering Crash
 **Learning:** Rendering raw API error responses (like `err.response?.data?.detail`) directly in React state causes a crash ("Objects are not valid as a React child") if the backend (e.g., FastAPI/Pydantic) returns an array of validation error objects for a 422 Unprocessable Entity.
 **Action:** Always parse and format API error details (checking `Array.isArray`) into readable strings before setting them in React error states to prevent application crashes and provide actionable UI feedback.
+## 2024-05-18 - [Smooth Entry Animations for Dynamic Results]
+**Learning:** Adding subtle CSS animations to dynamic content elements (like error alerts or data tables) when they mount prevents jarring UI layout shifts. However, to maintain strict accessibility, these animation classes must be prefixed with `motion-safe:` to respect users who have 'prefers-reduced-motion' enabled at the OS level.
+**Action:** Always use `motion-safe:animate-in motion-safe:fade-in` instead of bare `animate-in` when utilizing `tailwindcss-animate` for entry effects.
