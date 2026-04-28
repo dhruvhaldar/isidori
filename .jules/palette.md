@@ -35,3 +35,6 @@
 ## 2024-05-18 - [Smooth Entry Animations for Dynamic Results]
 **Learning:** Adding subtle CSS animations to dynamic content elements (like error alerts or data tables) when they mount prevents jarring UI layout shifts. However, to maintain strict accessibility, these animation classes must be prefixed with `motion-safe:` to respect users who have 'prefers-reduced-motion' enabled at the OS level.
 **Action:** Always use `motion-safe:animate-in motion-safe:fade-in` instead of bare `animate-in` when utilizing `tailwindcss-animate` for entry effects.
+## 2024-05-18 - Add Keyboard Shortcut to Forms with Textareas
+**Learning:** When a form contains `Textarea` inputs, pressing `Enter` inserts a new line instead of submitting the form. This breaks the common accessibility/usability expectation of "press enter to submit".
+**Action:** Enhance UX by adding an `onKeyDown` listener at the `<form>` level to handle `Cmd/Ctrl + Enter` for quick submission, and include a visual `<kbd>` hint (like `⌘↵`) on the submit button so power users discover the shortcut.
