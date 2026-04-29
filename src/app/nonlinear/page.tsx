@@ -64,7 +64,16 @@ export default function NonlinearSystemsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleCompute(); }}>
+            <form
+              className="space-y-4"
+              onSubmit={(e) => { e.preventDefault(); handleCompute(); }}
+              onKeyDown={(e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                  e.preventDefault();
+                  handleCompute();
+                }
+              }}
+            >
               <div className="space-y-2">
                 <Label htmlFor="state-variables">State Variables <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Input id="state-variables" required value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" />
@@ -85,9 +94,16 @@ export default function NonlinearSystemsPage() {
                 <Input id="output-function-h" required value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" className="font-mono" />
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading} aria-busy={isLoading}>
-                {isLoading && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
-                {isLoading ? "Computing..." : "Compute Relative Degree"}
+              <Button type="submit" className="w-full relative" disabled={isLoading} aria-busy={isLoading}>
+                <div className="flex items-center justify-center">
+                  {isLoading && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
+                  {isLoading ? "Computing..." : "Compute Relative Degree"}
+                </div>
+                {!isLoading && (
+                  <kbd className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                    <span className="text-xs">⌘</span>↵
+                  </kbd>
+                )}
               </Button>
             </form>
           </CardContent>
