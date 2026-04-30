@@ -38,3 +38,6 @@
 ## 2026-05-18 - [Keyboard Form Submission Shortcut]
 **Learning:** For forms containing textareas, pressing 'Enter' naturally inserts a newline. This limits quick keyboard submission and creates an accessibility/UX gap for advanced users. Providing a keyboard shortcut (`Cmd/Ctrl + Enter`) alongside a visual indicator (like a styled `<kbd>` element on the submit button) enhances usability.
 **Action:** Use an `onKeyDown` handler on the `<form>` wrapper to trap `metaKey || ctrlKey` + `Enter`, call `preventDefault()`, and trigger submission. Add a visually clear, responsive `<kbd>` hint (hidden on mobile devices) to the primary action button.
+## 2026-04-30 - [Disable Autocorrect on Math/Code Inputs]
+**Learning:** Browsers and mobile keyboards frequently attempt to spell-check or auto-capitalize inputs containing mathematical variables or code-like expressions (e.g., changing "x1" to "X1" or flagging "sin(x1)" as a typo), which leads to a frustrating user experience when entering formulas.
+**Action:** Always add `spellCheck={false}`, `autoCapitalize="none"`, and `autoCorrect="off"` to text inputs and textareas that are intended for code, variable names, or mathematical expressions to ensure raw input is preserved exactly as typed.
