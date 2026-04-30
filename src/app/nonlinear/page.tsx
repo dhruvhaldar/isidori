@@ -76,22 +76,22 @@ export default function NonlinearSystemsPage() {
             >
               <div className="space-y-2">
                 <Label htmlFor="state-variables">State Variables <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Input id="state-variables" required value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" />
+                <Input id="state-variables" required value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="vector-field-f">Vector Field f(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Textarea id="vector-field-f" required value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" className="font-mono" />
+                <Textarea id="vector-field-f" required value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="vector-field-g">Vector Field g(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Textarea id="vector-field-g" required value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" className="font-mono" />
+                <Textarea id="vector-field-g" required value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="output-function-h">Output Function h(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
-                <Input id="output-function-h" required value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" className="font-mono" />
+                <Input id="output-function-h" required value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" />
               </div>
 
               <Button type="submit" className="w-full relative" disabled={isLoading} aria-busy={isLoading}>
