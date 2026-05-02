@@ -149,7 +149,6 @@ export default function LinearSystemsPage() {
                     rows={vStar.length}
                     cols={vStar[0]?.length || 0}
                     value={vStar}
-                    onChange={() => {}}
                     readOnly
                   />
                   <p className="text-sm text-muted-foreground mt-2">
@@ -194,7 +193,6 @@ export default function LinearSystemsPage() {
                         rows={ddpResult.F.length}
                         cols={ddpResult.F[0]?.length || 0}
                         value={ddpResult.F}
-                        onChange={() => {}}
                         readOnly
                       />
                     </div>

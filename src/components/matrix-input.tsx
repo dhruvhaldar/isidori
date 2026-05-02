@@ -8,7 +8,7 @@ interface MatrixInputProps {
   rows: number;
   cols: number;
   value: number[][];
-  onChange: (value: number[][]) => void;
+  onChange?: (value: number[][]) => void;
   readOnly?: boolean;
 }
 
@@ -45,7 +45,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
   const handleChange = useCallback((r: number, c: number, val: string) => {
     const newValue = valueRef.current.map(row => [...row]);
     newValue[r][c] = parseFloat(val);
-    onChangeRef.current(newValue);
+    onChangeRef.current?.(newValue);
   }, []);
 
   const [copied, setCopied] = useState(false);

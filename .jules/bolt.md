@@ -91,3 +91,7 @@
 ## 2026-05-19 - Subspace Basis Orthonormality Redundancy
 **Learning:** In geometric control iterative algorithms (e.g., $V^* \cap A^{-1}(\dots)$), multiplying orthogonal matrices together or projecting matrices frequently produces results that are mathematically guaranteed to already be orthonormal. Running LAPACK's QR factorization (`linalg.qr`) inside `basis()` unconditionally on matrices that are already orthonormal bases wastes significant computation ($O(n^3)$).
 **Action:** In functions that return a `basis(M)`, add a fast $O(n^2)$ check using the Frobenius norm (`np.linalg.norm(M.T @ M - np.eye(M.shape[1]), ord='fro') < 1e-8`) to verify if the matrix is already strictly orthonormal. If it is, simply return `M` to completely bypass the Rank-Revealing QR factorization. This yields a massive (~8x) speedup for redundant calls and accelerates iterative convergence loops.
+
+## 2026-05-19 - Unnecessary empty onChange closures in React Memoized Components
+**Learning:** Passing `onChange={() => {}}` to memoized React components like `MatrixInput` creates a new unstable function reference on every single render. This forces the component and all its nested children to re-render constantly, defeating the purpose of `React.memo` and causing massive O(N*M) performance bottlenecks for read-only matrices.
+**Action:** Make `onChange` optional (`onChange?: (value: number[][]) => void`) in the component props so that read-only instances can omit the prop entirely, preserving `React.memo` performance optimizations.
