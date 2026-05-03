@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface SystemChartProps {
@@ -10,7 +11,9 @@ const formatScientific = (value: number) => {
   return value.toExponential(2);
 };
 
-export function SystemChart({ data }: SystemChartProps) {
+// ⚡ Bolt: Memoize the chart component to prevent expensive Recharts
+// re-renders when the user types in the matrix inputs on the parent page.
+export const SystemChart = React.memo(function SystemChart({ data }: SystemChartProps) {
   return (
     <div style={{ width: '100%', height: 400 }}>
       <ResponsiveContainer>
@@ -37,4 +40,4 @@ export function SystemChart({ data }: SystemChartProps) {
       </ResponsiveContainer>
     </div>
   );
-}
+});

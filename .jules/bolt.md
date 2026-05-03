@@ -95,3 +95,7 @@
 ## 2026-05-19 - Unnecessary empty onChange closures in React Memoized Components
 **Learning:** Passing `onChange={() => {}}` to memoized React components like `MatrixInput` creates a new unstable function reference on every single render. This forces the component and all its nested children to re-render constantly, defeating the purpose of `React.memo` and causing massive O(N*M) performance bottlenecks for read-only matrices.
 **Action:** Make `onChange` optional (`onChange?: (value: number[][]) => void`) in the component props so that read-only instances can omit the prop entirely, preserving `React.memo` performance optimizations.
+
+## 2026-05-19 - Unmemoized Chart Components in Forms
+**Learning:** Unmemoized complex chart components (like Recharts `LineChart`) within form pages cause severe input lag. Typing in adjacent form fields triggers a parent component re-render, forcing the chart to needlessly reconcile and render thousands of data points on every single keystroke.
+**Action:** Always wrap data-heavy visualization components with `React.memo()`. As long as the data prop reference is stable (e.g. only updated on form submission), this completely eliminates chart re-renders during form input, drastically improving UI responsiveness.
