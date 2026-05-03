@@ -41,3 +41,6 @@
 ## 2026-04-30 - [Disable Autocorrect on Math/Code Inputs]
 **Learning:** Browsers and mobile keyboards frequently attempt to spell-check or auto-capitalize inputs containing mathematical variables or code-like expressions (e.g., changing "x1" to "X1" or flagging "sin(x1)" as a typo), which leads to a frustrating user experience when entering formulas.
 **Action:** Always add `spellCheck={false}`, `autoCapitalize="none"`, and `autoCorrect="off"` to text inputs and textareas that are intended for code, variable names, or mathematical expressions to ensure raw input is preserved exactly as typed.
+## 2026-05-18 - [Bulk Actions for Grid Data Entry]
+**Learning:** In applications involving dense data entry like mathematical matrices or grids, clearing out default data or a previous system cell-by-cell requires excessive tabbing and backspacing, which is a significant point of UX friction and repetitive strain.
+**Action:** Provide explicit, accessible bulk actions (like a "Clear" button with an `Eraser` icon) for editable grids/matrices so users can instantly reset all values to default/zero before entering new data.

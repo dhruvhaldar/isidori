@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Eraser } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -56,6 +56,11 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
     setTimeout(() => setCopied(false), 2000);
   }, [value]);
 
+  const handleClear = useCallback(() => {
+    const emptyValue = Array(rows).fill(0).map(() => Array(cols).fill(0));
+    onChangeRef.current?.(emptyValue);
+  }, [rows, cols]);
+
   // Ensure value matches rows/cols, if not, parent should fix it or we just render safe
   // We assume value is correct size for now.
   
@@ -63,7 +68,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
     <fieldset className="space-y-2 relative">
       <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none">
         <span>{label} ({rows}x{cols})</span>
-        {readOnly && (
+        {readOnly ? (
           <Button
             type="button"
             variant="ghost"
@@ -86,6 +91,19 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
                 <span aria-hidden="true">Copy</span>
               </>
             )}
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
+            onClick={handleClear}
+            title={`Clear ${label} matrix`}
+          >
+            <span className="sr-only">Clear {label} matrix</span>
+            <Eraser aria-hidden="true" className="w-3 h-3 mr-1" />
+            <span aria-hidden="true">Clear</span>
           </Button>
         )}
       </legend>
