@@ -106,7 +106,7 @@ export default function SimulatePage() {
            </CardHeader>
            <CardContent>
              <form className="space-y-4" onSubmit={handleSimulate}>
-               <div className="grid grid-cols-4 gap-2">
+               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={e => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
                   <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={e => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
                   <div className="space-y-1"><Label htmlFor="outputs-p">Outputs (p)</Label><Input id="outputs-p" type="number" min="1" value={p} onFocus={(e) => e.target.select()} onChange={e => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>

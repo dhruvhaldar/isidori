@@ -61,3 +61,7 @@
 ## 2026-04-17 - React Matrix Number Input UX
 **Learning:** In React applications with controlled numeric inputs, parsing empty strings can result in `NaN`, which causes buggy UI behavior when rendered back into the `<input>`. Additionally, users updating dense data matrices (like mathematical fields) often want to quickly replace values without manually deleting '0'.
 **Action:** Always map `NaN` back to an empty string in the value prop (`value={Number.isNaN(val) ? "" : val}`). Improve the UX for dense numeric data-entry forms by adding `onFocus={(e) => e.target.select()}` to the inputs, mimicking spreadsheet behavior and allowing users to immediately overwrite the existing values.
+
+## 2026-05-04 - Inline Confirmations for Destructive Actions in Data-Entry Forms
+**Learning:** Using heavy modal dialogs for confirming minor destructive actions (like clearing a matrix) in dense data-entry views disrupts the user's workflow and feels overly burdensome. Conversely, lacking any confirmation can lead to severe data loss and user frustration.
+**Action:** When designing destructive data-entry actions (like a "Clear" button), implement an inline confirmation pattern. Clicking the button once should prompt "Sure?" and apply destructive styling, and clicking it again should execute the action. This preserves context and prevents accidental data loss seamlessly.
