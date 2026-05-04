@@ -53,6 +53,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
   }, []);
 
   const [copied, setCopied] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(JSON.stringify(value));
@@ -60,10 +61,16 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
     setTimeout(() => setCopied(false), 2000);
   }, [value]);
 
-  const handleClear = useCallback(() => {
+  const handleClearClick = useCallback(() => {
+    if (!confirmClear) {
+      setConfirmClear(true);
+      setTimeout(() => setConfirmClear(false), 3000);
+      return;
+    }
     const emptyValue = Array(rows).fill(0).map(() => Array(cols).fill(0));
     onChangeRef.current?.(emptyValue);
-  }, [rows, cols]);
+    setConfirmClear(false);
+  }, [rows, cols, confirmClear]);
 
   // Ensure value matches rows/cols, if not, parent should fix it or we just render safe
   // We assume value is correct size for now.
@@ -99,15 +106,18 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
         ) : (
           <Button
             type="button"
-            variant="ghost"
+            variant={confirmClear ? "destructive" : "ghost"}
             size="sm"
-            className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
-            onClick={handleClear}
-            title={`Clear ${label} matrix`}
+            className={`h-6 px-2 text-xs ${!confirmClear ? "text-muted-foreground hover:text-destructive" : ""}`}
+            onClick={handleClearClick}
+            title={confirmClear ? `Confirm clear ${label} matrix` : `Clear ${label} matrix`}
+            aria-live="polite"
           >
-            <span className="sr-only">Clear {label} matrix</span>
+            <span className="sr-only">
+              {confirmClear ? `Confirm clear ${label} matrix` : `Clear ${label} matrix`}
+            </span>
             <Eraser aria-hidden="true" className="w-3 h-3 mr-1" />
-            <span aria-hidden="true">Clear</span>
+            <span aria-hidden="true">{confirmClear ? "Sure?" : "Clear"}</span>
           </Button>
         )}
       </legend>
