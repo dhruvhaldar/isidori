@@ -44,3 +44,7 @@
 ## 2026-05-18 - [Bulk Actions for Grid Data Entry]
 **Learning:** In applications involving dense data entry like mathematical matrices or grids, clearing out default data or a previous system cell-by-cell requires excessive tabbing and backspacing, which is a significant point of UX friction and repetitive strain.
 **Action:** Provide explicit, accessible bulk actions (like a "Clear" button with an `Eraser` icon) for editable grids/matrices so users can instantly reset all values to default/zero before entering new data.
+
+## 2026-05-06 - Explicit Empty States for Zero-Dimensional Matrices
+**Learning:** In geometric control theory, rendering zero-dimensional subspaces (like an empty V* basis matrix) is mathematically correct and common (representing the origin). However, completely hiding the `MatrixInput` DOM structure when `rows === 0` or `cols === 0` provides poor UX and lack of feedback to users, making them assume the component failed to render or the computation was buggy.
+**Action:** Always provide explicit, styled empty states (e.g., using a dashed border, muted background, and a recognizable symbol like `∅`) for components that can mathematically evaluate to 'empty' or zero dimensions, rather than rendering nothing.

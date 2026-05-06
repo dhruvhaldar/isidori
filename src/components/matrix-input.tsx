@@ -121,24 +121,31 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
           </Button>
         )}
       </legend>
-      <div 
-        className="grid gap-2"
-        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
-      >
-        {Array.from({ length: rows }).map((_, r) =>
-          Array.from({ length: cols }).map((_, c) => (
-            <MatrixCell
-              key={`${r}-${c}`}
-              r={r}
-              c={c}
-              val={value[r] && value[r][c] !== undefined ? value[r][c] : 0}
-              readOnly={readOnly}
-              onChange={handleChange}
-              label={label}
-            />
-          ))
-        )}
-      </div>
+      {rows === 0 || cols === 0 ? (
+        <div className="flex flex-col items-center justify-center h-24 border-2 border-dashed rounded-lg text-muted-foreground bg-muted/10 gap-1">
+          <span aria-hidden="true" className="text-2xl font-mono">∅</span>
+          <p className="text-sm">Empty Matrix</p>
+        </div>
+      ) : (
+        <div
+          className="grid gap-2"
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+        >
+          {Array.from({ length: rows }).map((_, r) =>
+            Array.from({ length: cols }).map((_, c) => (
+              <MatrixCell
+                key={`${r}-${c}`}
+                r={r}
+                c={c}
+                val={value[r] && value[r][c] !== undefined ? value[r][c] : 0}
+                readOnly={readOnly}
+                onChange={handleChange}
+                label={label}
+              />
+            ))
+          )}
+        </div>
+      )}
     </fieldset>
   );
 });
