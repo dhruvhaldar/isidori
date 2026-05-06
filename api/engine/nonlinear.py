@@ -23,13 +23,17 @@ def safe_sympify(expr_str):
             'sinh', 'cosh', 'tanh', 'exp', 'log', 'sqrt', 'sign', 'Piecewise'
         }
 
+        ALLOWED_NODES = {
+            ast.Expression, ast.Call, ast.Name, ast.Load, ast.Constant,
+            ast.UnaryOp, ast.UAdd, ast.USub, ast.BinOp, ast.Add, ast.Sub,
+            ast.Mult, ast.Div, ast.Pow
+        }
+
         for node in ast.walk(tree):
-            if isinstance(node, (ast.List, ast.Tuple, ast.Set, ast.Dict, ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp, ast.JoinedStr, ast.FormattedValue)):
-                raise ValueError("Unsafe expression: container types and f-strings are not allowed")
-            elif isinstance(node, ast.Constant) and isinstance(node.value, (str, bytes)):
+            if type(node) not in ALLOWED_NODES:
+                raise ValueError(f"Unsafe expression: AST node type {type(node).__name__} is not allowed")
+            if isinstance(node, ast.Constant) and isinstance(node.value, (str, bytes)):
                 raise ValueError("Unsafe expression: string and byte literals are not allowed")
-            elif isinstance(node, ast.Attribute):
-                raise ValueError("Unsafe expression: attribute access is not allowed")
             elif isinstance(node, ast.Call):
                 if not isinstance(node.func, ast.Name):
                     raise ValueError("Unsafe expression: complex function calls are not allowed")
