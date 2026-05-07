@@ -10,11 +10,18 @@ def compute_v_star(A, B, C, tol=1e-10):
     """
     n = A.shape[0]
     
-    # Im(B)
-    ImB = basis(B, tol)
-    
     # V_0 = Ker(C)
     V = kernel(C, tol)
+
+    # ⚡ Bolt: Fast path for empty or full spaces.
+    # If Ker(C) is {0}, V* is trivially {0}.
+    # If Ker(C) is R^n, V* is trivially R^n.
+    # Bypasses all RRQR factorizations and iterative loops.
+    if V.shape[1] == 0 or V.shape[1] == n:
+        return V
+
+    # Im(B)
+    ImB = basis(B, tol)
     
     # Iteration
     for k in range(n + 1):
@@ -23,6 +30,11 @@ def compute_v_star(A, B, C, tol=1e-10):
         # Step 1: V + ImB
         S = sum_spaces(V, ImB, tol)
         
+        # ⚡ Bolt: Early convergence if V + ImB is the full space.
+        # V \cap A^{-1}(R^n) = V \cap R^n = V.
+        if S.shape[1] == n:
+            return V
+
         # ⚡ Bolt: Mathematical optimization to combine intersection and inverse image (~3x speedup).
         # Instead of finding the full preimage of S across R^n and intersecting with V,
         # restrict the domain of A to V, find the preimage Y, and map it back to R^n.
@@ -53,8 +65,13 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     V_star = compute_v_star(A, B, C, tol)
     
     # If E is zero, it's always solvable
-    if E.size == 0 or E.shape[1] == 0:
+    if E.size == 0 or E.shape[1] == 0 or np.linalg.norm(E, ord='fro') < tol:
         return True, V_star, np.zeros((B.shape[1], A.shape[0])) # F is dummy
+
+    # ⚡ Bolt: Early return if V* is the full space.
+    # If V* = R^n, then any disturbance E is trivially contained in it, and F=0 works.
+    if V_star.shape[1] == A.shape[0]:
+        return True, V_star, np.zeros((B.shape[1], A.shape[0]))
 
     # Check if Im(E) \subset V*
     # ⚡ Bolt: V* is an orthonormal basis. Projecting E onto V* and checking if it
@@ -127,6 +144,11 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     k = V_star.shape[1]
     
     if k == 0:
+        return np.zeros((m, n))
+
+    # ⚡ Bolt: If V* spans the entire space, any F satisfies (A+BF)V* \subset V*.
+    # Return zero feedback matrix to bypass expensive SVD computations.
+    if k == n:
         return np.zeros((m, n))
     
     # ⚡ Bolt: Use orthogonal projection to shrink the least-squares problem (~2.5x speedup)
