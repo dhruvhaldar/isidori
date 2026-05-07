@@ -48,13 +48,13 @@ def safe_sympify(expr_str):
                 if not isinstance(node.op, (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow)):
                     raise ValueError(f"Unsafe expression: unsupported binary operation")
                 if isinstance(node.op, ast.Pow):
-                    if isinstance(node.right, ast.Constant) and isinstance(node.right.value, (int, float)):
+                    if isinstance(node.right, ast.Constant) and isinstance(node.right.value, (int, float, complex)):
                         if abs(node.right.value) > 5:
                             raise ValueError("Unsafe expression: exponent too large")
 
         def get_pure_constant_value(n):
             if isinstance(n, ast.Constant):
-                return n.value if isinstance(n.value, (int, float)) else None
+                return n.value if isinstance(n.value, (int, float, complex)) else None
             elif isinstance(n, ast.UnaryOp):
                 val = get_pure_constant_value(n.operand)
                 if val is not None:
@@ -87,7 +87,7 @@ def safe_sympify(expr_str):
             if depth > 10:
                 raise ValueError("Unsafe expression: exponent too complex")
             if isinstance(n, ast.Constant):
-                if isinstance(n.value, (int, float)) and abs(n.value) > 5:
+                if isinstance(n.value, (int, float, complex)) and abs(n.value) > 5:
                     raise ValueError("Unsafe expression: exponent constant too large")
             elif isinstance(n, ast.UnaryOp):
                 check_exponent_complexity(n.operand, depth + 1)
