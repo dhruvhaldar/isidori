@@ -76,7 +76,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
   // We assume value is correct size for now.
   
   return (
-    <fieldset className="space-y-2 relative">
+    <fieldset className="space-y-2 relative min-w-0">
       <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none">
         <span>{label} ({rows}x{cols})</span>
         {readOnly ? (
@@ -127,10 +127,11 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
           <p className="text-sm">Empty Matrix</p>
         </div>
       ) : (
-        <div
-          className="grid gap-2"
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
-        >
+        <div className="w-full overflow-x-auto pb-2 -mx-1 px-1">
+          <div
+            className="grid gap-2"
+            style={{ gridTemplateColumns: `repeat(${cols}, minmax(4rem, 1fr))` }}
+          >
           {Array.from({ length: rows }).map((_, r) =>
             Array.from({ length: cols }).map((_, c) => (
               <MatrixCell
@@ -144,6 +145,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
               />
             ))
           )}
+                  </div>
         </div>
       )}
     </fieldset>
