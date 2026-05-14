@@ -65,3 +65,7 @@
 ## 2026-05-04 - Inline Confirmations for Destructive Actions in Data-Entry Forms
 **Learning:** Using heavy modal dialogs for confirming minor destructive actions (like clearing a matrix) in dense data-entry views disrupts the user's workflow and feels overly burdensome. Conversely, lacking any confirmation can lead to severe data loss and user frustration.
 **Action:** When designing destructive data-entry actions (like a "Clear" button), implement an inline confirmation pattern. Clicking the button once should prompt "Sure?" and apply destructive styling, and clicking it again should execute the action. This preserves context and prevents accidental data loss seamlessly.
+
+## 2026-05-14 - Feature Card Visual Affordance
+**Learning:** Large feature cards used as primary navigation gateways can lack apparent clickability if they only rely on a subtle hover state. This is especially problematic on mobile devices where hover states don't exist, leaving users unsure if the whole card is a link.
+**Action:** When using large cards as navigation links, always include an explicit directional indicator (like an `ArrowRight` icon) inside the card's title or header. Animate it slightly on hover to reinforce its interactive nature.

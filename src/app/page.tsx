@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Network, FunctionSquare, LineChart, ExternalLink } from "lucide-react";
+import { Network, FunctionSquare, LineChart, ExternalLink, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -33,12 +33,13 @@ export default function Home() {
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Link href="/linear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+        <Link href="/linear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl group">
           <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Network className="w-5 h-5 text-primary" />
                 Linear Systems
+                <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
               </CardTitle>
               <CardDescription>Geometric concepts for linear systems.</CardDescription>
             </CardHeader>
@@ -51,12 +52,13 @@ export default function Home() {
             </CardContent>
           </Card>
         </Link>
-        <Link href="/nonlinear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+        <Link href="/nonlinear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl group">
           <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FunctionSquare className="w-5 h-5 text-primary" />
                 Nonlinear Systems
+                <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
               </CardTitle>
               <CardDescription>Tools for nonlinear analysis.</CardDescription>
             </CardHeader>
@@ -70,12 +72,13 @@ export default function Home() {
             </CardContent>
           </Card>
         </Link>
-        <Link href="/simulate" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl md:col-span-2 lg:col-span-1">
+        <Link href="/simulate" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl md:col-span-2 lg:col-span-1 group">
           <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <LineChart className="w-5 h-5 text-primary" />
                 Simulation
+                <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
               </CardTitle>
               <CardDescription>Visualize system behavior.</CardDescription>
             </CardHeader>
