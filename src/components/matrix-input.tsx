@@ -13,19 +13,40 @@ interface MatrixInputProps {
 }
 
 // ⚡ Bolt: Memoize individual cells to prevent O(N*M) re-renders when a single value changes.
-const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, label: string }) => (
-  <Input
-    type="number"
-    step="any"
-    value={Number.isNaN(val) ? "" : val}
-    onChange={(e) => onChange(r, c, e.target.value)}
-    onFocus={(e) => e.target.select()}
-    readOnly={readOnly}
-    className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
-    aria-label={`${label} row ${r + 1} column ${c + 1}`}
-    title={`${label} row ${r + 1} column ${c + 1}`}
-  />
-));
+const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, onKeyDown, label }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, r: number, c: number) => void, label: string }) => {
+  const [localVal, setLocalVal] = useState<string | number>(Number.isNaN(val) ? "" : val);
+
+  useEffect(() => {
+    // Only update local value if it effectively differs from parent value
+    // This allows typing intermediate strings like "1." or "-" without being reset.
+    if (!Number.isNaN(val) && parseFloat(String(localVal)) !== val) {
+      setLocalVal(val);
+    }
+  }, [val, localVal]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalVal(e.target.value);
+    onChange(r, c, e.target.value);
+  };
+
+  return (
+    <Input
+      type="text"
+      inputMode="decimal"
+      pattern="[0-9\.\-]*"
+      value={localVal}
+      onChange={handleChange}
+      onFocus={(e) => e.target.select()}
+      onKeyDown={(e) => onKeyDown?.(e, r, c)}
+      readOnly={readOnly}
+      data-row={r}
+      data-col={c}
+      className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
+      aria-label={`${label} row ${r + 1} column ${c + 1}`}
+      title={`${label} row ${r + 1} column ${c + 1}`}
+    />
+  );
+});
 MatrixCell.displayName = "MatrixCell";
 
 // ⚡ Bolt: Memoize the entire MatrixInput so unrelated matrices don't re-render
@@ -36,6 +57,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
   // allowing MatrixCell to be effectively memoized.
   const valueRef = useRef(value);
   const onChangeRef = useRef(onChange);
+  const fieldsetRef = useRef<HTMLFieldSetElement>(null);
 
   useEffect(() => {
     valueRef.current = value;
@@ -72,11 +94,40 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
     setConfirmClear(false);
   }, [rows, cols, confirmClear]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>, r: number, c: number) => {
+    let nextR = r;
+    let nextC = c;
+
+    if (e.key === 'ArrowUp') {
+      nextR = Math.max(0, r - 1);
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      nextR = Math.min(rows - 1, r + 1);
+      e.preventDefault();
+    } else if (e.key === 'ArrowLeft' && e.currentTarget.selectionStart === 0) {
+      // Only move if at the beginning of the input
+      nextC = Math.max(0, c - 1);
+      if (nextC !== c) e.preventDefault();
+    } else if (e.key === 'ArrowRight' && e.currentTarget.selectionEnd === e.currentTarget.value.length) {
+      // Only move if at the end of the input
+      nextC = Math.min(cols - 1, c + 1);
+      if (nextC !== c) e.preventDefault();
+    }
+
+    if (nextR !== r || nextC !== c) {
+      const nextInput = fieldsetRef.current?.querySelector(`[data-row="${nextR}"][data-col="${nextC}"]`) as HTMLInputElement;
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.select();
+      }
+    }
+  }, [rows, cols]);
+
   // Ensure value matches rows/cols, if not, parent should fix it or we just render safe
   // We assume value is correct size for now.
   
   return (
-    <fieldset className="space-y-2 relative min-w-0">
+    <fieldset ref={fieldsetRef} className="space-y-2 relative min-w-0">
       <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none">
         <span>{label} ({rows}x{cols})</span>
         {readOnly ? (
@@ -141,6 +192,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
                 val={value[r] && value[r][c] !== undefined ? value[r][c] : 0}
                 readOnly={readOnly}
                 onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 label={label}
               />
             ))

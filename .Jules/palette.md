@@ -69,3 +69,7 @@
 ## 2026-05-14 - Feature Card Visual Affordance
 **Learning:** Large feature cards used as primary navigation gateways can lack apparent clickability if they only rely on a subtle hover state. This is especially problematic on mobile devices where hover states don't exist, leaving users unsure if the whole card is a link.
 **Action:** When using large cards as navigation links, always include an explicit directional indicator (like an `ArrowRight` icon) inside the card's title or header. Animate it slightly on hover to reinforce its interactive nature.
+
+## 2026-05-15 - Spreadsheet-like Keyboard Navigation for Matrix Inputs
+**Learning:** For dense data entry fields like matrices, standard keyboard navigation (using Tab and Shift+Tab) can be tedious as it forces linear traversal. Users expect spreadsheet-like behavior where arrow keys allow spatial navigation (up/down/left/right) across the grid cells, greatly improving efficiency and the perception of a fluid UI.
+**Action:** Always implement spatial arrow key navigation (`onKeyDown` handling `ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`) on grid-like input structures. For text/number inputs, ensure left/right navigation doesn't interfere with moving the text cursor inside the cell unless the cursor is at the boundaries.
