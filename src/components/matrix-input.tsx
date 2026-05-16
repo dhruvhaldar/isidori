@@ -13,19 +13,72 @@ interface MatrixInputProps {
 }
 
 // ⚡ Bolt: Memoize individual cells to prevent O(N*M) re-renders when a single value changes.
-const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, label: string }) => (
-  <Input
-    type="number"
-    step="any"
-    value={Number.isNaN(val) ? "" : val}
-    onChange={(e) => onChange(r, c, e.target.value)}
-    onFocus={(e) => e.target.select()}
-    readOnly={readOnly}
-    className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
-    aria-label={`${label} row ${r + 1} column ${c + 1}`}
-    title={`${label} row ${r + 1} column ${c + 1}`}
-  />
-));
+const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, label: string }) => {
+  const [localVal, setLocalVal] = useState(Number.isNaN(val) ? "" : val.toString());
+
+  useEffect(() => {
+    const parsedLocal = parseFloat(localVal);
+    if (Number.isNaN(val)) {
+      if (localVal !== "" && localVal !== "-" && localVal !== "." && localVal !== "-.") {
+        setLocalVal("");
+      }
+    } else if (parsedLocal !== val) {
+      setLocalVal(val.toString());
+    }
+  }, [val, localVal]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVal = e.target.value;
+    setLocalVal(newVal);
+    onChange(r, c, newVal);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const container = e.currentTarget.closest("fieldset");
+    if (!container) return;
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const el = container.querySelector(`input[data-row="${r - 1}"][data-col="${c}"]`) as HTMLInputElement;
+      el?.focus();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const el = container.querySelector(`input[data-row="${r + 1}"][data-col="${c}"]`) as HTMLInputElement;
+      el?.focus();
+    } else if (e.key === "ArrowLeft") {
+      const target = e.target as HTMLInputElement;
+      if (target.selectionStart === 0) {
+        e.preventDefault();
+        const el = container.querySelector(`input[data-row="${r}"][data-col="${c - 1}"]`) as HTMLInputElement;
+        el?.focus();
+      }
+    } else if (e.key === "ArrowRight") {
+      const target = e.target as HTMLInputElement;
+      if (target.selectionStart === target.value.length) {
+        e.preventDefault();
+        const el = container.querySelector(`input[data-row="${r}"][data-col="${c + 1}"]`) as HTMLInputElement;
+        el?.focus();
+      }
+    }
+  };
+
+  return (
+    <Input
+      type="text"
+      inputMode="decimal"
+      value={localVal}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onFocus={(e) => e.target.select()}
+      readOnly={readOnly}
+      className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
+      aria-label={`${label} row ${r + 1} column ${c + 1}`}
+      title={`${label} row ${r + 1} column ${c + 1}`}
+      data-row={r}
+      data-col={c}
+    />
+  );
+});
 MatrixCell.displayName = "MatrixCell";
 
 // ⚡ Bolt: Memoize the entire MatrixInput so unrelated matrices don't re-render

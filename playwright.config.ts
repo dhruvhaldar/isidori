@@ -19,18 +19,16 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'python -m uvicorn api.index:app --port 8001',
+      command: '. venv/bin/activate && export PYTHONPATH=. && python -m uvicorn api.index:app --port 8001',
       port: 8001,
       reuseExistingServer: !process.env.CI,
       cwd: '.',
     },
     {
-      command: 'npm run dev',
+      command: 'npm run dev -- -p 3000',
       port: 3000,
       reuseExistingServer: !process.env.CI,
       cwd: '.',
-      stdout: 'pipe',
-      stderr: 'pipe',
     }
   ],
 });

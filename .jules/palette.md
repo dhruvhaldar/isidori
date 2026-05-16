@@ -56,3 +56,10 @@
 ## 2026-05-19 - [Matrix Column Scaling UX]
 **Learning:** Using `minmax(0, 1fr)` for CSS grid template columns on elements with a variable number of columns (like dynamic matrices) causes the columns to shrink infinitely to fit the container width. On narrow screens or with many columns, inputs become completely unreadable and unusable.
 **Action:** Use a minimum width constraint like `minmax(4rem, 1fr)` on the grid template and wrap the grid in a horizontally scrollable container (`overflow-x-auto`). Add appropriate padding/negative margins to ensure keyboard focus rings (e.g. `focus-visible:ring-2`) are not clipped by the overflow boundaries.
+## 2026-05-19 - [Matrix Spatial Keyboard Navigation]
+**Learning:** When implementing spatial keyboard navigation (arrow keys) in reusable React grid/matrix components, avoid using global `document.querySelector` to locate adjacent cells. Scope the selection to the current component instance using `e.currentTarget.closest(...)` to prevent selecting cells from other identical components on the page.
+**Action:** Use `e.currentTarget.closest('fieldset').querySelector(...)` to correctly scope DOM queries for keyboard navigation.
+
+## 2026-05-19 - [Intermediate Decimal Input State]
+**Learning:** When using local string state in React to handle intermediate decimal input (e.g., '-', '.', '-.') before syncing with a numeric parent state, ensure the `useEffect` synchronization logic explicitly preserves all valid non-numeric intermediate strings when the parent value evaluates to `NaN`.
+**Action:** Add checks for `.` and `-.` alongside `""` and `-` to prevent premature clearing of valid intermediate inputs.
