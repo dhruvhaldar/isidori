@@ -67,7 +67,10 @@ def safe_sympify(expr_str):
                     if isinstance(n.op, ast.Add): return left + right
                     if isinstance(n.op, ast.Sub): return left - right
                     if isinstance(n.op, ast.Mult): return left * right
-                    if isinstance(n.op, ast.Div): return left / right if right != 0 else 0
+                    if isinstance(n.op, ast.Div):
+                        if right == 0:
+                            raise ValueError("Unsafe expression: division by zero")
+                        return left / right
                     if isinstance(n.op, ast.Pow):
                         if abs(left) > 100 or abs(right) > 5:
                             raise ValueError("Unsafe expression: constant exponentiation too large")
@@ -76,6 +79,8 @@ def safe_sympify(expr_str):
                             return res.real if isinstance(res, complex) else res
                         except OverflowError:
                             raise ValueError("Unsafe expression: constant exponentiation overflow")
+                        except ZeroDivisionError:
+                            raise ValueError("Unsafe expression: zero cannot be raised to a negative power")
             # If the node contains any Name or Call, it's not a pure constant
             return None
 
