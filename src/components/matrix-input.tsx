@@ -13,19 +13,95 @@ interface MatrixInputProps {
 }
 
 // ⚡ Bolt: Memoize individual cells to prevent O(N*M) re-renders when a single value changes.
-const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, label: string }) => (
-  <Input
-    type="number"
-    step="any"
-    value={Number.isNaN(val) ? "" : val}
-    onChange={(e) => onChange(r, c, e.target.value)}
-    onFocus={(e) => e.target.select()}
-    readOnly={readOnly}
-    className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
-    aria-label={`${label} row ${r + 1} column ${c + 1}`}
-    title={`${label} row ${r + 1} column ${c + 1}`}
-  />
-));
+const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label, rows, cols }: { r: number, c: number, val: number, readOnly: boolean, onChange: (r: number, c: number, val: string) => void, label: string, rows: number, cols: number }) => {
+  const [localVal, setLocalVal] = useState<string>(Number.isNaN(val) ? "" : val.toString());
+
+  useEffect(() => {
+    const parentValStr = Number.isNaN(val) ? "" : val.toString();
+    const isIntermediate = ["-", ".", "-."].includes(localVal) || localVal.endsWith(".");
+    const parsedLocal = parseFloat(localVal);
+    const isNumMatch = (Number.isNaN(parsedLocal) && Number.isNaN(val)) || parsedLocal === val;
+
+    if (parentValStr === "" && isIntermediate) {
+      // Preserve intermediate typing states like "-" when parent evaluates to NaN
+    } else if (!isNumMatch && localVal !== parentValStr) {
+      setLocalVal(parentValStr);
+    }
+  }, [val, localVal]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    // Allow empty, minus, decimals, and numbers
+    if (/^-?\d*\.?\d*$/.test(newValue)) {
+      setLocalVal(newValue);
+      onChange(r, c, newValue);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const grid = input.closest(".grid");
+    if (!grid) return;
+
+    let targetR = r;
+    let targetC = c;
+
+    if (e.key === "ArrowUp") {
+      targetR = Math.max(0, r - 1);
+    } else if (e.key === "ArrowDown") {
+      targetR = Math.min(rows - 1, r + 1);
+    } else if (e.key === "ArrowLeft") {
+      if (input.selectionStart === 0 && input.selectionEnd === 0) {
+        if (c > 0) {
+          targetC = c - 1;
+        } else if (r > 0) {
+          targetR = r - 1;
+          targetC = cols - 1;
+        }
+      } else {
+        return;
+      }
+    } else if (e.key === "ArrowRight") {
+      if (input.selectionStart === input.value.length && input.selectionEnd === input.value.length) {
+        if (c < cols - 1) {
+          targetC = c + 1;
+        } else if (r < rows - 1) {
+          targetR = r + 1;
+          targetC = 0;
+        }
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+
+    if (targetR !== r || targetC !== c) {
+      e.preventDefault();
+      const targetInput = grid.querySelector(`input[data-row="${targetR}"][data-col="${targetC}"]`) as HTMLInputElement;
+      if (targetInput) {
+        targetInput.focus();
+      }
+    }
+  };
+
+  return (
+    <Input
+      type="text"
+      inputMode="decimal"
+      value={localVal}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onFocus={(e) => e.target.select()}
+      readOnly={readOnly}
+      className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
+      aria-label={`${label} row ${r + 1} column ${c + 1}`}
+      title={`${label} row ${r + 1} column ${c + 1}`}
+      data-row={r}
+      data-col={c}
+    />
+  );
+});
 MatrixCell.displayName = "MatrixCell";
 
 // ⚡ Bolt: Memoize the entire MatrixInput so unrelated matrices don't re-render
@@ -142,6 +218,8 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
                 readOnly={readOnly}
                 onChange={handleChange}
                 label={label}
+                rows={rows}
+                cols={cols}
               />
             ))
           )}
