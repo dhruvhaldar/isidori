@@ -98,3 +98,7 @@
 **Vulnerability:** The mathematical endpoints (e.g., `/api/simulate`, `/api/nonlinear/reldeg`) execute CPU-intensive geometric operations and SymPy evaluations. Without rate limiting, the synchronous FastAPI server is vulnerable to Application-Layer DoS via resource exhaustion (blocking the thread pool).
 **Learning:** Even with algorithmic optimizations, CPU-bound endpoints can be brute-forced to tie up all server threads. A simple dictionary-based `RateLimitMiddleware` using `client.host` helps mitigate this. Crucially, memory leaks must be prevented by explicitly deleting empty keys (`del self.clients[client_ip]`) when cleaning up expired timestamps.
 **Prevention:** Implement rate limiting middleware (e.g. `RateLimitMiddleware`) to enforce boundaries (like 100 requests / 60 seconds) on CPU-intensive endpoints.
+## 2024-05-18 - [Unhandled ZeroDivisionError in SymPy AST Evaluation]
+**Vulnerability:** Application-Layer DoS via Unhandled `ZeroDivisionError` in AST evaluation.
+**Learning:** Even when building custom AST validators to prevent large numbers from reaching SymPy, native Python exceptions like `ZeroDivisionError` (e.g. from `0**-1`) can still crash the application if not explicitly caught.
+**Prevention:** Wrap AST evaluation math operations in `try...except (OverflowError, ZeroDivisionError)` blocks or explicitly check for zero divisors / zero bases with negative exponents before evaluation.
