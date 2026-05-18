@@ -69,3 +69,7 @@
 ## 2026-05-14 - Feature Card Visual Affordance
 **Learning:** Large feature cards used as primary navigation gateways can lack apparent clickability if they only rely on a subtle hover state. This is especially problematic on mobile devices where hover states don't exist, leaving users unsure if the whole card is a link.
 **Action:** When using large cards as navigation links, always include an explicit directional indicator (like an `ArrowRight` icon) inside the card's title or header. Animate it slightly on hover to reinforce its interactive nature.
+
+## 2026-05-18 - Prevent Accidental Form Submissions in Data Grids
+**Learning:** When using React `<input>` elements to build dense data-entry grids (like mathematical matrices) within a `<form>`, pressing the 'Enter' key naturally triggers a form submission. This creates a frustrating UX where users accidentally submit incomplete data while simply trying to navigate the grid or confirm a value.
+**Action:** Intercept the 'Enter' key (`e.key === "Enter"`) in grid cell `onKeyDown` handlers, call `e.preventDefault()` to stop the form submission, and map the key to a spatial navigation action (like moving focus to the cell below, mimicking spreadsheet behavior).
