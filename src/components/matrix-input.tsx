@@ -72,11 +72,14 @@ const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label, rows, col
       } else {
         return;
       }
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      targetR = e.shiftKey ? Math.max(0, r - 1) : Math.min(rows - 1, r + 1);
     } else {
       return;
     }
 
-    if (targetR !== r || targetC !== c) {
+    if (targetR !== r || targetC !== c || e.key === "Enter") {
       e.preventDefault();
       const targetInput = grid.querySelector(`input[data-row="${targetR}"][data-col="${targetC}"]`) as HTMLInputElement;
       if (targetInput) {
