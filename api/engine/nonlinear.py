@@ -76,6 +76,8 @@ def safe_sympify(expr_str):
                             return res.real if isinstance(res, complex) else res
                         except OverflowError:
                             raise ValueError("Unsafe expression: constant exponentiation overflow")
+                        except ZeroDivisionError:
+                            raise ValueError("Unsafe expression: division by zero in exponentiation")
             # If the node contains any Name or Call, it's not a pure constant
             return None
 

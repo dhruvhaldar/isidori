@@ -127,6 +127,15 @@ def test_relative_degree_large_variable_name():
 
     assert "Variable name exceeds maximum length" in str(exc_info.value)
 
+def test_relative_degree_zero_division_dos():
+    from api.engine.nonlinear import safe_sympify
+
+    # This should raise a ValueError and not a ZeroDivisionError
+    with pytest.raises(ValueError) as excinfo:
+        safe_sympify("0**(-1)")
+
+    assert "division by zero" in str(excinfo.value)
+
 def test_sympify_dos_protection():
     from api.engine.nonlinear import safe_sympify
 
