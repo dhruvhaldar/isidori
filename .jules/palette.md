@@ -56,3 +56,7 @@
 ## 2026-05-19 - [Matrix Column Scaling UX]
 **Learning:** Using `minmax(0, 1fr)` for CSS grid template columns on elements with a variable number of columns (like dynamic matrices) causes the columns to shrink infinitely to fit the container width. On narrow screens or with many columns, inputs become completely unreadable and unusable.
 **Action:** Use a minimum width constraint like `minmax(4rem, 1fr)` on the grid template and wrap the grid in a horizontally scrollable container (`overflow-x-auto`). Add appropriate padding/negative margins to ensure keyboard focus rings (e.g. `focus-visible:ring-2`) are not clipped by the overflow boundaries.
+
+## 2026-05-20 - [Spatial Keyboard Navigation in Matrices]
+**Learning:** In highly dense spreadsheet-like interfaces, users expect to navigate adjacent input cells using arrow keys. However, detecting text boundaries (to prevent jumping cells while the user is actively typing a number) requires `selectionStart` and `selectionEnd`, which natively throw errors on `<input type="number">`.
+**Action:** Change numeric matrix inputs to `type="text"` with `inputMode="decimal"`. Use localized string state inside the cell component to handle intermediate typing states (like `-` or `1.`), sync only valid parsed numbers to the parent, and implement an `onKeyDown` handler to allow spatial movement (Arrow Up, Down, Left, Right) only when the cursor is at the edges of the input value.
