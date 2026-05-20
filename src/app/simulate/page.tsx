@@ -105,7 +105,16 @@ export default function SimulatePage() {
              <CardTitle>System Configuration</CardTitle>
            </CardHeader>
            <CardContent>
-             <form className="space-y-4" onSubmit={handleSimulate}>
+             <form
+               className="space-y-4"
+               onSubmit={handleSimulate}
+               onKeyDown={(e) => {
+                 if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                   e.preventDefault();
+                   e.currentTarget.requestSubmit();
+                 }
+               }}
+             >
                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={e => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
                   <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={e => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
@@ -119,15 +128,25 @@ export default function SimulatePage() {
                <MatrixInput label="E (Disturbance)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
 
                <div aria-live="polite" className="space-y-4">
-                 <Button type="submit" className="w-full" disabled={isSimulating} aria-busy={isSimulating}>
-                   {isSimulating && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
-                   {isSimulating ? "Simulating..." : "Simulate Response"}
+                 <Button type="submit" className="w-full relative" disabled={isSimulating} aria-busy={isSimulating}>
+                   <div className="flex items-center justify-center">
+                     {isSimulating && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
+                     {isSimulating ? "Simulating..." : "Simulate Response"}
+                   </div>
+                   {!isSimulating && (
+                     <kbd className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                       <span className="text-xs">⌘</span>↵
+                     </kbd>
+                   )}
                  </Button>
                  {simError && (
                    <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                      <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                      <span>{simError}</span>
                    </div>
+                 )}
+                 {!isSimulating && simData.length > 0 && !simError && (
+                   <span className="sr-only">Simulation complete. Response plotted.</span>
                  )}
                </div>
              </form>

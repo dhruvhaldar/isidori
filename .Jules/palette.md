@@ -73,3 +73,7 @@
 ## 2026-05-18 - Prevent Accidental Form Submissions in Data Grids
 **Learning:** When using React `<input>` elements to build dense data-entry grids (like mathematical matrices) within a `<form>`, pressing the 'Enter' key naturally triggers a form submission. This creates a frustrating UX where users accidentally submit incomplete data while simply trying to navigate the grid or confirm a value.
 **Action:** Intercept the 'Enter' key (`e.key === "Enter"`) in grid cell `onKeyDown` handlers, call `e.preventDefault()` to stop the form submission, and map the key to a spatial navigation action (like moving focus to the cell below, mimicking spreadsheet behavior).
+
+## 2026-05-20 - Cmd/Ctrl + Enter for Data Grid Forms
+**Learning:** For forms involving dense data entry like matrices, users often rely on keyboard navigation. When the 'Enter' key is intentionally suppressed to allow spatial cell-to-cell navigation (e.g., in spreadsheets), users are forced to awkwardly use the mouse to click the submit button. Providing an alternative keyboard shortcut like `Cmd/Ctrl + Enter` restores the quick-submit capability without breaking grid navigation.
+**Action:** When overriding the default 'Enter' submission behavior in data grids, always provide an alternative quick-submit handler (`(e.metaKey || e.ctrlKey) && e.key === 'Enter'`) on the parent form and trigger it via `e.currentTarget.requestSubmit()`. Additionally, provide a visual `<kbd>⌘↵</kbd>` hint on the submit button so users discover the shortcut.
