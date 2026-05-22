@@ -143,7 +143,7 @@ export default function LinearSystemsPage() {
                 </div>
               )}
               {vStar && (
-                <div className="mt-4 space-y-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
+                <div className={`mt-4 space-y-2 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : ""}`}>
                   <MatrixInput
                     label="V* Basis Matrix"
                     rows={vStar.length}
@@ -181,7 +181,7 @@ export default function LinearSystemsPage() {
                 </div>
               )}
               {ddpResult && (
-                <div className="mt-4 space-y-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
+                <div className={`mt-4 space-y-2 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : ""}`}>
                   <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>
                     {ddpResult.is_solvable ? <CheckCircle aria-hidden="true" className="w-5 h-5" /> : <XCircle aria-hidden="true" className="w-5 h-5" />}
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}

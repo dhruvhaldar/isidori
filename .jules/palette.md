@@ -64,3 +64,7 @@
 ## 2026-05-19 - Native Validation on Custom Shortcut Submissions
 **Learning:** When implementing custom form submission shortcuts (like Cmd/Ctrl + Enter) via an `onKeyDown` handler, calling the form's submit logic directly bypasses native HTML5 validation constraints (like the `required` attribute).
 **Action:** Use `form.checkValidity()` and `form.reportValidity()` before executing the submission logic. This ensures the browser validates the inputs and displays the native validation tooltips properly.
+
+## 2026-05-22 - [Stale Data Feedback UX]
+**Learning:** When performing async re-computations or form submissions that update existing result blocks on the screen, completely clearing the state (e.g. `setResult(null)`) before the fetch finishes causes a jarring layout shift and visually replaces the user's previous context with an empty state. This breaks continuity.
+**Action:** Instead of clearing stale data entirely, retain the previous data in state and apply a dynamic CSS class (like `opacity-50 pointer-events-none transition-opacity`) to visually "dim" the block while `isLoading` is true. This smoothly communicates to the user that the data is stale and updating without breaking the layout.

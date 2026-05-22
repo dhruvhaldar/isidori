@@ -22,7 +22,6 @@ export default function NonlinearSystemsPage() {
 
   const handleCompute = async () => {
     setError(null);
-    setResult(null);
     setIsLoading(true);
     try {
       const varsList = variables.split(",").map(s => s.trim()).filter(s => s);
@@ -127,7 +126,7 @@ export default function NonlinearSystemsPage() {
             )}
             
             {result && (
-              <div className="space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300">
+              <div className={`space-y-4 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : ""}`}>
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <span className="font-semibold">Relative Degree (r):</span>
                   <span className="text-2xl font-bold">{result.relative_degree !== null ? result.relative_degree : "Undefined"}</span>
