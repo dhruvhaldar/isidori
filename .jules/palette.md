@@ -60,3 +60,7 @@
 ## 2026-05-20 - [Spatial Keyboard Navigation in Matrices]
 **Learning:** In highly dense spreadsheet-like interfaces, users expect to navigate adjacent input cells using arrow keys. However, detecting text boundaries (to prevent jumping cells while the user is actively typing a number) requires `selectionStart` and `selectionEnd`, which natively throw errors on `<input type="number">`.
 **Action:** Change numeric matrix inputs to `type="text"` with `inputMode="decimal"`. Use localized string state inside the cell component to handle intermediate typing states (like `-` or `1.`), sync only valid parsed numbers to the parent, and implement an `onKeyDown` handler to allow spatial movement (Arrow Up, Down, Left, Right) only when the cursor is at the edges of the input value.
+
+## 2026-05-19 - Native Validation on Custom Shortcut Submissions
+**Learning:** When implementing custom form submission shortcuts (like Cmd/Ctrl + Enter) via an `onKeyDown` handler, calling the form's submit logic directly bypasses native HTML5 validation constraints (like the `required` attribute).
+**Action:** Use `form.checkValidity()` and `form.reportValidity()` before executing the submission logic. This ensures the browser validates the inputs and displays the native validation tooltips properly.

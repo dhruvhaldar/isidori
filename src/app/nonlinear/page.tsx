@@ -70,6 +70,11 @@ export default function NonlinearSystemsPage() {
               onKeyDown={(e) => {
                 if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
                   e.preventDefault();
+                  const form = e.currentTarget.closest('form');
+                  if (form && !form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                  }
                   handleCompute();
                 }
               }}
