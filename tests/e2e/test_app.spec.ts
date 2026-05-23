@@ -14,6 +14,10 @@ test.describe('Isidori E2E', () => {
   test('Linear Systems page computes V*', async ({ page }) => {
     await page.goto('/linear');
     page.on('dialog', dialog => console.log(`Dialog message: ${dialog.message()}`));
+    await page.getByLabel('A (System Matrix) row 1 column 2').fill('1');
+    await page.getByLabel('A (System Matrix) row 2 column 1').fill('2');
+    await page.getByLabel('B (Input Matrix) row 2 column 1').fill('1');
+    await page.getByLabel('C (Output Matrix) row 1 column 1').fill('1');
     await page.click('text=Compute V*');
     await expect(page.locator('legend').filter({ hasText: 'V* Basis Matrix' })).toBeVisible({ timeout: 10000 });
   });

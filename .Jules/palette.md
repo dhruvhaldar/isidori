@@ -77,3 +77,7 @@
 ## 2026-05-20 - Cmd/Ctrl + Enter for Data Grid Forms
 **Learning:** For forms involving dense data entry like matrices, users often rely on keyboard navigation. When the 'Enter' key is intentionally suppressed to allow spatial cell-to-cell navigation (e.g., in spreadsheets), users are forced to awkwardly use the mouse to click the submit button. Providing an alternative keyboard shortcut like `Cmd/Ctrl + Enter` restores the quick-submit capability without breaking grid navigation.
 **Action:** When overriding the default 'Enter' submission behavior in data grids, always provide an alternative quick-submit handler (`(e.metaKey || e.ctrlKey) && e.key === 'Enter'`) on the parent form and trigger it via `e.currentTarget.requestSubmit()`. Additionally, provide a visual `<kbd>⌘↵</kbd>` hint on the submit button so users discover the shortcut.
+
+## 2026-05-25 - Copy Buttons for Math Results
+**Learning:** Complex mathematical expressions like Lie derivatives or matrices outputted in a result view are difficult to select and copy manually. Adding subtle "Copy to Clipboard" buttons greatly improves the UX for users who need to take these expressions into other software.
+**Action:** When rendering long string outputs or blocks of text meant to be consumed elsewhere, wrap the result container in a `relative group` and add an absolute-positioned copy `<Button>` that is revealed on hover (`opacity-0 group-hover:opacity-100 focus:opacity-100`). Always use `aria-label` or `title` to ensure it remains accessible despite the visual trick.
