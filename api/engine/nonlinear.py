@@ -81,6 +81,39 @@ def safe_sympify(expr_str):
             # If the node contains any Name or Call, it's not a pure constant
             return None
 
+        # Recursively evaluate the mathematical polynomial degree of the AST to prevent polynomial inflation DoS.
+        def get_poly_degree(n):
+            if isinstance(n, ast.Constant):
+                return 0
+            elif isinstance(n, ast.Name):
+                return 1
+            elif isinstance(n, ast.UnaryOp):
+                return get_poly_degree(n.operand)
+            elif isinstance(n, ast.BinOp):
+                left_deg = get_poly_degree(n.left)
+                right_deg = get_poly_degree(n.right)
+                if isinstance(n.op, (ast.Add, ast.Sub)):
+                    return max(left_deg, right_deg)
+                elif isinstance(n.op, ast.Mult):
+                    return left_deg + right_deg
+                elif isinstance(n.op, ast.Div):
+                    return left_deg # Div by constant, or we're just estimating upper bound
+                elif isinstance(n.op, ast.Pow):
+                    if isinstance(n.right, ast.Constant) and isinstance(n.right.value, (int, float)):
+                        if n.right.value >= 0:
+                            return left_deg * int(n.right.value)
+                    # If we don't know the exact value, assume it could multiply by our max constant exponent (5)
+                    return left_deg * 5
+                else:
+                    return max(left_deg, right_deg)
+            elif isinstance(n, ast.Call):
+                # We need to check the arguments of function calls
+                max_arg_deg = 0
+                for arg in n.args:
+                    max_arg_deg = max(max_arg_deg, get_poly_degree(arg))
+                return max(1, max_arg_deg)
+            return 0
+
         # Prevent computationally explosive variable powers that cause Denial of Service in SymPy.
         # We allow constants (<= 100 for bases, <= 5 for exponents), variables, basic arithmetic, function calls (like sin(x)),
         # and even nested powers, provided they do not evaluate to massive constants.
@@ -107,6 +140,11 @@ def safe_sympify(expr_str):
                 pass
             else:
                 raise ValueError("Unsafe expression: unsupported node type in exponent")
+
+        # Check overall polynomial degree to prevent polynomial inflation attacks
+        # tree.body is an Expression node when mode='eval'
+        if get_poly_degree(tree.body) > 50:
+            raise ValueError("Unsafe expression: polynomial degree too high")
 
         for node in ast.walk(tree):
             if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
