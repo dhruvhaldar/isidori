@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { Loader2, FunctionSquare, AlertCircle } from "lucide-react";
+import { Loader2, FunctionSquare, AlertCircle, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,13 @@ export default function NonlinearSystemsPage() {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(text);
+    setTimeout(() => setCopiedText(null), 2000);
+  };
 
   const handleCompute = async () => {
     setError(null);
@@ -135,8 +142,13 @@ export default function NonlinearSystemsPage() {
                 {result.Lg_Lf_h && (
                   <div className="space-y-2">
                      <h3 className="text-sm font-medium leading-none">L_g L_f^(r-1) h (Decoupling Matrix):</h3>
-                     <div className="p-3 bg-secondary rounded-md font-mono text-sm overflow-x-auto">
-                       {result.Lg_Lf_h}
+                     <div className="relative group">
+                       <div className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto">
+                         {result.Lg_Lf_h}
+                       </div>
+                       <Button variant="ghost" size="icon" className="absolute right-1 top-1 h-6 w-6 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(result.Lg_Lf_h)} title="Copy decoupling matrix" aria-label="Copy decoupling matrix">
+                         {copiedText === result.Lg_Lf_h ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
+                       </Button>
                      </div>
                   </div>
                 )}
@@ -146,8 +158,11 @@ export default function NonlinearSystemsPage() {
                     <h3 className="text-sm font-medium leading-none">Lie Derivatives (L_f^k h):</h3>
                     <ul className="space-y-1">
                       {result.Lie_derivatives.map((expr: string, i: number) => (
-                        <li key={i} className="p-2 bg-secondary/50 rounded text-sm font-mono overflow-x-auto">
-                          k={i}: {expr}
+                        <li key={i} className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto relative group">
+                          <span>k={i}: {expr}</span>
+                          <Button variant="ghost" size="icon" className="absolute right-1 top-1 h-6 w-6 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(expr)} title={`Copy Lie derivative k=${i}`} aria-label={`Copy Lie derivative k=${i}`}>
+                            {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
+                          </Button>
                         </li>
                       ))}
                     </ul>
