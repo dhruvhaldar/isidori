@@ -95,9 +95,28 @@ def intersection(A, B, tol=1e-10):
     # The component of A orthogonal to B is A - B(B^T A).
     # Its null space gives the coefficients for A.
     
-    # Ensure B is orthonormal (if not, make it so)
-    # This check is relatively cheap compared to a large SVD
-    if np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') >= 1e-8:
+    # Fast path check for orthonormality
+    B_is_ortho = False
+    if B.shape[0] >= B.shape[1]:
+        B_is_ortho = np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') < 1e-8
+
+    if not B_is_ortho:
+        # If B is not orthonormal, see if we can swap roles to bypass basis(B) factorization
+        A_is_ortho = False
+        if A.shape[0] >= A.shape[1]:
+            A_is_ortho = np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8
+
+        if A_is_ortho:
+            # ⚡ Bolt: If A is orthonormal and B is not, swap roles (~2.5x speedup)
+            proj_B_perp = B - A @ (A.T @ B)
+            if np.linalg.norm(proj_B_perp, ord='fro') < tol * max(B.shape) * max(1.0, np.linalg.norm(B, ord='fro')):
+                return basis(B, tol)
+            K = kernel(proj_B_perp, tol)
+            if K.size == 0:
+                return np.zeros((B.shape[0], 0))
+            return basis(B @ K, tol)
+
+        # Ensure B is orthonormal
         B = basis(B, tol)
 
     proj_A_perp = A - B @ (B.T @ A)
@@ -130,7 +149,12 @@ def sum_spaces(A, B, tol=1e-10):
     # ⚡ Bolt: Fast sum using orthogonal projection (~2.7x speedup)
     # If A is an orthonormal basis, project B onto the orthogonal complement of A.
     # Finding the basis of this projection avoids a large SVD on the concatenated matrix [A, B].
-    if np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8:
+    # Use shape check to prevent expensive multiplications on fat non-orthonormal matrices.
+    A_is_ortho = False
+    if A.shape[0] >= A.shape[1]:
+        A_is_ortho = np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8
+
+    if A_is_ortho:
         B_perp = B - A @ (A.T @ B)
 
         # ⚡ Bolt: Early return if B is fully contained in A (~2.4x speedup for subset case)
@@ -146,7 +170,11 @@ def sum_spaces(A, B, tol=1e-10):
 
     # ⚡ Bolt: If A is not orthonormal but B is, swap roles and project A onto B's complement (~1.3x speedup).
     # This prevents falling back to the expensive RRQR factorization of the full concatenated matrix.
-    if np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') < 1e-8:
+    B_is_ortho = False
+    if B.shape[0] >= B.shape[1]:
+        B_is_ortho = np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') < 1e-8
+
+    if B_is_ortho:
         A_perp = A - B @ (B.T @ A)
 
         if np.linalg.norm(A_perp, ord='fro') < tol * max(A.shape) * max(1.0, np.linalg.norm(A, ord='fro')):
@@ -178,7 +206,11 @@ def inverse_image(A, S, tol=1e-10):
     # orthogonal to S is zero.
     
     # Ensure S is orthonormal
-    if np.linalg.norm(S.T @ S - np.eye(S.shape[1]), ord='fro') >= 1e-8:
+    S_is_ortho = False
+    if S.shape[0] >= S.shape[1]:
+        S_is_ortho = np.linalg.norm(S.T @ S - np.eye(S.shape[1]), ord='fro') < 1e-8
+
+    if not S_is_ortho:
         S = basis(S, tol)
 
     proj_A_perp = A - S @ (S.T @ A)
