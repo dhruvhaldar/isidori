@@ -1,3 +1,4 @@
+from .utils import hashable_cache
 import sympy as sp
 import ast
 import functools
@@ -184,6 +185,7 @@ def lie_derivative(func, vector_field, variables):
             res += sp.diff(func, var) * v
     return res
 
+@hashable_cache
 def compute_relative_degree(f_exprs, g_exprs, h_expr, var_names):
     """
     Computes the relative degree r of a SISO nonlinear system:

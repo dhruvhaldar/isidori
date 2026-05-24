@@ -1,6 +1,7 @@
 import numpy as np
-from .utils import basis, kernel, intersection, sum_spaces, inverse_image, rank
+from .utils import hashable_cache, basis, kernel, intersection, sum_spaces, inverse_image, rank
 
+@hashable_cache
 def compute_v_star(A, B, C, tol=1e-10):
     """
     Computes the maximal controlled invariant subspace V* contained in Ker(C).
@@ -65,6 +66,7 @@ def compute_v_star(A, B, C, tol=1e-10):
         
     return V
 
+@hashable_cache
 def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     """
     Checks if DDP (Disturbance Decoupling Problem) is solvable.
