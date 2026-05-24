@@ -1,5 +1,44 @@
 import numpy as np
+import functools
 from scipy import linalg
+
+
+def hashable_cache(func):
+    """
+    A caching decorator that converts unhashable arguments (like numpy arrays or lists)
+    into hashable tuples before calling the lru_cache wrapper.
+    """
+    @functools.lru_cache(maxsize=128)
+    def cached_wrapper(args_key, kwargs_key):
+        args = tuple(_unmake_hashable(arg) for arg in args_key)
+        kwargs = {k: _unmake_hashable(v) for k, v in kwargs_key}
+        return func(*args, **kwargs)
+
+    def _make_hashable(val):
+        if isinstance(val, np.ndarray):
+            return ('ndarray', val.shape, tuple(val.flatten().tolist()), val.dtype.str)
+        elif isinstance(val, list):
+            return ('list', tuple(_make_hashable(v) for v in val))
+        return val
+
+    def _unmake_hashable(val):
+        if isinstance(val, tuple) and len(val) > 0:
+            if val[0] == 'ndarray':
+                _, shape, flat_data, dtype_str = val
+                return np.array(flat_data, dtype=np.dtype(dtype_str)).reshape(shape)
+            elif val[0] == 'list':
+                return list(_unmake_hashable(v) for v in val[1])
+        return val
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        args_key = tuple(_make_hashable(arg) for arg in args)
+        kwargs_key = frozenset((k, _make_hashable(v)) for k, v in kwargs.items())
+        return cached_wrapper(args_key, kwargs_key)
+
+    wrapper.cache_info = cached_wrapper.cache_info
+    wrapper.cache_clear = cached_wrapper.cache_clear
+    return wrapper
 
 def tolerance(M):
     """Returns a tolerance value for rank/nullspace calculations."""
