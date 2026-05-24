@@ -131,17 +131,22 @@ export default function LinearSystemsPage() {
             <CardHeader>
               <CardTitle>Controlled Invariance (V*)</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4" aria-live="polite">
-              <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>
-                {isComputingVStar && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
-                {isComputingVStar ? "Computing V*..." : "Compute V*"}
-              </Button>
-              {vStarError && (
-                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
-                  <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
-                  <span>{vStarError}</span>
-                </div>
-              )}
+            <CardContent className="space-y-4">
+              <div aria-live="polite" className="space-y-4">
+                <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>
+                  {isComputingVStar && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
+                  {isComputingVStar ? "Computing V*..." : "Compute V*"}
+                </Button>
+                {vStarError && (
+                  <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                    <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                    <span>{vStarError}</span>
+                  </div>
+                )}
+                {!isComputingVStar && vStar && !vStarError && (
+                  <span className="sr-only">V* computation complete. Basis matrix displayed.</span>
+                )}
+              </div>
               {vStar && (
                 <div className={`mt-4 space-y-2 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : ""}`}>
                   <MatrixInput
@@ -169,17 +174,22 @@ export default function LinearSystemsPage() {
             <CardHeader>
               <CardTitle>Disturbance Decoupling (DDP)</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4" aria-live="polite">
-              <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>
-                {isCheckingDDP && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
-                {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
-              </Button>
-              {ddpError && (
-                <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
-                  <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
-                  <span>{ddpError}</span>
-                </div>
-              )}
+            <CardContent className="space-y-4">
+              <div aria-live="polite" className="space-y-4">
+                <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>
+                  {isCheckingDDP && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
+                  {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
+                </Button>
+                {ddpError && (
+                  <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                    <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                    <span>{ddpError}</span>
+                  </div>
+                )}
+                {!isCheckingDDP && ddpResult && !ddpError && (
+                  <span className="sr-only">DDP check complete. {ddpResult.is_solvable ? "Solvable." : "Not solvable."}</span>
+                )}
+              </div>
               {ddpResult && (
                 <div className={`mt-4 space-y-2 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : ""}`}>
                   <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>

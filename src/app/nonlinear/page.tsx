@@ -124,13 +124,18 @@ export default function NonlinearSystemsPage() {
           <CardHeader>
             <CardTitle>Results</CardTitle>
           </CardHeader>
-          <CardContent aria-live="polite">
-            {error && (
-               <div className="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
-                 <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
-                 <span>{error}</span>
-               </div>
-            )}
+          <CardContent>
+            <div aria-live="polite">
+              {error && (
+                 <div className="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                   <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                   <span>{error}</span>
+                 </div>
+              )}
+              {!isLoading && result && !error && (
+                <span className="sr-only">Computation complete. Results displayed below.</span>
+              )}
+            </div>
             
             {result && (
               <div className={`space-y-4 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : ""}`}>
