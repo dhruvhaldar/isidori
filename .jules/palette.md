@@ -68,3 +68,7 @@
 ## 2026-05-22 - [Stale Data Feedback UX]
 **Learning:** When performing async re-computations or form submissions that update existing result blocks on the screen, completely clearing the state (e.g. `setResult(null)`) before the fetch finishes causes a jarring layout shift and visually replaces the user's previous context with an empty state. This breaks continuity.
 **Action:** Instead of clearing stale data entirely, retain the previous data in state and apply a dynamic CSS class (like `opacity-50 pointer-events-none transition-opacity`) to visually "dim" the block while `isLoading` is true. This smoothly communicates to the user that the data is stale and updating without breaking the layout.
+
+## 2026-05-24 - [Aria-Live Region Verbosity]
+**Learning:** Wrapping large data structures, matrices, or complex mathematical strings entirely in `aria-live="polite"` regions causes screen readers to read the entire DOM structure out loud every time it updates. This leads to massive, frustrating verbosity and navigation fatigue for screen reader users.
+**Action:** Isolate `aria-live` regions specifically to status wrappers (e.g., around loading spinners or error messages) and provide visually hidden (`sr-only`) concise announcement messages upon completion, keeping the dense data elements outside the live region.
