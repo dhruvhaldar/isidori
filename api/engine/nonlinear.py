@@ -67,7 +67,15 @@ def safe_sympify(expr_str):
                     if isinstance(n.op, ast.Add): return left + right
                     if isinstance(n.op, ast.Sub): return left - right
                     if isinstance(n.op, ast.Mult): return left * right
-                    if isinstance(n.op, ast.Div): return left / right if right != 0 else 0
+                    if isinstance(n.op, ast.Div):
+                        if right == 0:
+                            raise ValueError("Unsafe expression: division by zero")
+                        try:
+                            return left / right
+                        except ZeroDivisionError:
+                            raise ValueError("Unsafe expression: division by zero")
+                        except OverflowError:
+                            raise ValueError("Unsafe expression: division overflow")
                     if isinstance(n.op, ast.Pow):
                         if abs(left) > 100 or abs(right) > 5:
                             raise ValueError("Unsafe expression: constant exponentiation too large")
