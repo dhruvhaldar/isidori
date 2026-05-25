@@ -72,3 +72,7 @@
 ## 2026-05-24 - [Aria-Live Region Verbosity]
 **Learning:** Wrapping large data structures, matrices, or complex mathematical strings entirely in `aria-live="polite"` regions causes screen readers to read the entire DOM structure out loud every time it updates. This leads to massive, frustrating verbosity and navigation fatigue for screen reader users.
 **Action:** Isolate `aria-live` regions specifically to status wrappers (e.g., around loading spinners or error messages) and provide visually hidden (`sr-only`) concise announcement messages upon completion, keeping the dense data elements outside the live region.
+
+## 2026-05-25 - [Touch Device & Screen Reader Support for Inline Actions]
+**Learning:** Hiding inline actions (like "Copy" buttons next to code blocks) using strict hover states (`opacity-0 group-hover:opacity-100`) makes them completely undiscoverable on touch devices (mobile/tablet) which lack a hover mechanism. Furthermore, when the action completes, failing to update `aria-label` or lacking `aria-live` means screen reader users receive no confirmation of success.
+**Action:** Use responsive modifiers (`md:opacity-0 md:group-hover:opacity-100`) so the actions are visible by default on smaller touch devices and reveal on hover for larger screens. Always add `aria-live="polite"` and dynamically update `aria-label` or include a visually hidden announcement when the action (like copying) is successful.

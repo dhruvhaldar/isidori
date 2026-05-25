@@ -151,7 +151,8 @@ export default function NonlinearSystemsPage() {
                        <div className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto">
                          {result.Lg_Lf_h}
                        </div>
-                       <Button variant="ghost" size="icon" className="absolute right-1 top-1 h-6 w-6 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(result.Lg_Lf_h)} title="Copy decoupling matrix" aria-label="Copy decoupling matrix">
+                       <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(result.Lg_Lf_h)} title={copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}>
+                         <span className="sr-only">{copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}</span>
                          {copiedText === result.Lg_Lf_h ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
                        </Button>
                      </div>
@@ -165,7 +166,8 @@ export default function NonlinearSystemsPage() {
                       {result.Lie_derivatives.map((expr: string, i: number) => (
                         <li key={i} className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto relative group">
                           <span>k={i}: {expr}</span>
-                          <Button variant="ghost" size="icon" className="absolute right-1 top-1 h-6 w-6 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(expr)} title={`Copy Lie derivative k=${i}`} aria-label={`Copy Lie derivative k=${i}`}>
+                          <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(expr)} title={copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}>
+                            <span className="sr-only">{copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}</span>
                             {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
                           </Button>
                         </li>
