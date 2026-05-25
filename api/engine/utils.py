@@ -16,7 +16,11 @@ def hashable_cache(func):
 
     def _make_hashable(val):
         if isinstance(val, np.ndarray):
-            return ('ndarray', val.shape, tuple(val.flatten().tolist()), val.dtype.str)
+            # ⚡ Bolt: Use tobytes() instead of flattening to a list.
+            # tobytes() is a highly optimized C-level operation that produces a hashable
+            # bytes object almost instantly, bypassing the massive overhead of iterating
+            # and creating individual Python scalar objects for every matrix element.
+            return ('ndarray', val.shape, val.tobytes(), val.dtype.str)
         elif isinstance(val, list):
             return ('list', tuple(_make_hashable(v) for v in val))
         return val
@@ -25,7 +29,7 @@ def hashable_cache(func):
         if isinstance(val, tuple) and len(val) > 0:
             if val[0] == 'ndarray':
                 _, shape, flat_data, dtype_str = val
-                return np.array(flat_data, dtype=np.dtype(dtype_str)).reshape(shape)
+                return np.frombuffer(flat_data, dtype=np.dtype(dtype_str)).reshape(shape).copy()
             elif val[0] == 'list':
                 return list(_unmake_hashable(v) for v in val[1])
         return val
