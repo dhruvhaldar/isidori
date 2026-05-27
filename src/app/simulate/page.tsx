@@ -111,7 +111,12 @@ export default function SimulatePage() {
                onKeyDown={(e) => {
                  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
                    e.preventDefault();
-                   e.currentTarget.requestSubmit();
+                   const form = e.currentTarget.closest('form');
+                   if (form && !form.checkValidity()) {
+                     form.reportValidity();
+                     return;
+                   }
+                   handleSimulate();
                  }
                }}
              >
