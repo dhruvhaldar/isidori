@@ -21,8 +21,8 @@ export function NavLinks() {
             key={link.href}
             href={link.href}
             aria-current={isActive ? "page" : undefined}
-            className={`transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm ${
-              isActive ? "font-bold text-foreground" : "text-foreground/60"
+            className={`transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md px-3 py-2 ${
+              isActive ? "font-bold text-accent-foreground bg-accent" : "text-foreground/60 hover:bg-accent/50"
             }`}
           >
             {link.label}
