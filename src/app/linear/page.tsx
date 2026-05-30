@@ -40,6 +40,9 @@ export default function LinearSystemsPage() {
   }, [n, m, p, q]);
 
   const resizeMatrix = (mat: number[][], rows: number, cols: number) => {
+    if (mat.length === rows && (mat.length === 0 || mat[0].length === cols)) {
+      return mat;
+    }
     const newMat = createMatrix(rows, cols);
     for (let r = 0; r < Math.min(rows, mat.length); r++) {
       for (let c = 0; c < Math.min(cols, mat[0].length); c++) {

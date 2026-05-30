@@ -145,3 +145,7 @@
 ## 2026-05-25 - NumPy Array Caching Optimization
 **Learning:** When generating hash keys for caching NumPy arrays (e.g., in a custom `hashable_cache` decorator), converting arrays to flattened Python lists (`tuple(val.flatten().tolist())`) is an O(N) operation that creates individual Python scalar objects, causing massive overhead for large matrices.
 **Action:** Use `val.tobytes()` instead to instantly generate a hashable C-level bytes object. Then, reconstruct the array during un-hashing using `np.frombuffer(val, dtype).reshape(shape).copy()` to ensure the returned array is properly formatted and writable.
+
+## 2026-05-30 - Matrix Resize React referential equality bailout
+**Learning:** In React components handling complex states like nested arrays (`MatrixInput`), updating state inside `useEffect` with a completely new array instance (even if the dimensions and values are identical) breaks referential equality. This forces React to unnecessarily re-render the matrix inputs and all its memoized children (like `MatrixCell` and `SystemChart`), creating significant rendering overhead and potential input lag when other unrelated states trigger the effect.
+**Action:** When performing programmatic state updates like `resizeMatrix` based on dependencies, always add an early return that checks if the intended update would actually change anything (e.g. `if (mat.length === rows && mat[0].length === cols) return mat;`). Returning the original reference allows React to bail out of the update completely, preventing costly cascading re-renders.
