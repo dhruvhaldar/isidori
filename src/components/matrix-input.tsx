@@ -91,8 +91,11 @@ const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label, rows, col
   return (
     <Input
       type="text"
-      inputMode="decimal"
+      inputMode="text"
       value={localVal}
+      autoComplete="off"
+      autoCorrect="off"
+      spellCheck={false}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onFocus={(e) => e.target.select()}

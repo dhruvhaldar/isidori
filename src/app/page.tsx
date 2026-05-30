@@ -18,8 +18,9 @@ export default function Home() {
         </p>
         <div className="flex w-full items-center justify-start gap-2 py-2">
           <Button asChild>
-            <Link href="/linear">
+            <Link href="/linear" className="gap-2 group">
               Get Started
+              <ArrowRight aria-hidden="true" className="w-4 h-4 transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
             </Link>
           </Button>
           <Button asChild variant="outline">
