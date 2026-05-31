@@ -79,3 +79,6 @@
 ## 2026-05-26 - Improve Navigation Touch Targets and Active State Clarity
 **Learning:** Using only font-weight to indicate active state in primary navigation is insufficient for many users (especially with low contrast), and small inline links present usability issues on touch devices.
 **Action:** Always wrap primary navigation links with generous padding (`px-3 py-2`) to meet minimum touch target sizes (44x44px equivalent), and use distinct background colors (`bg-accent text-accent-foreground`) alongside font-weight changes to unambiguously communicate the current active page.
+## 2024-05-31 - Mobile Keyboard Optimization for Matrix Inputs
+**Learning:** Using `type="text"` (required for `selectionStart` API to implement arrow-key cell navigation) triggers the full alphanumeric keyboard on mobile, making numeric matrix entry extremely tedious.
+**Action:** Always combine `type="text"` with `inputMode="decimal"` for numeric grid inputs to ensure mobile users get a numeric keypad while preserving the text-selection APIs needed for desktop keyboard navigation.
