@@ -91,7 +91,7 @@ const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label, rows, col
   return (
     <Input
       type="text"
-      inputMode="text"
+      inputMode="decimal"
       value={localVal}
       autoComplete="off"
       autoCorrect="off"
