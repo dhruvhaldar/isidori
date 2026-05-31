@@ -30,29 +30,6 @@ def safe_sympify(expr_str):
             ast.Mult, ast.Div, ast.Pow
         }
 
-        for node in ast.walk(tree):
-            if type(node) not in ALLOWED_NODES:
-                raise ValueError(f"Unsafe expression: AST node type {type(node).__name__} is not allowed")
-            if isinstance(node, ast.Constant) and isinstance(node.value, (str, bytes)):
-                raise ValueError("Unsafe expression: string and byte literals are not allowed")
-            elif isinstance(node, ast.Call):
-                if not isinstance(node.func, ast.Name):
-                    raise ValueError("Unsafe expression: complex function calls are not allowed")
-
-                func_name = node.func.id
-                if func_name in builtin_names:
-                    if func_name not in {'abs', 'max', 'min', 'round', 'sum', 'complex', 'float', 'int'}:
-                        raise ValueError(f"Unsafe expression: builtin {func_name} is not allowed")
-                elif func_name not in ALLOWED_MATH_FUNCS:
-                    raise ValueError(f"Unsafe expression: function {func_name} is not allowed")
-            elif isinstance(node, ast.BinOp):
-                if not isinstance(node.op, (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow)):
-                    raise ValueError(f"Unsafe expression: unsupported binary operation")
-                if isinstance(node.op, ast.Pow):
-                    if isinstance(node.right, ast.Constant) and isinstance(node.right.value, (int, float, complex)):
-                        if abs(node.right.value) > 5:
-                            raise ValueError("Unsafe expression: exponent too large")
-
         def get_pure_constant_value(n):
             if isinstance(n, ast.Constant):
                 return n.value if isinstance(n.value, (int, float, complex)) else None
@@ -89,6 +66,30 @@ def safe_sympify(expr_str):
                             raise ValueError("Unsafe expression: division by zero in exponentiation")
             # If the node contains any Name or Call, it's not a pure constant
             return None
+
+        for node in ast.walk(tree):
+            if type(node) not in ALLOWED_NODES:
+                raise ValueError(f"Unsafe expression: AST node type {type(node).__name__} is not allowed")
+            if isinstance(node, ast.Constant) and isinstance(node.value, (str, bytes)):
+                raise ValueError("Unsafe expression: string and byte literals are not allowed")
+            elif isinstance(node, ast.Call):
+                if not isinstance(node.func, ast.Name):
+                    raise ValueError("Unsafe expression: complex function calls are not allowed")
+
+                func_name = node.func.id
+                if func_name in builtin_names:
+                    if func_name not in {'abs', 'max', 'min', 'round', 'sum', 'complex', 'float', 'int'}:
+                        raise ValueError(f"Unsafe expression: builtin {func_name} is not allowed")
+                elif func_name not in ALLOWED_MATH_FUNCS:
+                    raise ValueError(f"Unsafe expression: function {func_name} is not allowed")
+            elif isinstance(node, ast.BinOp):
+                if not isinstance(node.op, (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow)):
+                    raise ValueError(f"Unsafe expression: unsupported binary operation")
+                if isinstance(node.op, ast.Pow):
+                    # 🛡️ Sentinel: Evaluate full constant value (including UnaryOp like USub) to prevent DoS bypass via `x**-10`
+                    val = get_pure_constant_value(node.right)
+                    if val is not None and abs(val) > 5:
+                        raise ValueError("Unsafe expression: exponent too large")
 
         # Recursively evaluate the mathematical polynomial degree of the AST to prevent polynomial inflation DoS.
         def get_poly_degree(n):
