@@ -175,7 +175,7 @@ def safe_sympify(expr_str):
     except SyntaxError:
         raise ValueError("Invalid syntax in expression")
 
-    return sp.sympify(expr_str)
+    return sp.parse_expr(expr_str)
 
 def lie_derivative(func, vector_field, variables):
     """

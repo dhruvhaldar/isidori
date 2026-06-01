@@ -225,9 +225,9 @@ def simulate_system(data: LinearSystemInput):
             x_out[i] = x
             
         # Vectorize output computation: y = C @ x
-        # x_out is (steps, dim), x_out.T is (dim, steps)
-        # C @ x_out.T is (outputs, steps), then transpose back to (steps, outputs)
-        y_out = (C @ x_out.T).T.tolist()
+        # x_out is (steps, dim), C.T is (dim, outputs)
+        # x_out @ C.T is (steps, outputs)
+        y_out = (x_out @ C.T).tolist()
 
         return {
             "time": time.tolist(),
