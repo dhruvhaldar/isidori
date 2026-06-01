@@ -82,3 +82,7 @@
 ## 2024-05-31 - Mobile Keyboard Optimization for Matrix Inputs
 **Learning:** Using `type="text"` (required for `selectionStart` API to implement arrow-key cell navigation) triggers the full alphanumeric keyboard on mobile, making numeric matrix entry extremely tedious.
 **Action:** Always combine `type="text"` with `inputMode="decimal"` for numeric grid inputs to ensure mobile users get a numeric keypad while preserving the text-selection APIs needed for desktop keyboard navigation.
+
+## 2026-06-01 - [Keyboard Access for Overflowing Text]
+**Learning:** Text containers (like mathematical expressions or matrices) that utilize `overflow-x-auto` to handle long strings are inaccessible to keyboard-only users unless they can be focused. If they overflow and cannot receive focus, a keyboard user cannot scroll to read the hidden content.
+**Action:** Always add `tabIndex={0}`, a `role="region"`, a descriptive `aria-label`, and appropriate focus indicator classes (like `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1`) to `overflow-x-auto` text containers to allow keyboard users to focus and scroll them.
