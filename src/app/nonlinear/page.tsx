@@ -148,7 +148,12 @@ export default function NonlinearSystemsPage() {
                   <div className="space-y-2">
                      <h3 className="text-sm font-medium leading-none">L_g L_f^(r-1) h (Decoupling Matrix):</h3>
                      <div className="relative group">
-                       <div className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto">
+                       <div
+                         className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                         tabIndex={0}
+                         role="region"
+                         aria-label="Decoupling Matrix"
+                       >
                          {result.Lg_Lf_h}
                        </div>
                        <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(result.Lg_Lf_h)} title={copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}>
@@ -164,8 +169,15 @@ export default function NonlinearSystemsPage() {
                     <h3 className="text-sm font-medium leading-none">Lie Derivatives (L_f^k h):</h3>
                     <ul className="space-y-1">
                       {result.Lie_derivatives.map((expr: string, i: number) => (
-                        <li key={i} className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto relative group">
-                          <span>k={i}: {expr}</span>
+                        <li key={i} className="relative group">
+                          <div
+                            className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                            tabIndex={0}
+                            role="region"
+                            aria-label={`Lie derivative k=${i}`}
+                          >
+                            <span>k={i}: {expr}</span>
+                          </div>
                           <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity" onClick={() => handleCopy(expr)} title={copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}>
                             <span className="sr-only">{copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}</span>
                             {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
