@@ -133,6 +133,9 @@ export default function LinearSystemsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Controlled Invariance (V*)</CardTitle>
+              <CardDescription>
+                Computes the largest subspace that can be made invariant using state feedback.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div aria-live="polite" className="space-y-4">
@@ -176,6 +179,9 @@ export default function LinearSystemsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Disturbance Decoupling (DDP)</CardTitle>
+              <CardDescription>
+                Checks if a feedback control can isolate the output from disturbances.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div aria-live="polite" className="space-y-4">

@@ -86,3 +86,7 @@
 ## 2026-06-01 - [Keyboard Access for Overflowing Text]
 **Learning:** Text containers (like mathematical expressions or matrices) that utilize `overflow-x-auto` to handle long strings are inaccessible to keyboard-only users unless they can be focused. If they overflow and cannot receive focus, a keyboard user cannot scroll to read the hidden content.
 **Action:** Always add `tabIndex={0}`, a `role="region"`, a descriptive `aria-label`, and appropriate focus indicator classes (like `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1`) to `overflow-x-auto` text containers to allow keyboard users to focus and scroll them.
+
+## 2026-06-03 - [Keyboard Cancellation for Inline Confirmations]
+**Learning:** Inline confirmation patterns (like clicking "Clear" -> "Sure?") are great for preserving context compared to heavy modals. However, forcing users to wait for a timeout to cancel an accidental click causes friction and a feeling of lost control.
+**Action:** Always provide escape hatches (e.g., listening for the 'Escape' key via `onKeyDown`, and resetting the state on `onBlur`) to instantly cancel and reset inline confirmation states, restoring user control.
