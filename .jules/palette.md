@@ -90,3 +90,7 @@
 ## 2026-06-03 - [Keyboard Cancellation for Inline Confirmations]
 **Learning:** Inline confirmation patterns (like clicking "Clear" -> "Sure?") are great for preserving context compared to heavy modals. However, forcing users to wait for a timeout to cancel an accidental click causes friction and a feeling of lost control.
 **Action:** Always provide escape hatches (e.g., listening for the 'Escape' key via `onKeyDown`, and resetting the state on `onBlur`) to instantly cancel and reset inline confirmation states, restoring user control.
+
+## 2026-06-04 - Semantic Icons in Navigation for Scannability
+**Learning:** Text-only navigation links in the primary header can blend together, making it difficult for users to quickly scan and identify their target page, especially when the navigation options map directly to visually distinct feature cards on the homepage.
+**Action:** Always include consistent semantic icons alongside primary navigation text labels to improve visual recognition, create a cohesive design language across the application, and reduce cognitive load for users scanning the navigation bar. Ensure these icons are purely decorative by applying `aria-hidden="true"`.
