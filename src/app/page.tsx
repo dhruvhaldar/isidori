@@ -38,7 +38,7 @@ export default function Home() {
           <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Network className="w-5 h-5 text-primary" />
+                <Network aria-hidden="true" className="w-5 h-5 text-primary" />
                 Linear Systems
                 <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
               </CardTitle>
@@ -57,7 +57,7 @@ export default function Home() {
           <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FunctionSquare className="w-5 h-5 text-primary" />
+                <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
                 Nonlinear Systems
                 <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
               </CardTitle>
@@ -77,7 +77,7 @@ export default function Home() {
           <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <LineChart className="w-5 h-5 text-primary" />
+                <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
                 Simulation
                 <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
               </CardTitle>
