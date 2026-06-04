@@ -190,13 +190,20 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             type="button"
             variant={confirmClear ? "destructive" : "ghost"}
             size="sm"
-            className={`h-6 px-2 text-xs ${!confirmClear ? "text-muted-foreground hover:text-destructive" : ""}`}
+            className={`h-6 px-2 text-xs transition-colors ${!confirmClear ? "text-muted-foreground hover:text-destructive" : ""}`}
             onClick={handleClearClick}
-            title={confirmClear ? `Confirm clear ${label} matrix` : `Clear ${label} matrix`}
+            onBlur={() => setConfirmClear(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && confirmClear) {
+                e.preventDefault();
+                setConfirmClear(false);
+              }
+            }}
+            title={confirmClear ? `Confirm clear ${label} matrix (Esc to cancel)` : `Clear ${label} matrix`}
             aria-live="polite"
           >
             <span className="sr-only">
-              {confirmClear ? `Confirm clear ${label} matrix` : `Clear ${label} matrix`}
+              {confirmClear ? `Confirm clear ${label} matrix. Press Escape to cancel.` : `Clear ${label} matrix`}
             </span>
             <Eraser aria-hidden="true" className="w-3 h-3 mr-1" />
             <span aria-hidden="true">{confirmClear ? "Sure?" : "Clear"}</span>
