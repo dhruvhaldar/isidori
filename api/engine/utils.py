@@ -44,20 +44,26 @@ def hashable_cache(func):
     wrapper.cache_clear = cached_wrapper.cache_clear
     return wrapper
 
-def tolerance(M):
+def tolerance(M, norm_M=None):
     """Returns a tolerance value for rank/nullspace calculations."""
     # ⚡ Bolt: Use Frobenius norm instead of 2-norm (which computes a full SVD).
     # Since ||M||_2 <= ||M||_F <= sqrt(r) ||M||_2, Frobenius norm provides a safe,
     # extremely fast upper bound for rank tolerances without computing an SVD.
-    return max(M.shape) * np.linalg.norm(M, 'fro') * np.finfo(M.dtype).eps
+    if norm_M is None:
+        norm_M = np.linalg.norm(M, 'fro')
+    return max(M.shape) * norm_M * np.finfo(M.dtype).eps
 
 def rank(M, tol=None):
     """Computes the rank of a matrix."""
     # ⚡ Bolt: Early return for mathematically zero matrices (~20x-50x speedup)
     # Using the computationally cheap Frobenius norm check prevents running expensive
     # RRQR factorizations on matrices that are effectively zero (e.g. from iterative projections).
-    tol_val = tol if tol is not None else tolerance(M)
-    if M.size == 0 or np.linalg.norm(M, ord='fro') <= tol_val:
+    if M.size == 0:
+        return 0
+    # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
+    norm_M = np.linalg.norm(M, ord='fro')
+    tol_val = tol if tol is not None else tolerance(M, norm_M)
+    if norm_M <= tol_val:
         return 0
 
     # ⚡ Bolt: Use Rank-Revealing QR (RRQR) instead of SVD for rank, kernel, and basis.
@@ -77,8 +83,12 @@ def basis(M, tol=None):
     # ⚡ Bolt: Early return for mathematically zero matrices (~20x-50x speedup)
     # Using the computationally cheap Frobenius norm check prevents running expensive
     # RRQR factorizations on matrices that are effectively zero (e.g. from iterative projections).
-    tol_val = tol if tol is not None else tolerance(M)
-    if M.size == 0 or np.linalg.norm(M, ord='fro') <= tol_val:
+    if M.size == 0:
+        return np.zeros((M.shape[0], 0))
+    # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
+    norm_M = np.linalg.norm(M, ord='fro')
+    tol_val = tol if tol is not None else tolerance(M, norm_M)
+    if norm_M <= tol_val:
         return np.zeros((M.shape[0], 0))
 
     # ⚡ Bolt: Early return if M is already an orthonormal basis (~8x speedup for redundant calls).
@@ -86,7 +96,7 @@ def basis(M, tol=None):
     # is already strictly orthonormal. Checking the Frobenius norm of M^T M - I
     # uses highly optimized BLAS Level 3 GEMM operations, bypassing the significantly
     # slower LAPACK RRQR factorization even though both are O(m n^2).
-    if M.size > 0 and M.shape[0] >= M.shape[1]:
+    if M.shape[0] >= M.shape[1]:
         if np.linalg.norm(M.T @ M - np.eye(M.shape[1]), ord='fro') < 1e-8:
             return M
 
@@ -105,8 +115,12 @@ def kernel(M, tol=None):
     # ⚡ Bolt: Early return for mathematically zero matrices (~20x-50x speedup)
     # Using the computationally cheap Frobenius norm check prevents running expensive
     # RRQR factorizations on matrices that are effectively zero (e.g. from iterative projections).
-    tol_val = tol if tol is not None else tolerance(M)
-    if M.size == 0 or np.linalg.norm(M, ord='fro') <= tol_val:
+    if M.size == 0:
+        return np.eye(M.shape[1])
+    # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
+    norm_M = np.linalg.norm(M, ord='fro')
+    tol_val = tol if tol is not None else tolerance(M, norm_M)
+    if norm_M <= tol_val:
         return np.eye(M.shape[1])
 
     # ⚡ Bolt: Null space via RRQR of M^T (since Mx=0 => x^T M^T = 0).
