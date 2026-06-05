@@ -1,5 +1,5 @@
 import numpy as np
-from .utils import hashable_cache, basis, kernel, intersection, sum_spaces, inverse_image, rank
+from .utils import hashable_cache, basis, kernel, intersection, sum_spaces, inverse_image, rank, is_orthonormal
 
 @hashable_cache
 def compute_v_star(A, B, C, tol=1e-10):
@@ -167,7 +167,7 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     # bypassing the need to compute the unused X coefficients.
     
     # Strictly enforce orthonormality before orthogonal projection to prevent math errors
-    if np.linalg.norm(V_star.T @ V_star - np.eye(k), ord='fro') >= 1e-8:
+    if not is_orthonormal(V_star, tol=1e-8):
         V_star = basis(V_star, tol)
 
     A_V_star = A @ V_star
