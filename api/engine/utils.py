@@ -3,6 +3,22 @@ import functools
 from scipy import linalg
 
 
+def is_orthonormal(M, tol=1e-8):
+    """
+    Fast check if a matrix has orthonormal columns.
+    """
+    if M.shape[0] < M.shape[1] or M.shape[1] == 0:
+        return False
+
+    # ⚡ Bolt: Fast O(N*M) heuristic: if columns are not unit length, it cannot be orthonormal.
+    # This completely bypasses the O(N*M^2) matrix multiplication for non-orthonormal matrices.
+    col_sq_norms = np.sum(M**2, axis=0)
+    if not np.all(np.abs(col_sq_norms - 1.0) < tol):
+        return False
+
+    return np.linalg.norm(M.T @ M - np.eye(M.shape[1]), ord='fro') < tol
+
+
 def hashable_cache(func):
     """
     A caching decorator that converts unhashable arguments (like numpy arrays or lists)
@@ -96,9 +112,8 @@ def basis(M, tol=None):
     # is already strictly orthonormal. Checking the Frobenius norm of M^T M - I
     # uses highly optimized BLAS Level 3 GEMM operations, bypassing the significantly
     # slower LAPACK RRQR factorization even though both are O(m n^2).
-    if M.shape[0] >= M.shape[1]:
-        if np.linalg.norm(M.T @ M - np.eye(M.shape[1]), ord='fro') < 1e-8:
-            return M
+    if is_orthonormal(M):
+        return M
 
     # ⚡ Bolt: Rank-Revealing QR Factorization yields an orthonormal basis in Q
     Q, R, _ = linalg.qr(M, pivoting=True, mode='economic')
@@ -153,15 +168,11 @@ def intersection(A, B, tol=1e-10):
     # Its null space gives the coefficients for A.
     
     # Fast path check for orthonormality
-    B_is_ortho = False
-    if B.shape[0] >= B.shape[1]:
-        B_is_ortho = np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') < 1e-8
+    B_is_ortho = is_orthonormal(B)
 
     if not B_is_ortho:
         # If B is not orthonormal, see if we can swap roles to bypass basis(B) factorization
-        A_is_ortho = False
-        if A.shape[0] >= A.shape[1]:
-            A_is_ortho = np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8
+        A_is_ortho = is_orthonormal(A)
 
         if A_is_ortho:
             # ⚡ Bolt: If A is orthonormal and B is not, swap roles (~2.5x speedup)
@@ -207,9 +218,7 @@ def sum_spaces(A, B, tol=1e-10):
     # If A is an orthonormal basis, project B onto the orthogonal complement of A.
     # Finding the basis of this projection avoids a large SVD on the concatenated matrix [A, B].
     # Use shape check to prevent expensive multiplications on fat non-orthonormal matrices.
-    A_is_ortho = False
-    if A.shape[0] >= A.shape[1]:
-        A_is_ortho = np.linalg.norm(A.T @ A - np.eye(A.shape[1]), ord='fro') < 1e-8
+    A_is_ortho = is_orthonormal(A)
 
     if A_is_ortho:
         B_perp = B - A @ (A.T @ B)
@@ -227,9 +236,7 @@ def sum_spaces(A, B, tol=1e-10):
 
     # ⚡ Bolt: If A is not orthonormal but B is, swap roles and project A onto B's complement (~1.3x speedup).
     # This prevents falling back to the expensive RRQR factorization of the full concatenated matrix.
-    B_is_ortho = False
-    if B.shape[0] >= B.shape[1]:
-        B_is_ortho = np.linalg.norm(B.T @ B - np.eye(B.shape[1]), ord='fro') < 1e-8
+    B_is_ortho = is_orthonormal(B)
 
     if B_is_ortho:
         A_perp = A - B @ (B.T @ A)
@@ -263,9 +270,7 @@ def inverse_image(A, S, tol=1e-10):
     # orthogonal to S is zero.
     
     # Ensure S is orthonormal
-    S_is_ortho = False
-    if S.shape[0] >= S.shape[1]:
-        S_is_ortho = np.linalg.norm(S.T @ S - np.eye(S.shape[1]), ord='fro') < 1e-8
+    S_is_ortho = is_orthonormal(S)
 
     if not S_is_ortho:
         S = basis(S, tol)
