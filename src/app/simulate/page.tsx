@@ -123,6 +123,7 @@ export default function SimulatePage() {
                  }
                }}
              >
+               <fieldset disabled={isSimulating} className="space-y-4 group">
                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="space-y-1"><Label htmlFor="states-n">States (n)</Label><Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={e => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
                   <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m)</Label><Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={e => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} /></div>
@@ -157,6 +158,7 @@ export default function SimulatePage() {
                    <span className="sr-only">Simulation complete. Response plotted.</span>
                  )}
                </div>
+               </fieldset>
              </form>
            </CardContent>
         </Card>

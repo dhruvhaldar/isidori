@@ -160,7 +160,14 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
   return (
     <fieldset className="space-y-2 relative min-w-0">
       <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none">
-        <span>{label} ({rows}x{cols})</span>
+        <div className="flex items-center gap-2">
+          <span>{label} ({rows}x{cols})</span>
+          {!readOnly && rows > 0 && cols > 0 && (
+            <span className="hidden md:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground font-mono bg-muted/50 px-1.5 py-0.5 rounded border" aria-hidden="true">
+              <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> to navigate
+            </span>
+          )}
+        </div>
         {readOnly ? (
           <Button
             type="button"
