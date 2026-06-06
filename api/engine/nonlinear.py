@@ -109,9 +109,9 @@ def safe_sympify(expr_str):
                 elif isinstance(n.op, ast.Div):
                     return left_deg # Div by constant, or we're just estimating upper bound
                 elif isinstance(n.op, ast.Pow):
-                    if isinstance(n.right, ast.Constant) and isinstance(n.right.value, (int, float)):
-                        if n.right.value >= 0:
-                            return left_deg * int(n.right.value)
+                    if isinstance(n.right, ast.Constant) and isinstance(n.right.value, (int, float, complex)):
+                        if isinstance(n.right.value, complex) or n.right.value >= 0:
+                            return left_deg * int(abs(n.right.value))
                     # If we don't know the exact value, assume it could multiply by our max constant exponent (5)
                     return left_deg * 5
                 else:
