@@ -85,6 +85,7 @@ export default function NonlinearSystemsPage() {
                 }
               }}
             >
+              <fieldset disabled={isLoading} className="space-y-4 group">
               <div className="space-y-2">
                 <Label htmlFor="state-variables">State Variables <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Input id="state-variables" required value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" />
@@ -116,6 +117,7 @@ export default function NonlinearSystemsPage() {
                   </kbd>
                 )}
               </Button>
+              </fieldset>
             </form>
           </CardContent>
         </Card>

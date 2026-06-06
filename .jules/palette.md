@@ -94,3 +94,7 @@
 ## 2026-06-04 - Semantic Icons in Navigation for Scannability
 **Learning:** Text-only navigation links in the primary header can blend together, making it difficult for users to quickly scan and identify their target page, especially when the navigation options map directly to visually distinct feature cards on the homepage.
 **Action:** Always include consistent semantic icons alongside primary navigation text labels to improve visual recognition, create a cohesive design language across the application, and reduce cognitive load for users scanning the navigation bar. Ensure these icons are purely decorative by applying `aria-hidden="true"`.
+
+## 2026-06-06 - [Bulk Disabling Forms with Fieldset]
+**Learning:** In complex forms where computations take time, keeping inputs fully interactive allows users to modify data mid-computation, leading to frustrating state-mismatch bugs where the visible output doesn't match the inputs. Passing `disabled` props down to every individual input and button is tedious and prone to error.
+**Action:** Leverage the native HTML5 `<fieldset>` element by wrapping the form controls in `<fieldset disabled={isLoading}>`. This automatically disables all descendant form controls and seamlessly applies Tailwind's `disabled:opacity-50 disabled:pointer-events-none` pseudo-classes in a clean, declarative manner.
