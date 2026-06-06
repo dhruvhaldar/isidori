@@ -16,3 +16,8 @@
 **Vulnerability:** Rate limit bypass and Denial of Service.
 **Learning:** When implementing IP-based rate limiting behind a reverse proxy, blindly trusting the `X-Forwarded-For` header to determine the client IP allows attackers to trivially spoof their IP to bypass limits or cause DoS for other users.
 **Prevention:** Only extract the IP from `X-Forwarded-For` if the request is cryptographically verified or network-verified to come from a trusted proxy server. Otherwise, fall back to `request.client.host` or use established proxy middleware that handles trusted IP lists.
+
+## 2024-06-06 - [SymPy Complex Number DoS Bypass]
+**Vulnerability:** Application-Layer DoS via `ast.Pow` exponent validation bypass using complex numbers.
+**Learning:** When validating Python AST `ast.Constant` nodes to prevent Application-Layer DoS (e.g., limiting exponent magnitudes for SymPy), explicitly include `complex` in the type checks alongside `int` and `float`. Omitting `complex` allows attackers to bypass magnitude bounds using complex arithmetic (e.g., `10j * 10j` evaluating to `-100`). Additionally, Python's `complex` type does not support ordering operators (like `>=`), so attempting direct numeric comparisons will raise a `TypeError`.
+**Prevention:** Always explicitly include `complex` in type checks when validating mathematical constants. When validating the magnitude of nodes that may contain `complex` numbers, use `abs(value)` rather than relational operators (e.g., `>=`).
