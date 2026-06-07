@@ -98,3 +98,6 @@
 ## 2026-06-06 - [Bulk Disabling Forms with Fieldset]
 **Learning:** In complex forms where computations take time, keeping inputs fully interactive allows users to modify data mid-computation, leading to frustrating state-mismatch bugs where the visible output doesn't match the inputs. Passing `disabled` props down to every individual input and button is tedious and prone to error.
 **Action:** Leverage the native HTML5 `<fieldset>` element by wrapping the form controls in `<fieldset disabled={isLoading}>`. This automatically disables all descendant form controls and seamlessly applies Tailwind's `disabled:opacity-50 disabled:pointer-events-none` pseudo-classes in a clean, declarative manner.
+## 2024-06-07 - Add missing tooltips to icon-only buttons
+**Learning:** Sometimes icon-only buttons have `sr-only` text for screen readers, but lack a `title` attribute, leaving mouse users without hover feedback.
+**Action:** When creating icon buttons, always include a descriptive `title` attribute along with `aria-label` or `sr-only` text so both mouse and screen reader users can understand the button's action.

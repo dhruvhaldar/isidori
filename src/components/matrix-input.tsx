@@ -176,6 +176,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             className="h-6 px-2 text-xs"
             onClick={handleCopy}
             aria-live="polite"
+            title={copied ? `Copied ${label} matrix` : `Copy ${label} matrix to clipboard`}
           >
             <span className="sr-only">
               {copied ? `Copied ${label} matrix` : `Copy ${label} matrix to clipboard`}
