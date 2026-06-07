@@ -48,9 +48,22 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.max_requests = max_requests
         self.window_seconds = window_seconds
         self.clients = defaultdict(list)
+        # 🛡️ Sentinel: Support rate limiting behind reverse proxies
+        self.trusted_proxies = set(os.getenv("TRUSTED_PROXIES", "127.0.0.1").split(","))
 
     async def dispatch(self, request, call_next):
         client_ip = request.client.host if request.client else "unknown"
+
+        # 🛡️ Sentinel: Safely extract real client IP if request comes from a trusted proxy
+        if client_ip in self.trusted_proxies and "X-Forwarded-For" in request.headers:
+            forwarded_for = request.headers["X-Forwarded-For"]
+            ips = [ip.strip() for ip in forwarded_for.split(",")]
+            # Extract the rightmost IP that is not in the trusted proxies list
+            for ip in reversed(ips):
+                if ip not in self.trusted_proxies:
+                    client_ip = ip
+                    break
+
         now = time.time()
 
         # Cleanup old records and remove empty keys to prevent memory leaks
