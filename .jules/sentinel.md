@@ -26,3 +26,7 @@
 **Vulnerability:** IP-based rate limiting blocked all users simultaneously behind a reverse proxy.
 **Learning:** `request.client.host` returned the proxy's IP instead of the actual user's IP. Blindly trusting `X-Forwarded-For` without validating trusted proxies could allow attackers to spoof IPs and bypass rate limits.
 **Prevention:** Validate that the direct connection `request.client.host` comes from a trusted proxy before extracting the client IP from `X-Forwarded-For`, picking the rightmost untrusted IP to prevent spoofing.
+## 2024-06-08 - [SymPy Division DoS Bypass]
+**Vulnerability:** Application-Layer DoS via `ast.Div` polynomial inflation bypass.
+**Learning:** When recursively calculating the polynomial degree of a Python AST to prevent Application-Layer DoS (e.g., SymPy polynomial inflation), returning only the left operand's degree for `ast.Div` operations is insufficient. Attackers can bypass polynomial expansion size limits by sending chained division-by-fraction payloads (e.g., `x / (1/x)` evaluates to `x^2`, but the previous checker incorrectly measured it as degree 1). If submitted multiple times, this causes exponential inflation during `sympy.expand()`.
+**Prevention:** Explicitly handle `ast.Div` by adding the algebraic degree bounds of both operands (`left_deg + right_deg`), ensuring the check provides a safe mathematical upper bound against division-based polynomial inflation.
