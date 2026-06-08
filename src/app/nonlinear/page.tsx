@@ -106,13 +106,13 @@ export default function NonlinearSystemsPage() {
                 <Input id="output-function-h" required value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" />
               </div>
 
-              <Button type="submit" className="w-full relative" disabled={isLoading} aria-busy={isLoading}>
+              <Button type="submit" className="w-full relative" disabled={isLoading} aria-busy={isLoading} title="Compute Relative Degree (Cmd/Ctrl + Enter)">
                 <div className="flex items-center justify-center">
                   {isLoading && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                   {isLoading ? "Computing..." : "Compute Relative Degree"}
                 </div>
                 {!isLoading && (
-                  <kbd className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                  <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                     <span className="text-xs">⌘</span>↵
                   </kbd>
                 )}

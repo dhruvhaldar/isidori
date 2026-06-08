@@ -101,3 +101,7 @@
 ## 2024-06-07 - Add missing tooltips to icon-only buttons
 **Learning:** Sometimes icon-only buttons have `sr-only` text for screen readers, but lack a `title` attribute, leaving mouse users without hover feedback.
 **Action:** When creating icon buttons, always include a descriptive `title` attribute along with `aria-label` or `sr-only` text so both mouse and screen reader users can understand the button's action.
+
+## 2026-06-08 - [Keyboard Shortcuts inside Button Labels]
+**Learning:** Adding visual keyboard shortcuts (`<kbd>`) inside a `<Button>` element pollutes the accessible name of the button, causing screen readers to read confusing text like "Submit command symbol return symbol".
+**Action:** Always apply `aria-hidden="true"` to inline keyboard shortcut visual indicators inside interactive elements, and consider adding a `title` attribute to the button to explicitly describe the shortcut for mouse users without breaking the accessible name.
