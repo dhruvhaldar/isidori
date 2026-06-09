@@ -42,6 +42,8 @@ import time
 from collections import defaultdict
 from fastapi.responses import JSONResponse
 
+import random
+
 class RateLimitMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, max_requests: int = 100, window_seconds: int = 60):
         super().__init__(app)
@@ -66,10 +68,21 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         now = time.time()
 
-        # Cleanup old records and remove empty keys to prevent memory leaks
+        # Cleanup current client
         self.clients[client_ip] = [t for t in self.clients[client_ip] if now - t < self.window_seconds]
         if not self.clients[client_ip]:
             del self.clients[client_ip]
+
+        # 🛡️ Sentinel: Periodic probabilistic cleanup of old records to prevent memory leak without DoS
+        if random.random() < 0.01:
+            keys_to_delete = []
+            for ip, timestamps in self.clients.items():
+                self.clients[ip] = [t for t in timestamps if now - t < self.window_seconds]
+                if not self.clients[ip]:
+                    keys_to_delete.append(ip)
+            for ip in keys_to_delete:
+                if ip in self.clients:
+                    del self.clients[ip]
 
         if len(self.clients.get(client_ip, [])) >= self.max_requests:
             return JSONResponse(status_code=429, content={"detail": "Too many requests."})
