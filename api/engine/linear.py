@@ -75,7 +75,8 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     V_star = compute_v_star(A, B, C, tol)
     
     # If E is zero, it's always solvable
-    if E.size == 0 or E.shape[1] == 0 or np.linalg.norm(E, ord='fro') < tol:
+    norm_E = np.linalg.norm(E, ord='fro') if E.size > 0 else 0
+    if E.size == 0 or E.shape[1] == 0 or norm_E < tol:
         return True, V_star, np.zeros((B.shape[1], A.shape[0])) # F is dummy
 
     # ⚡ Bolt: Early return if V* is the full space.
@@ -91,7 +92,7 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     diff_norm = np.linalg.norm(E - projection, ord='fro')
     
     # Use consistent tolerance bounds
-    tolerance_val = tol * max(E.shape) * max(1, np.linalg.norm(E, ord='fro'))
+    tolerance_val = tol * max(E.shape) * max(1, norm_E)
     is_solvable = bool(diff_norm < tolerance_val)
     
     F = None
