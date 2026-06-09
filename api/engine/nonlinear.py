@@ -107,7 +107,8 @@ def safe_sympify(expr_str):
                 elif isinstance(n.op, ast.Mult):
                     return left_deg + right_deg
                 elif isinstance(n.op, ast.Div):
-                    return left_deg # Div by constant, or we're just estimating upper bound
+                    # 🛡️ Sentinel: Treat division like multiplication to prevent DoS via `x / (1/x)` inflation
+                    return left_deg + right_deg
                 elif isinstance(n.op, ast.Pow):
                     if isinstance(n.right, ast.Constant) and isinstance(n.right.value, (int, float, complex)):
                         if isinstance(n.right.value, complex) or n.right.value >= 0:
