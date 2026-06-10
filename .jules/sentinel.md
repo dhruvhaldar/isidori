@@ -34,3 +34,8 @@
 **Vulnerability:** The custom in-memory rate limiting middleware previously only cleaned up expired request timestamps for the IP address making the *current* request. This caused a memory leak over time, as expired timestamps and dictionary keys for IPs that no longer made requests were never purged.
 **Learning:** In-memory rate limiting dictionary mechanisms that map IPs to request histories must proactively perform cleanup across all stored clients, not just the active requester, to prevent the structure from growing indefinitely and eventually causing an Out-Of-Memory (OOM) Denial-of-Service condition.
 **Prevention:** Iterate through all stored IPs periodically (or on every request) to purge expired timestamps, and explicitly delete keys from the dictionary when their associated lists become empty (e.g., `del self.clients[client_ip]`).
+
+## 2026-06-10 - Fix Missing CORS/Security Headers on 429 Responses
+**Vulnerability:** Fast API `add_middleware` registers middleware in reverse order. `RateLimitMiddleware` was registered last, making it the outermost wrapper. Its early 429 responses bypassed `CORSMiddleware` and `SecurityHeadersMiddleware`.
+**Learning:** Middlewares handling auth/rate-limiting must execute *inside* security and CORS middlewares so their short-circuit responses receive crucial security headers.
+**Prevention:** Register application-level early-exit middleware (like Rate Limiting) *before* `CORSMiddleware` and `SecurityHeadersMiddleware` via `app.add_middleware()`.
