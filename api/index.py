@@ -18,14 +18,6 @@ app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 # Defaults to localhost for dev, can be configured via environment variable
 origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         response = await call_next(request)
@@ -35,8 +27,6 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Content-Security-Policy"] = "default-src 'self'"
         return response
-
-app.add_middleware(SecurityHeadersMiddleware)
 
 import time
 from collections import defaultdict
@@ -90,7 +80,16 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.clients[client_ip].append(now)
         return await call_next(request)
 
+# 🛡️ Sentinel: Reordered middleware to ensure CORS and Security headers are applied to RateLimit 429 responses
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class MatrixInput(BaseModel):
     model_config = ConfigDict(allow_inf_nan=False)
