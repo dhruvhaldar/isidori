@@ -23,7 +23,12 @@ export default function RootLayout({
         </a>
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-14 items-center">
-            <div className="mr-4 flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide">
+            <div
+              className="mr-4 flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+              tabIndex={0}
+              role="region"
+              aria-label="Main navigation"
+            >
               <Link className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm shrink-0" href="/">
                 <span className="font-bold inline-block">Isidori</span>
               </Link>
