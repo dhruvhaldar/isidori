@@ -105,3 +105,7 @@
 ## 2026-06-08 - [Keyboard Shortcuts inside Button Labels]
 **Learning:** Adding visual keyboard shortcuts (`<kbd>`) inside a `<Button>` element pollutes the accessible name of the button, causing screen readers to read confusing text like "Submit command symbol return symbol".
 **Action:** Always apply `aria-hidden="true"` to inline keyboard shortcut visual indicators inside interactive elements, and consider adding a `title` attribute to the button to explicitly describe the shortcut for mouse users without breaking the accessible name.
+
+## 2026-06-11 - [Keyboard Access for Overflowing Navigation]
+**Learning:** Navigation containers that use `overflow-x-auto` to handle long lists of links on smaller screens are inaccessible to keyboard-only users unless the container itself can be focused. If it cannot receive focus, a keyboard user cannot scroll to reach the hidden navigation items.
+**Action:** Always add `tabIndex={0}`, a `role="region"`, a descriptive `aria-label`, and appropriate focus indicator classes to `overflow-x-auto` navigation containers to allow keyboard users to focus and scroll them.
