@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Loader2, CheckCircle, AlertTriangle, LineChart, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,7 @@ export default function SimulatePage() {
   const [ddpStatus, setDdpStatus] = useState<boolean | null>(null);
   const [simError, setSimError] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
+  const [isStale, setIsStale] = useState(false);
 
   useEffect(() => {
     // Only resize if dimensions change significantly, but here we just handle manual input.
@@ -52,6 +53,20 @@ export default function SimulatePage() {
      setC(old => resizeMatrix(old, Number(p) || 1, Number(n) || 1));
      setE(old => resizeMatrix(old, Number(n) || 1, Number(q) || 1));
   }, [n, m, p, q]);
+
+  const lastSimulatedParamsRef = React.useRef("");
+
+  // Mark data as stale if matrices change after simulation
+  useEffect(() => {
+    if (simData.length > 0 && !isSimulating) {
+      const currentParams = JSON.stringify({ A, B, C, E, n, m, p, q });
+      if (lastSimulatedParamsRef.current && currentParams !== lastSimulatedParamsRef.current) {
+        setIsStale(true);
+      } else {
+        setIsStale(false);
+      }
+    }
+  }, [A, B, C, E, n, m, p, q, simData, isSimulating]);
 
   const resizeMatrix = (mat: number[][], rows: number, cols: number) => {
     if (mat.length === rows && (mat.length === 0 || mat[0].length === cols)) {
@@ -84,6 +99,8 @@ export default function SimulatePage() {
       
       setSimData(formattedData);
       setDdpStatus(is_ddp_solved);
+      lastSimulatedParamsRef.current = JSON.stringify({ A, B, C, E, n, m, p, q });
+      setIsStale(false);
     } catch (err) {
       console.error(err);
       setSimError(formatErrorDetail(err, "Error during simulation"));
@@ -173,7 +190,13 @@ export default function SimulatePage() {
             </CardHeader>
             <CardContent>
               {simData.length > 0 ? (
-                <div className={`space-y-4 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isSimulating ? "opacity-50 pointer-events-none" : ""}`}>
+                <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isSimulating ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                   {isStale && (
+                     <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                       <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                       <span>Parameters changed. Run simulation again to update plot.</span>
+                     </div>
+                   )}
                    <SystemChart data={simData} />
                    <div className={`flex items-center justify-center gap-2 p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"}`}>
                      {ddpStatus ? <CheckCircle aria-hidden="true" className="w-4 h-4" /> : <AlertTriangle aria-hidden="true" className="w-4 h-4" />}
