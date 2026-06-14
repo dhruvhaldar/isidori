@@ -224,7 +224,12 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
           <p className="text-sm">Empty Matrix</p>
         </div>
       ) : (
-        <div className="w-full overflow-x-auto pb-2 -mx-1 px-1">
+        <div
+          className="w-full overflow-x-auto pb-2 -mx-1 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+          tabIndex={0}
+          role="region"
+          aria-label={`${label} matrix container`}
+        >
           <div
             className="grid gap-2"
             style={{ gridTemplateColumns: `repeat(${cols}, minmax(4rem, 1fr))` }}

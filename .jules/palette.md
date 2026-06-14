@@ -112,3 +112,7 @@
 ## 2024-06-12 - Stale State Warning on Mutable Inputs
 **Learning:** When displaying data derived from mutable inputs (like a simulation plot), failing to notify the user that their parameters have changed since the last calculation can lead to significant confusion, as the plot no longer represents the current inputs.
 **Action:** Implement a 'stale state' to visually dim the derived UI elements (e.g., `opacity-70 grayscale-[0.5]`) and display an accessible warning (`role="alert"`) if inputs change post-calculation. Crucially, when implementing this in React with `useEffect`, track the last computed parameters using a `useRef` and compare them in an effect that depends *only* on the input parameters. Do not include simulation status flags (like `isSimulating` or `simData`) in the dependency array, as this causes an immediate false-positive stale state upon successful computation.
+
+## 2026-06-14 - [Keyboard Access for Overflowing Matrices]
+**Learning:** Matrix inputs that utilize `overflow-x-auto` to handle large grids are inaccessible to keyboard-only users unless the container itself can be focused. If they overflow and cannot receive focus, a keyboard user cannot scroll to view the hidden columns.
+**Action:** Always add `tabIndex={0}`, a `role="region"`, a descriptive `aria-label`, and appropriate focus indicator classes (like `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm`) to `overflow-x-auto` matrix containers to allow keyboard users to focus and scroll them.
