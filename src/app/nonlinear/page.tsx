@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Loader2, FunctionSquare, AlertCircle, Copy, Check } from "lucide-react";
+import { Loader2, FunctionSquare, AlertCircle, AlertTriangle, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +20,20 @@ export default function NonlinearSystemsPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [isStale, setIsStale] = useState(false);
+
+  const lastComputedParamsRef = useRef("");
+
+  useEffect(() => {
+    if (result && !isLoading) {
+      const currentParams = JSON.stringify({ variables, f, g, h });
+      if (lastComputedParamsRef.current && currentParams !== lastComputedParamsRef.current) {
+        setIsStale(true);
+      } else {
+        setIsStale(false);
+      }
+    }
+  }, [variables, f, g, h, result, isLoading]);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -43,6 +57,8 @@ export default function NonlinearSystemsPage() {
       });
       
       setResult(res.data);
+      lastComputedParamsRef.current = JSON.stringify({ variables, f, g, h });
+      setIsStale(false);
     } catch (err: any) {
       setError(formatErrorDetail(err, "An error occurred"));
     } finally {
@@ -140,7 +156,13 @@ export default function NonlinearSystemsPage() {
             </div>
             
             {result && (
-              <div className={`space-y-4 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : ""}`}>
+              <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                {isStale && (
+                  <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                    <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                    <span>Parameters changed. Recompute to update results.</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <span className="font-semibold">Relative Degree (r):</span>
                   <span className="text-2xl font-bold">{result.relative_degree !== null ? result.relative_degree : "Undefined"}</span>

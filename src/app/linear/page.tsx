@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Loader2, CheckCircle, XCircle, Layers, Settings2, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, Layers, Settings2, AlertCircle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +32,33 @@ export default function LinearSystemsPage() {
   const [isComputingVStar, setIsComputingVStar] = useState(false);
   const [isCheckingDDP, setIsCheckingDDP] = useState(false);
 
+  const [isVStarStale, setIsVStarStale] = useState(false);
+  const [isDDPStale, setIsDDPStale] = useState(false);
+  const lastVStarParamsRef = useRef("");
+  const lastDDPParamsRef = useRef("");
+
+  useEffect(() => {
+    if (vStar && !isComputingVStar) {
+      const currentParams = JSON.stringify({ A, B, C });
+      if (lastVStarParamsRef.current && currentParams !== lastVStarParamsRef.current) {
+        setIsVStarStale(true);
+      } else {
+        setIsVStarStale(false);
+      }
+    }
+  }, [A, B, C, vStar, isComputingVStar]);
+
+  useEffect(() => {
+    if (ddpResult && !isCheckingDDP) {
+      const currentParams = JSON.stringify({ A, B, C, E });
+      if (lastDDPParamsRef.current && currentParams !== lastDDPParamsRef.current) {
+        setIsDDPStale(true);
+      } else {
+        setIsDDPStale(false);
+      }
+    }
+  }, [A, B, C, E, ddpResult, isCheckingDDP]);
+
   useEffect(() => {
     setA(old => resizeMatrix(old, Number(n) || 1, Number(n) || 1));
     setB(old => resizeMatrix(old, Number(n) || 1, Number(m) || 1));
@@ -58,6 +85,8 @@ export default function LinearSystemsPage() {
     try {
       const res = await axios.post("/api/vstar", { A, B, C });
       setVStar(res.data.V_star);
+      lastVStarParamsRef.current = JSON.stringify({ A, B, C });
+      setIsVStarStale(false);
     } catch (err) {
       console.error(err);
       setVStarError(formatErrorDetail(err, "Error computing V*"));
@@ -72,6 +101,8 @@ export default function LinearSystemsPage() {
     try {
       const res = await axios.post("/api/ddp", { A, B, C, E });
       setDdpResult(res.data);
+      lastDDPParamsRef.current = JSON.stringify({ A, B, C, E });
+      setIsDDPStale(false);
     } catch (err) {
       console.error(err);
       setDdpError(formatErrorDetail(err, "Error checking DDP"));
@@ -154,7 +185,13 @@ export default function LinearSystemsPage() {
                 )}
               </div>
               {vStar && (
-                <div className={`mt-4 space-y-2 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : ""}`}>
+                <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : isVStarStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                  {isVStarStale && (
+                    <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                      <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                      <span>Matrices changed. Recompute to update V*.</span>
+                    </div>
+                  )}
                   <MatrixInput
                     label="V* Basis Matrix"
                     rows={vStar.length}
@@ -200,7 +237,13 @@ export default function LinearSystemsPage() {
                 )}
               </div>
               {ddpResult && (
-                <div className={`mt-4 space-y-2 transition-opacity duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : ""}`}>
+                <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : isDDPStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                  {isDDPStale && (
+                    <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                      <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
+                      <span>Matrices changed. Check DDP again to update results.</span>
+                    </div>
+                  )}
                   <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>
                     {ddpResult.is_solvable ? <CheckCircle aria-hidden="true" className="w-5 h-5" /> : <XCircle aria-hidden="true" className="w-5 h-5" />}
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}
