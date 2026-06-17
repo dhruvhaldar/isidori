@@ -32,32 +32,15 @@ export default function LinearSystemsPage() {
   const [isComputingVStar, setIsComputingVStar] = useState(false);
   const [isCheckingDDP, setIsCheckingDDP] = useState(false);
 
-  const [isVStarStale, setIsVStarStale] = useState(false);
-  const [isDDPStale, setIsDDPStale] = useState(false);
   const lastVStarParamsRef = useRef("");
   const lastDDPParamsRef = useRef("");
 
-  useEffect(() => {
-    if (vStar && !isComputingVStar) {
-      const currentParams = JSON.stringify({ A, B, C });
-      if (lastVStarParamsRef.current && currentParams !== lastVStarParamsRef.current) {
-        setIsVStarStale(true);
-      } else {
-        setIsVStarStale(false);
-      }
-    }
-  }, [A, B, C, vStar, isComputingVStar]);
-
-  useEffect(() => {
-    if (ddpResult && !isCheckingDDP) {
-      const currentParams = JSON.stringify({ A, B, C, E });
-      if (lastDDPParamsRef.current && currentParams !== lastDDPParamsRef.current) {
-        setIsDDPStale(true);
-      } else {
-        setIsDDPStale(false);
-      }
-    }
-  }, [A, B, C, E, ddpResult, isCheckingDDP]);
+  // ⚡ Bolt: Derive stale states during render to bypass full effect cycles.
+  // Eliminates double re-renders on every keystroke when modifying matrices.
+  const isVStarStale = !!vStar && !isComputingVStar && lastVStarParamsRef.current !== "" &&
+                       JSON.stringify({ A, B, C }) !== lastVStarParamsRef.current;
+  const isDDPStale = !!ddpResult && !isCheckingDDP && lastDDPParamsRef.current !== "" &&
+                     JSON.stringify({ A, B, C, E }) !== lastDDPParamsRef.current;
 
   useEffect(() => {
     setA(old => resizeMatrix(old, Number(n) || 1, Number(n) || 1));
@@ -86,7 +69,6 @@ export default function LinearSystemsPage() {
       const res = await axios.post("/api/vstar", { A, B, C });
       setVStar(res.data.V_star);
       lastVStarParamsRef.current = JSON.stringify({ A, B, C });
-      setIsVStarStale(false);
     } catch (err) {
       console.error(err);
       setVStarError(formatErrorDetail(err, "Error computing V*"));
@@ -102,7 +84,6 @@ export default function LinearSystemsPage() {
       const res = await axios.post("/api/ddp", { A, B, C, E });
       setDdpResult(res.data);
       lastDDPParamsRef.current = JSON.stringify({ A, B, C, E });
-      setIsDDPStale(false);
     } catch (err) {
       console.error(err);
       setDdpError(formatErrorDetail(err, "Error checking DDP"));
