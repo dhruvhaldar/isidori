@@ -116,3 +116,6 @@
 ## 2026-06-14 - [Keyboard Access for Overflowing Matrices]
 **Learning:** Matrix inputs that utilize `overflow-x-auto` to handle large grids are inaccessible to keyboard-only users unless the container itself can be focused. If they overflow and cannot receive focus, a keyboard user cannot scroll to view the hidden columns.
 **Action:** Always add `tabIndex={0}`, a `role="region"`, a descriptive `aria-label`, and appropriate focus indicator classes (like `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm`) to `overflow-x-auto` matrix containers to allow keyboard users to focus and scroll them.
+## 2026-06-17 - [Bulk Disabling Forms with Fieldset]
+**Learning:** In complex forms where computations take time, keeping inputs fully interactive allows users to modify data mid-computation, leading to frustrating state-mismatch bugs where the visible output doesn't match the inputs. Passing `disabled` props down to every individual input and button is tedious and prone to error.
+**Action:** Leverage the native HTML5 `<fieldset>` element by wrapping the form controls in `<fieldset disabled={isLoading}>`. This automatically disables all descendant form controls and seamlessly applies Tailwind's `disabled:opacity-50 disabled:pointer-events-none` pseudo-classes in a clean, declarative manner.

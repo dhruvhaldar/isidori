@@ -120,45 +120,46 @@ export default function LinearSystemsPage() {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>System Dimensions</CardTitle>
-          <CardDescription>Define the size of your system matrices.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="states-n">States (n)</Label>
-              <Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={(e) => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="inputs-m">Inputs (m)</Label>
-              <Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={(e) => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="outputs-p">Outputs (p)</Label>
-              <Input id="outputs-p" type="number" min="1" value={p} onFocus={(e) => e.target.select()} onChange={(e) => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="disturbances-q">Disturbances (q)</Label>
-              <Input id="disturbances-q" type="number" min="1" value={q} onFocus={(e) => e.target.select()} onChange={(e) => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid gap-6 md:grid-cols-2">
+      <fieldset disabled={isComputingVStar || isCheckingDDP} className="space-y-6 group">
         <Card>
           <CardHeader>
-            <CardTitle>System Matrices</CardTitle>
+            <CardTitle>System Dimensions</CardTitle>
+            <CardDescription>Define the size of your system matrices.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <MatrixInput label="A (System Matrix)" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
-            <MatrixInput label="B (Input Matrix)" rows={Number(n) || 1} cols={Number(m) || 1} value={B} onChange={setB} />
-            <MatrixInput label="C (Output Matrix)" rows={Number(p) || 1} cols={Number(n) || 1} value={C} onChange={setC} />
-            <MatrixInput label="E (Disturbance Matrix)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="states-n">States (n)</Label>
+                <Input id="states-n" type="number" min="1" value={n} onFocus={(e) => e.target.select()} onChange={(e) => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="inputs-m">Inputs (m)</Label>
+                <Input id="inputs-m" type="number" min="1" value={m} onFocus={(e) => e.target.select()} onChange={(e) => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="outputs-p">Outputs (p)</Label>
+                <Input id="outputs-p" type="number" min="1" value={p} onFocus={(e) => e.target.select()} onChange={(e) => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="disturbances-q">Disturbances (q)</Label>
+                <Input id="disturbances-q" type="number" min="1" value={q} onFocus={(e) => e.target.select()} onChange={(e) => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+              </div>
+            </div>
           </CardContent>
         </Card>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>System Matrices</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <MatrixInput label="A (System Matrix)" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
+              <MatrixInput label="B (Input Matrix)" rows={Number(n) || 1} cols={Number(m) || 1} value={B} onChange={setB} />
+              <MatrixInput label="C (Output Matrix)" rows={Number(p) || 1} cols={Number(n) || 1} value={C} onChange={setC} />
+              <MatrixInput label="E (Disturbance Matrix)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
+            </CardContent>
+          </Card>
 
         <div className="space-y-6">
           <Card>
@@ -271,6 +272,7 @@ export default function LinearSystemsPage() {
           </Card>
         </div>
       </div>
+      </fieldset>
     </div>
   );
 }
