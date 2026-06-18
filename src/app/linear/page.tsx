@@ -101,6 +101,21 @@ export default function LinearSystemsPage() {
         </p>
       </div>
 
+      <form
+        className="space-y-6"
+        onSubmit={(e) => { e.preventDefault(); handleComputeVStar(); }}
+        onKeyDown={(e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+            e.preventDefault();
+            const form = e.currentTarget.closest('form');
+            if (form && !form.checkValidity()) {
+              form.reportValidity();
+              return;
+            }
+            handleComputeVStar();
+          }
+        }}
+      >
       <fieldset disabled={isComputingVStar || isCheckingDDP} className="space-y-6 group">
         <Card>
           <CardHeader>
@@ -152,9 +167,16 @@ export default function LinearSystemsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div aria-live="polite" className="space-y-4">
-                <Button onClick={handleComputeVStar} className="w-full" disabled={isComputingVStar} aria-busy={isComputingVStar}>
-                  {isComputingVStar && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
-                  {isComputingVStar ? "Computing V*..." : "Compute V*"}
+                <Button type="submit" className="w-full relative" disabled={isComputingVStar} aria-busy={isComputingVStar} title="Compute V* (Cmd/Ctrl + Enter)">
+                  <div className="flex items-center justify-center">
+                    {isComputingVStar && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
+                    {isComputingVStar ? "Computing V*..." : "Compute V*"}
+                  </div>
+                  {!isComputingVStar && (
+                    <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                      <span className="text-xs">⌘</span>↵
+                    </kbd>
+                  )}
                 </Button>
                 {vStarError && (
                   <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
@@ -204,7 +226,7 @@ export default function LinearSystemsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div aria-live="polite" className="space-y-4">
-                <Button onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>
+                <Button type="button" onClick={handleCheckDDP} variant="secondary" className="w-full" disabled={isCheckingDDP} aria-busy={isCheckingDDP}>
                   {isCheckingDDP && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                   {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
                 </Button>
@@ -254,6 +276,7 @@ export default function LinearSystemsPage() {
         </div>
       </div>
       </fieldset>
+      </form>
     </div>
   );
 }
