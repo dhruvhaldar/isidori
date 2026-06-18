@@ -20,20 +20,13 @@ export default function NonlinearSystemsPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [isStale, setIsStale] = useState(false);
 
   const lastComputedParamsRef = useRef("");
 
-  useEffect(() => {
-    if (result && !isLoading) {
-      const currentParams = JSON.stringify({ variables, f, g, h });
-      if (lastComputedParamsRef.current && currentParams !== lastComputedParamsRef.current) {
-        setIsStale(true);
-      } else {
-        setIsStale(false);
-      }
-    }
-  }, [variables, f, g, h, result, isLoading]);
+  // ⚡ Bolt: Derive stale state during render to bypass a full effect cycle.
+  // Eliminates double re-renders on every keystroke when typing expressions.
+  const isStale = !!result && !isLoading && lastComputedParamsRef.current !== "" &&
+                  JSON.stringify({ variables, f, g, h }) !== lastComputedParamsRef.current;
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -58,7 +51,6 @@ export default function NonlinearSystemsPage() {
       
       setResult(res.data);
       lastComputedParamsRef.current = JSON.stringify({ variables, f, g, h });
-      setIsStale(false);
     } catch (err: any) {
       setError(formatErrorDetail(err, "An error occurred"));
     } finally {

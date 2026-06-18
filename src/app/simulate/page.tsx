@@ -36,7 +36,6 @@ export default function SimulatePage() {
   const [ddpStatus, setDdpStatus] = useState<boolean | null>(null);
   const [simError, setSimError] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [isStale, setIsStale] = useState(false);
 
   useEffect(() => {
     // Only resize if dimensions change significantly, but here we just handle manual input.
@@ -56,17 +55,10 @@ export default function SimulatePage() {
 
   const lastSimulatedParamsRef = React.useRef("");
 
-  // Mark data as stale if matrices change after simulation
-  useEffect(() => {
-    if (simData.length > 0 && !isSimulating) {
-      const currentParams = JSON.stringify({ A, B, C, E, n, m, p, q });
-      if (lastSimulatedParamsRef.current && currentParams !== lastSimulatedParamsRef.current) {
-        setIsStale(true);
-      } else {
-        setIsStale(false);
-      }
-    }
-  }, [A, B, C, E, n, m, p, q, simData, isSimulating]);
+  // ⚡ Bolt: Derive stale state during render to bypass a full effect cycle.
+  // This eliminates double re-renders on every keystroke when modifying matrices.
+  const isStale = simData.length > 0 && !isSimulating && lastSimulatedParamsRef.current !== "" &&
+                  JSON.stringify({ A, B, C, E, n, m, p, q }) !== lastSimulatedParamsRef.current;
 
   const resizeMatrix = (mat: number[][], rows: number, cols: number) => {
     if (mat.length === rows && (mat.length === 0 || mat[0].length === cols)) {
@@ -109,7 +101,6 @@ export default function SimulatePage() {
       setSimData(formattedData);
       setDdpStatus(is_ddp_solved);
       lastSimulatedParamsRef.current = JSON.stringify({ A, B, C, E, n, m, p, q });
-      setIsStale(false);
     } catch (err) {
       console.error(err);
       setSimError(formatErrorDetail(err, "Error during simulation"));
