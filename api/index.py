@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, ConfigDict, model_validator
 from typing import List, Optional, Any
@@ -79,6 +80,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         self.clients[client_ip].append(now)
         return await call_next(request)
+
+# ⚡ Bolt: Added GZip compression middleware to reduce the payload size of large simulation responses
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # 🛡️ Sentinel: Reordered middleware to ensure CORS and Security headers are applied to RateLimit 429 responses
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
