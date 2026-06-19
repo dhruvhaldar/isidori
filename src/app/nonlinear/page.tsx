@@ -72,7 +72,7 @@ export default function NonlinearSystemsPage() {
           <CardHeader>
             <CardTitle>System Definition</CardTitle>
             <CardDescription>
-              Enter the vector fields f(x), g(x) and scalar function h(x).
+              Enter the vector fields for dx/dt = f(x) + g(x)u, y = h(x).
               <br/>
               Format: Comma separated expressions for vectors.
             </CardDescription>
