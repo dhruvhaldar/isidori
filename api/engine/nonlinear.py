@@ -132,9 +132,15 @@ def safe_sympify(expr_str):
         def check_exponent_complexity(n, depth=0):
             if depth > 10:
                 raise ValueError("Unsafe expression: exponent too complex")
+
+            # 🛡️ Sentinel: Evaluate pure constant value of sub-expressions inside exponent
+            # to prevent bypasses like (x-x) + 5*5*4 generating huge constants > 5.
+            val = get_pure_constant_value(n)
+            if val is not None and abs(val) > 5:
+                raise ValueError("Unsafe expression: exponent constant too large")
+
             if isinstance(n, ast.Constant):
-                if isinstance(n.value, (int, float, complex)) and abs(n.value) > 5:
-                    raise ValueError("Unsafe expression: exponent constant too large")
+                pass # Already handled by get_pure_constant_value above
             elif isinstance(n, ast.UnaryOp):
                 check_exponent_complexity(n.operand, depth + 1)
             elif isinstance(n, ast.BinOp):
