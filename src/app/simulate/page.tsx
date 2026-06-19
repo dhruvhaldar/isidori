@@ -123,6 +123,7 @@ export default function SimulatePage() {
         <Card>
            <CardHeader>
              <CardTitle>System Configuration</CardTitle>
+             <CardDescription>Define the matrices for dx/dt = Ax + Bu + Ed, y = Cx</CardDescription>
            </CardHeader>
            <CardContent>
              <form

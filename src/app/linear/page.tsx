@@ -148,6 +148,7 @@ export default function LinearSystemsPage() {
           <Card>
             <CardHeader>
               <CardTitle>System Matrices</CardTitle>
+              <CardDescription>Define the matrices for dx/dt = Ax + Bu + Ed, y = Cx</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <MatrixInput label="A (System Matrix)" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
