@@ -21,12 +21,17 @@ export default function NonlinearSystemsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
-  const lastComputedParamsRef = useRef("");
+  const lastComputedParamsRef = useRef<{ variables: string, f: string, g: string, h: string } | null>(null);
 
   // ⚡ Bolt: Derive stale state during render to bypass a full effect cycle.
   // Eliminates double re-renders on every keystroke when typing expressions.
-  const isStale = !!result && !isLoading && lastComputedParamsRef.current !== "" &&
-                  JSON.stringify({ variables, f, g, h }) !== lastComputedParamsRef.current;
+  // ⚡ Bolt: Use strict referential equality check instead of JSON.stringify to avoid
+  // traversing structures on every keystroke, yielding speedup for stale checks.
+  const isStale = !!result && !isLoading && lastComputedParamsRef.current !== null &&
+                  (variables !== lastComputedParamsRef.current.variables ||
+                   f !== lastComputedParamsRef.current.f ||
+                   g !== lastComputedParamsRef.current.g ||
+                   h !== lastComputedParamsRef.current.h);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -50,7 +55,7 @@ export default function NonlinearSystemsPage() {
       });
       
       setResult(res.data);
-      lastComputedParamsRef.current = JSON.stringify({ variables, f, g, h });
+      lastComputedParamsRef.current = { variables, f, g, h };
     } catch (err: any) {
       setError(formatErrorDetail(err, "An error occurred"));
     } finally {
