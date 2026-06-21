@@ -126,3 +126,7 @@
 ## 2026-06-20 - [Educational Context in Complex Interfaces]
 **Learning:** In complex engineering analysis tools where users must input abstract mathematical components (like "A", "B", "C" matrices or "f(x)", "g(x)" vector fields), omitting the underlying mathematical relationship (e.g., the state-space equations) increases cognitive load and alienates students who are still learning the material.
 **Action:** Always include descriptive subheadings (like `<CardDescription>`) that explicitly show the governing equations (e.g., `dx/dt = Ax + Bu + Ed, y = Cx` or `dx/dt = f(x) + g(x)u, y = h(x)`) right above the input fields. This provides immediate, in-context educational grounding without requiring users to consult external documentation.
+
+## 2026-06-25 - [Mobile Keyboard Optimization for Number Inputs]
+**Learning:** Using `type="number"` without `inputMode="numeric"` or `inputMode="decimal"` often triggers a sub-optimal keyboard layout (sometimes just the standard text keyboard depending on the OS and browser).
+**Action:** Always add `inputMode="numeric"` to positive integer `<Input type="number">` fields (and `inputMode="decimal"` for floats) to guarantee the best numeric keypad on iOS/Android.
