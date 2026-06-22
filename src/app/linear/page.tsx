@@ -133,19 +133,19 @@ export default function LinearSystemsPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="states-n">States (n)</Label>
-                <Input id="states-n" type="number" inputMode="numeric" min="1" value={n} onFocus={(e) => e.target.select()} onChange={(e) => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+                <Input id="states-n" type="number" inputMode="numeric" min="1" value={n} onFocus={(e) => e.target.select()} onChange={(e) => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} autoComplete="off" autoCorrect="off" spellCheck={false} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="inputs-m">Inputs (m)</Label>
-                <Input id="inputs-m" type="number" inputMode="numeric" min="1" value={m} onFocus={(e) => e.target.select()} onChange={(e) => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+                <Input id="inputs-m" type="number" inputMode="numeric" min="1" value={m} onFocus={(e) => e.target.select()} onChange={(e) => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} autoComplete="off" autoCorrect="off" spellCheck={false} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="outputs-p">Outputs (p)</Label>
-                <Input id="outputs-p" type="number" inputMode="numeric" min="1" value={p} onFocus={(e) => e.target.select()} onChange={(e) => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+                <Input id="outputs-p" type="number" inputMode="numeric" min="1" value={p} onFocus={(e) => e.target.select()} onChange={(e) => setP(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} autoComplete="off" autoCorrect="off" spellCheck={false} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="disturbances-q">Disturbances (q)</Label>
-                <Input id="disturbances-q" type="number" inputMode="numeric" min="1" value={q} onFocus={(e) => e.target.select()} onChange={(e) => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} />
+                <Input id="disturbances-q" type="number" inputMode="numeric" min="1" value={q} onFocus={(e) => e.target.select()} onChange={(e) => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} autoComplete="off" autoCorrect="off" spellCheck={false} />
               </div>
             </div>
           </CardContent>

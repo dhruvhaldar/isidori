@@ -130,3 +130,7 @@
 ## 2026-06-25 - [Mobile Keyboard Optimization for Number Inputs]
 **Learning:** Using `type="number"` without `inputMode="numeric"` or `inputMode="decimal"` often triggers a sub-optimal keyboard layout (sometimes just the standard text keyboard depending on the OS and browser).
 **Action:** Always add `inputMode="numeric"` to positive integer `<Input type="number">` fields (and `inputMode="decimal"` for floats) to guarantee the best numeric keypad on iOS/Android.
+
+## 2026-06-25 - Disable Intrusive Browser Features for Math and Grid Inputs
+**Learning:** Browser features like spellcheck, autocorrect, autocapitalize, and autocomplete are highly intrusive and unhelpful when users are typing mathematical expressions (e.g., `-sin(x1)`) or entering raw data into grid dimension inputs. These features cause annoying red squiggles, incorrect capitalization (which breaks case-sensitive math parsers like SymPy), and irrelevant dropdown suggestions that block the UI.
+**Action:** Always add `spellCheck={false}`, `autoCapitalize="none"`, `autoCorrect="off"`, and `autoComplete="off"` to text inputs and textareas intended for math code or pure dimensional data entry.
