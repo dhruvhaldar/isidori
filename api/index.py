@@ -237,12 +237,12 @@ def simulate_system(data: LinearSystemInput):
         
         # System matrix with feedback
         A_cl = A + B @ F
-        E_flat = E.flatten()
+        E_sum = np.sum(E, axis=1)
         
         # ⚡ Bolt: Precompute Euler step matrices to avoid matrix additions and
         # scalar multiplications inside the loop (~1.7x speedup)
         A_step = np.eye(A.shape[0]) + A_cl * dt
-        E_step = E_flat * dt
+        E_step = E_sum * dt
 
         # ⚡ Bolt: Vectorize the disturbance input calculation outside the loop.
         # Pre-computing the (steps, dim) matrix of scaled disturbance vectors
