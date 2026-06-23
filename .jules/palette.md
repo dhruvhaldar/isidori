@@ -134,3 +134,7 @@
 ## 2026-06-25 - Disable Intrusive Browser Features for Math and Grid Inputs
 **Learning:** Browser features like spellcheck, autocorrect, autocapitalize, and autocomplete are highly intrusive and unhelpful when users are typing mathematical expressions (e.g., `-sin(x1)`) or entering raw data into grid dimension inputs. These features cause annoying red squiggles, incorrect capitalization (which breaks case-sensitive math parsers like SymPy), and irrelevant dropdown suggestions that block the UI.
 **Action:** Always add `spellCheck={false}`, `autoCapitalize="none"`, `autoCorrect="off"`, and `autoComplete="off"` to text inputs and textareas intended for math code or pure dimensional data entry.
+
+## 2026-06-25 - Disable Intrusive Browser Features for Numeric Configuration Inputs
+**Learning:** Browser features like spellcheck, autocorrect, autocapitalize, and autocomplete are highly intrusive and unhelpful when users are typing purely numeric configuration values, such as the system dimensions (e.g., Number of States `n`, Inputs `m`, etc.). These features can cause annoying red squiggles or irrelevant dropdown suggestions that block the UI.
+**Action:** Always add `spellCheck={false}`, `autoCapitalize="none"`, `autoCorrect="off"`, and `autoComplete="off"` to text inputs intended for pure numeric or dimensional data entry.
