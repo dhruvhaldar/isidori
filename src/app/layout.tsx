@@ -26,7 +26,7 @@ export default function RootLayout({
             <div
               className="mr-4 flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
               tabIndex={0}
-              role="region"
+              role="group"
               aria-label="Main navigation"
             >
               <Link className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm shrink-0" href="/">

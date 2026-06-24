@@ -138,3 +138,7 @@
 ## 2026-06-25 - Disable Intrusive Browser Features for Numeric Configuration Inputs
 **Learning:** Browser features like spellcheck, autocorrect, autocapitalize, and autocomplete are highly intrusive and unhelpful when users are typing purely numeric configuration values, such as the system dimensions (e.g., Number of States `n`, Inputs `m`, etc.). These features can cause annoying red squiggles or irrelevant dropdown suggestions that block the UI.
 **Action:** Always add `spellCheck={false}`, `autoCapitalize="none"`, `autoCorrect="off"`, and `autoComplete="off"` to text inputs intended for pure numeric or dimensional data entry.
+
+## 2024-05-19 - Fix Landmark Pollution in Scrollable Containers
+**Learning:** Using `role="region"` on minor scrollable containers (like repeated code snippets in a list) or containers that wrap existing semantic landmarks (like `<nav>`) clutters the screen reader's landmark menu and severely degrades navigation UX.
+**Action:** Use `role="group"` instead of `role="region"` alongside `tabIndex={0}` and `aria-label` for scrollable containers that require keyboard accessibility but do not warrant being a page-level landmark.

@@ -172,7 +172,7 @@ export default function NonlinearSystemsPage() {
                        <div
                          className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                          tabIndex={0}
-                         role="region"
+                         role="group"
                          aria-label="Decoupling Matrix"
                        >
                          {result.Lg_Lf_h}
@@ -194,7 +194,7 @@ export default function NonlinearSystemsPage() {
                           <div
                             className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                             tabIndex={0}
-                            role="region"
+                            role="group"
                             aria-label={`Lie derivative k=${i}`}
                           >
                             <span>k={i}: {expr}</span>
