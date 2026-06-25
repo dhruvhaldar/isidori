@@ -142,3 +142,7 @@
 ## 2024-05-19 - Fix Landmark Pollution in Scrollable Containers
 **Learning:** Using `role="region"` on minor scrollable containers (like repeated code snippets in a list) or containers that wrap existing semantic landmarks (like `<nav>`) clutters the screen reader's landmark menu and severely degrades navigation UX.
 **Action:** Use `role="group"` instead of `role="region"` alongside `tabIndex={0}` and `aria-label` for scrollable containers that require keyboard accessibility but do not warrant being a page-level landmark.
+
+## 2026-06-25 - [Persistent Format Guidance]
+**Learning:** Relying solely on `placeholder` attributes for format examples forces users to rely on short-term memory, as the guidance disappears as soon as they start typing. This is especially problematic for complex inputs like mathematical equations.
+**Action:** Always provide explicit helper text (e.g., `<p id="...-help">`) below the input and link it using `aria-describedby` to ensure persistent visual guidance and screen reader support.
