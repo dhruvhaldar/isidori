@@ -19,7 +19,7 @@ export const SystemChart = React.memo(function SystemChart({ data }: SystemChart
   const accessibleData = data.length > 50 ? data.slice(0, 50) : data;
 
   return (
-    <div className="relative w-full" role="region" aria-label="System simulation response chart">
+    <div className="relative w-full" role="group" aria-label="System simulation response chart">
       <div style={{ width: '100%', height: 400 }} aria-hidden="true">
         <ResponsiveContainer>
           <LineChart
@@ -39,8 +39,8 @@ export const SystemChart = React.memo(function SystemChart({ data }: SystemChart
             />
             <Tooltip formatter={(value: number) => formatScientific(value)} />
             <Legend />
-            <Line type="monotone" dataKey="y" stroke="#8884d8" name="Output y(t)" dot={false} strokeWidth={2} />
-            <Line type="monotone" dataKey="d" stroke="#82ca9d" name="Disturbance d(t)" dot={false} strokeDasharray="5 5" />
+            <Line type="monotone" dataKey="y" stroke="#2563eb" name="Output y(t)" dot={false} strokeWidth={2} />
+            <Line type="monotone" dataKey="d" stroke="#ef4444" name="Disturbance d(t)" dot={false} strokeDasharray="5 5" />
           </LineChart>
         </ResponsiveContainer>
       </div>

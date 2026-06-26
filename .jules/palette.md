@@ -146,3 +146,7 @@
 ## 2026-06-25 - [Persistent Format Guidance]
 **Learning:** Relying solely on `placeholder` attributes for format examples forces users to rely on short-term memory, as the guidance disappears as soon as they start typing. This is especially problematic for complex inputs like mathematical equations.
 **Action:** Always provide explicit helper text (e.g., `<p id="...-help">`) below the input and link it using `aria-describedby` to ensure persistent visual guidance and screen reader support.
+
+## 2026-06-26 - [Recharts Default Color Accessibility]
+**Learning:** Default colors provided by chart libraries (like Recharts' light-green `#82ca9d`) often fail WCAG contrast guidelines against white or light backgrounds (~1.7:1), making them difficult for visually impaired users to perceive.
+**Action:** Always override default chart colors with highly accessible, high-contrast values (e.g., `#2563eb` and `#ef4444`) to ensure at least a 3:1 contrast ratio against both light and dark mode backgrounds.
