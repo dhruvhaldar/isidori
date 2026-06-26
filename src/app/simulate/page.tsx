@@ -16,7 +16,13 @@ import dynamic from 'next/dynamic';
 const SystemChart = dynamic(() => import('@/components/system-chart').then(mod => mod.SystemChart), { ssr: false });
 
 function createMatrix(rows: number, cols: number) {
-  return Array(rows).fill(0).map(() => Array(cols).fill(0));
+  // ⚡ Bolt: Replace nested Array.map() with pre-allocated for loop
+  // to avoid intermediate array allocations and GC churn.
+  const mat = new Array(rows);
+  for (let i = 0; i < rows; i++) {
+    mat[i] = new Array(cols).fill(0);
+  }
+  return mat;
 }
 
 export default function SimulatePage() {

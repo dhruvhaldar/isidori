@@ -11,7 +11,13 @@ import { MatrixInput } from "@/components/matrix-input";
 import { formatErrorDetail } from "@/lib/error-formatter";
 
 function createMatrix(rows: number, cols: number) {
-  return Array(rows).fill(0).map(() => Array(cols).fill(0));
+  // ⚡ Bolt: Replace nested Array.map() with pre-allocated for loop
+  // to avoid intermediate array allocations and GC churn.
+  const mat = new Array(rows);
+  for (let i = 0; i < rows; i++) {
+    mat[i] = new Array(cols).fill(0);
+  }
+  return mat;
 }
 
 export default function LinearSystemsPage() {
