@@ -16,6 +16,12 @@ def is_orthonormal(M, tol=1e-8):
     if not np.all(np.abs(col_sq_norms - 1.0) < tol):
         return False
 
+    # ⚡ Bolt: Fast-path for 1D vectors (single-column matrices).
+    # Since we already verified it has unit length above, a single column is strictly orthonormal
+    # to itself. We can return True instantly and bypass M.T @ M and np.eye(1) allocations.
+    if M.shape[1] == 1:
+        return True
+
     return np.linalg.norm(M.T @ M - np.eye(M.shape[1]), ord='fro') < tol
 
 
