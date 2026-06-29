@@ -5,7 +5,7 @@ test.describe('Isidori E2E', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Isidori/);
     await expect(page.locator('h1')).toContainText('Geometric Control Theory');
-    const img = page.locator('img[alt="Disturbance Decoupling Demo"]');
+    const img = page.locator('img[alt="Graph showing simulation of DDP control effectiveness"]');
     await expect(img).toBeVisible();
     await expect(page.locator('footer')).toContainText('Dhruv Haldar');
     await expect(page.locator('footer')).toContainText('MIT License');
