@@ -100,13 +100,14 @@ export default function Home() {
            <div className="aspect-[2/1] relative w-full">
              <Image
                src="/graphs/ddp_demo.png" 
-               alt="Disturbance Decoupling Demo" 
+               alt="Graph showing simulation of DDP control effectiveness"
+               aria-describedby="ddp-demo-caption"
                fill
                className="object-contain bg-white"
              />
            </div>
            <CardContent className="pt-4">
-             <p className="text-sm text-muted-foreground">
+             <p id="ddp-demo-caption" className="text-sm text-muted-foreground">
                Simulation showing the effect of DDP control. The red line shows the output without control (affected by disturbance), 
                while the blue line shows the output with geometric control (zero output despite disturbance).
              </p>

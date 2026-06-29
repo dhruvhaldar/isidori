@@ -150,3 +150,7 @@
 ## 2026-06-26 - [Recharts Default Color Accessibility]
 **Learning:** Default colors provided by chart libraries (like Recharts' light-green `#82ca9d`) often fail WCAG contrast guidelines against white or light backgrounds (~1.7:1), making them difficult for visually impaired users to perceive.
 **Action:** Always override default chart colors with highly accessible, high-contrast values (e.g., `#2563eb` and `#ef4444`) to ensure at least a 3:1 contrast ratio against both light and dark mode backgrounds.
+
+## 2026-06-27 - [Programmatic Association of Image Descriptions]
+**Learning:** Complex graphs or demo images often have detailed textual descriptions positioned right below them (e.g., in a caption or card content). However, relying solely on short `alt` text leaves screen reader users with incomplete information, while duplicating the entire description into the `alt` text is overly verbose and redundant.
+**Action:** Always link the descriptive text block to the image using `aria-describedby="[id]"` and provide a concise `alt` text. This ensures screen reader users are notified of the detailed description and can access it naturally.
