@@ -19,7 +19,7 @@ def is_orthonormal(M, tol=1e-8):
 
     # ⚡ Bolt: Fast O(N*M) heuristic: if columns are not unit length, it cannot be orthonormal.
     # This completely bypasses the O(N*M^2) matrix multiplication for non-orthonormal matrices.
-    col_sq_norms = np.sum(np.square(M), axis=0)
+    col_sq_norms = np.einsum('ij,ij->j', M, M)
     if not np.all(np.abs(col_sq_norms - 1.0) < tol):
         return False
 
