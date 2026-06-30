@@ -222,10 +222,19 @@ export default function LinearSystemsPage() {
                   </p>
                 </div>
               )}
-              {!vStar && !vStarError && !isComputingVStar && (
+              {!vStar && !vStarError && (
                 <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
-                  <Layers aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
-                  <p>Compute V* to view basis matrix.</p>
+                  {isComputingVStar ? (
+                    <>
+                      <Loader2 aria-hidden="true" className="w-8 h-8 text-muted-foreground/50 animate-spin" />
+                      <p>Computing V*...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Layers aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
+                      <p>Compute V* to view basis matrix.</p>
+                    </>
+                  )}
                 </div>
               )}
             </CardContent>
@@ -279,10 +288,19 @@ export default function LinearSystemsPage() {
                   )}
                 </div>
               )}
-              {!ddpResult && !ddpError && !isCheckingDDP && (
+              {!ddpResult && !ddpError && (
                 <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
-                  <Settings2 aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
-                  <p>Check DDP to see solvability.</p>
+                  {isCheckingDDP ? (
+                    <>
+                      <Loader2 aria-hidden="true" className="w-8 h-8 text-muted-foreground/50 animate-spin" />
+                      <p>Checking DDP...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Settings2 aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
+                      <p>Check DDP to see solvability.</p>
+                    </>
+                  )}
                 </div>
               )}
             </CardContent>

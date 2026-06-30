@@ -221,8 +221,17 @@ export default function NonlinearSystemsPage() {
             
             {!result && !error && (
               <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg text-muted-foreground bg-muted/10 gap-2">
-                <FunctionSquare aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
-                <p>Run computation to see results.</p>
+                {isLoading ? (
+                  <>
+                    <Loader2 aria-hidden="true" className="w-8 h-8 text-muted-foreground/50 animate-spin" />
+                    <p>Computing...</p>
+                  </>
+                ) : (
+                  <>
+                    <FunctionSquare aria-hidden="true" className="w-8 h-8 text-muted-foreground/50" />
+                    <p>Run computation to see results.</p>
+                  </>
+                )}
               </div>
             )}
           </CardContent>

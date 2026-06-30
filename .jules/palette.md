@@ -154,3 +154,7 @@
 ## 2026-06-27 - [Programmatic Association of Image Descriptions]
 **Learning:** Complex graphs or demo images often have detailed textual descriptions positioned right below them (e.g., in a caption or card content). However, relying solely on short `alt` text leaves screen reader users with incomplete information, while duplicating the entire description into the `alt` text is overly verbose and redundant.
 **Action:** Always link the descriptive text block to the image using `aria-describedby="[id]"` and provide a concise `alt` text. This ensures screen reader users are notified of the detailed description and can access it naturally.
+
+## 2026-06-30 - [Loading States in Empty Placeholders]
+**Learning:** When a user initiates an action that fetches or computes data, relying solely on a loading spinner inside the submit button leaves the main content area showing a static 'empty state' (e.g., 'Run computation to see results'). This causes a confusing disconnect and leads to a jarring layout shift when the empty state is suddenly replaced by the results.
+**Action:** Always update static empty state placeholders to display a loading indicator and relevant text (e.g., 'Computing...') when an action is in flight. This maintains container dimensions, prevents layout shifts, and provides immediate, in-context feedback in the main content area.
