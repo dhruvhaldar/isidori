@@ -158,3 +158,7 @@
 ## 2026-06-30 - [Loading States in Empty Placeholders]
 **Learning:** When a user initiates an action that fetches or computes data, relying solely on a loading spinner inside the submit button leaves the main content area showing a static 'empty state' (e.g., 'Run computation to see results'). This causes a confusing disconnect and leads to a jarring layout shift when the empty state is suddenly replaced by the results.
 **Action:** Always update static empty state placeholders to display a loading indicator and relevant text (e.g., 'Computing...') when an action is in flight. This maintains container dimensions, prevents layout shifts, and provides immediate, in-context feedback in the main content area.
+
+## 2026-07-02 - [Accessible Clickable Cards]
+**Learning:** Wrapping an entire complex `<Card>` (containing headings, descriptions, and lists) in an `<a>` or `<Link>` tag forces screen readers to read the entire card's text content sequentially as the link's accessible name. This creates a noisy, frustrating experience and prevents users from semantically navigating the card's internal content (like lists).
+**Action:** Implement the "Clickable Card" pattern: Make the `<Card>` a relative container with `focus-within` styles. Wrap only the Card's Title text in the `<Link>`, and apply a `before:absolute before:inset-0` pseudo-element to the link so its clickable area expands to cover the entire card. This preserves the large mouse click target while providing a clean, semantic DOM structure for screen readers.
