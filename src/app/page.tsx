@@ -34,64 +34,66 @@ export default function Home() {
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Link href="/linear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl group">
-          <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Network aria-hidden="true" className="w-5 h-5 text-primary" />
+        <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Network aria-hidden="true" className="w-5 h-5 text-primary" />
+              <Link href="/linear" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Linear Systems
-                <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
-              </CardTitle>
-              <CardDescription>Geometric concepts for linear systems.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
-                <li>Invariance and controlled invariance (V*)</li>
-                <li>Disturbance decoupling (DDP)</li>
-                <li>System inversion</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/nonlinear" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl group">
-          <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
+              </Link>
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+            </CardTitle>
+            <CardDescription>Geometric concepts for linear systems.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
+              <li>Invariance and controlled invariance (V*)</li>
+              <li>Disturbance decoupling (DDP)</li>
+              <li>System inversion</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
+              <Link href="/nonlinear" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Nonlinear Systems
-                <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
-              </CardTitle>
-              <CardDescription>Tools for nonlinear analysis.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
-                <li>Relative degree</li>
-                <li>Lie derivatives</li>
-                <li>Zero dynamics</li>
-                <li>Input-output linearization</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/simulate" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl md:col-span-2 lg:col-span-1 group">
-          <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
+              </Link>
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+            </CardTitle>
+            <CardDescription>Tools for nonlinear analysis.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
+              <li>Relative degree</li>
+              <li>Lie derivatives</li>
+              <li>Zero dynamics</li>
+              <li>Input-output linearization</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer relative group md:col-span-2 lg:col-span-1 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
+              <Link href="/simulate" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Simulation
-                <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
-              </CardTitle>
-              <CardDescription>Visualize system behavior.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
-                <li>Time response simulation</li>
-                <li>Disturbance rejection verification</li>
-                <li>Tracking performance</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </Link>
+              </Link>
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+            </CardTitle>
+            <CardDescription>Visualize system behavior.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
+              <li>Time response simulation</li>
+              <li>Disturbance rejection verification</li>
+              <li>Tracking performance</li>
+            </ul>
+          </CardContent>
+        </Card>
       </div>
 
       <section className="py-8">
