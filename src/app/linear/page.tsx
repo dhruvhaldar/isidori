@@ -181,7 +181,7 @@ export default function LinearSystemsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div aria-live="polite" className="space-y-4">
-                <Button type="submit" className="w-full relative" disabled={isComputingVStar} aria-busy={isComputingVStar} title="Compute V* (Cmd/Ctrl + Enter)">
+                <Button type="submit" className="w-full relative" disabled={isComputingVStar} aria-busy={isComputingVStar} title="Compute V* (Cmd/Ctrl + Enter)" aria-keyshortcuts="Meta+Enter Control+Enter">
                   <div className="flex items-center justify-center">
                     {isComputingVStar && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                     {isComputingVStar ? "Computing V*..." : "Compute V*"}

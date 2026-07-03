@@ -170,7 +170,7 @@ export default function SimulatePage() {
                <MatrixInput label="E (Disturbance)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
 
                <div aria-live="polite" className="space-y-4">
-                 <Button type="submit" className="w-full relative" disabled={isSimulating} aria-busy={isSimulating} title="Simulate Response (Cmd/Ctrl + Enter)">
+                 <Button type="submit" className="w-full relative" disabled={isSimulating} aria-busy={isSimulating} title="Simulate Response (Cmd/Ctrl + Enter)" aria-keyshortcuts="Meta+Enter Control+Enter">
                    <div className="flex items-center justify-center">
                      {isSimulating && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                      {isSimulating ? "Simulating..." : "Simulate Response"}

@@ -123,7 +123,7 @@ export default function NonlinearSystemsPage() {
                 <p id="output-function-h-help" className="text-xs text-muted-foreground">Example: x1</p>
               </div>
 
-              <Button type="submit" className="w-full relative" disabled={isLoading} aria-busy={isLoading} title="Compute Relative Degree (Cmd/Ctrl + Enter)">
+              <Button type="submit" className="w-full relative" disabled={isLoading} aria-busy={isLoading} title="Compute Relative Degree (Cmd/Ctrl + Enter)" aria-keyshortcuts="Meta+Enter Control+Enter">
                 <div className="flex items-center justify-center">
                   {isLoading && <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />}
                   {isLoading ? "Computing..." : "Compute Relative Degree"}
