@@ -18,7 +18,7 @@ test.describe('Isidori E2E', () => {
     await page.getByLabel('A (System Matrix) row 2 column 1').fill('2');
     await page.getByLabel('B (Input Matrix) row 2 column 1').fill('1');
     await page.getByLabel('C (Output Matrix) row 1 column 1').fill('1');
-    await page.click('text=Compute V*');
+    await page.locator('button[title="Compute V* (Cmd/Ctrl + Enter)"]').click();
     await expect(page.locator('legend').filter({ hasText: 'V* Basis Matrix' })).toBeVisible({ timeout: 10000 });
   });
 
