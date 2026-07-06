@@ -137,7 +137,7 @@ export default function LinearSystemsPage() {
           }
         }}
       >
-      <fieldset disabled={isComputingVStar || isCheckingDDP} className="space-y-6 group">
+      <fieldset disabled={isComputingVStar || isCheckingDDP} aria-invalid={!!vStarError || !!ddpError} aria-describedby={[vStarError ? "vstar-error" : "", ddpError ? "ddp-error" : ""].filter(Boolean).join(" ") || undefined} className="space-y-6 group">
         <Card>
           <CardHeader>
             <CardTitle>System Dimensions</CardTitle>
@@ -201,7 +201,7 @@ export default function LinearSystemsPage() {
                   )}
                 </Button>
                 {vStarError && (
-                  <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                  <div id="vstar-error" className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                     <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>{vStarError}</span>
                   </div>
@@ -269,7 +269,7 @@ export default function LinearSystemsPage() {
                   )}
                 </Button>
                 {ddpError && (
-                  <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                  <div id="ddp-error" className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                     <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>{ddpError}</span>
                   </div>
