@@ -156,7 +156,7 @@ export default function SimulatePage() {
                  }
                }}
              >
-               <fieldset disabled={isSimulating} className="space-y-4 group">
+               <fieldset disabled={isSimulating} aria-invalid={!!simError} aria-describedby={simError ? "sim-error" : undefined} className="space-y-4 group">
                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="space-y-1"><Label htmlFor="states-n">States (n) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label><Input id="states-n" required type="number" inputMode="numeric" min="1" value={n} onFocus={(e) => e.target.select()} onChange={e => setN(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} autoComplete="off" autoCorrect="off" spellCheck={false} /></div>
                   <div className="space-y-1"><Label htmlFor="inputs-m">Inputs (m) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label><Input id="inputs-m" required type="number" inputMode="numeric" min="1" value={m} onFocus={(e) => e.target.select()} onChange={e => setM(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} autoComplete="off" autoCorrect="off" spellCheck={false} /></div>
@@ -182,7 +182,7 @@ export default function SimulatePage() {
                    )}
                  </Button>
                  {simError && (
-                   <div className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                   <div id="sim-error" className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                      <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                      <span>{simError}</span>
                    </div>
