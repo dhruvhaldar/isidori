@@ -7,3 +7,6 @@
 ## 2024-05-18 - Added aria-invalid and aria-describedby to forms with server errors
 **Learning:** Server-returned form errors displayed in a banner are visually clear, but assistive tech users navigating inputs won't know the inputs caused an error without `aria-invalid` and a programmatic link via `aria-describedby`.
 **Action:** Always bind error state banners to the associated form controls or fieldsets using `aria-invalid` and `aria-describedby`.
+## 2026-07-07 - Added visual error styling for invalid form fields
+**Learning:** Setting `aria-invalid="true"` announces the error to screen reader users, but without corresponding visual styles (e.g., red border), sighted users are left without immediate contextual feedback on the specific fields that failed validation, causing them to rely only on the general error banner.
+**Action:** Always bind the `aria-invalid` attribute to explicit visual styles (e.g., `aria-[invalid=true]:border-destructive` and `group-aria-[invalid=true]:border-destructive`) to ensure parity between assistive technology and visual cues.
