@@ -52,7 +52,10 @@ def hashable_cache(func):
         if isinstance(val, tuple) and len(val) > 0:
             if val[0] == 'ndarray':
                 _, shape, flat_data, dtype_str = val
-                return np.frombuffer(flat_data, dtype=np.dtype(dtype_str)).reshape(shape).copy()
+                # ⚡ Bolt: Remove .copy() to prevent expensive O(N) memory allocation and copy overhead on every cache read.
+                # np.frombuffer returns a fast, read-only view of the bytes object. If a decorated function
+                # needs to mutate the array, the caller is responsible for explicitly copying it.
+                return np.frombuffer(flat_data, dtype=np.dtype(dtype_str)).reshape(shape)
             elif val[0] == 'list':
                 return list(_unmake_hashable(v) for v in val[1])
         return val
