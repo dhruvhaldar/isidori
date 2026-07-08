@@ -188,7 +188,7 @@ export default function SimulatePage() {
                    </div>
                  )}
                  {!isSimulating && simData.length > 0 && !simError && (
-                   <span className="sr-only">Simulation complete. Response plotted.</span>
+                   <span className="sr-only">Simulation complete. {ddpStatus ? "DDP Solved and Applied." : "DDP Not Solvable. Open Loop response plotted."}</span>
                  )}
                </div>
                </fieldset>

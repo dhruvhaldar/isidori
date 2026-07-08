@@ -20,7 +20,7 @@ export default function Home() {
           <Button asChild>
             <Link href="/linear" className="gap-2 group">
               Get Started
-              <ArrowRight aria-hidden="true" className="w-4 h-4 transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transform-none" />
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -41,7 +41,7 @@ export default function Home() {
               <Link href="/linear" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Linear Systems
               </Link>
-              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
             <CardDescription>Geometric concepts for linear systems.</CardDescription>
           </CardHeader>
@@ -61,7 +61,7 @@ export default function Home() {
               <Link href="/nonlinear" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Nonlinear Systems
               </Link>
-              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
             <CardDescription>Tools for nonlinear analysis.</CardDescription>
           </CardHeader>
@@ -82,7 +82,7 @@ export default function Home() {
               <Link href="/simulate" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Simulation
               </Link>
-              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
             <CardDescription>Visualize system behavior.</CardDescription>
           </CardHeader>

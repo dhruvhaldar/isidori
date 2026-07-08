@@ -152,7 +152,7 @@ export default function NonlinearSystemsPage() {
                  </div>
               )}
               {!isLoading && result && !error && (
-                <span className="sr-only">Computation complete. Results displayed below.</span>
+                <span className="sr-only">Computation complete. Relative degree is {result.relative_degree !== null ? result.relative_degree : "Undefined"}.</span>
               )}
             </div>
             
