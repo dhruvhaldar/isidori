@@ -207,7 +207,7 @@ export default function LinearSystemsPage() {
                   </div>
                 )}
                 {!isComputingVStar && vStar && !vStarError && (
-                  <span className="sr-only">V* computation complete. Basis matrix displayed.</span>
+                  <span className="sr-only">V* computation complete. Basis matrix displayed with {vStar.length} rows and {vStar[0]?.length || 0} columns.</span>
                 )}
               </div>
               {vStar && (
