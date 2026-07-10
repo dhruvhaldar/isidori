@@ -17,3 +17,6 @@
 ## 2024-05-18 - Ensuring Keyboard Visual Parity on interactive containers
 **Learning:** Adding hover effects (like `group-hover:translate-x-1`) to internal elements of complex interactive components (like links disguised as cards) is great for mouse users, but leaves keyboard users without the same visual feedback when they focus the component.
 **Action:** Always pair `group-hover` utility classes with their focus equivalents, like `group-focus-visible` (for buttons) or `group-focus-within` (for container cards with inner links), to ensure equal visual feedback for all interaction modes.
+## 2024-05-18 - Added keyboard visual parity for copy buttons
+**Learning:** Hiding icon-only buttons (like "Copy") until hover is a common pattern to reduce visual clutter, but relying solely on `group-hover:opacity-100` leaves keyboard-only users without visual feedback when they navigate to the container, making the feature invisible until they tab directly to the hidden button.
+**Action:** Always pair `group-hover:opacity-100` with `group-focus-within:opacity-100` on elements within an interactive or focusable container to ensure equal visual discovery for keyboard navigation.
