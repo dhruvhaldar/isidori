@@ -17,6 +17,16 @@ def safe_sympify(expr_str):
 
     try:
         tree = ast.parse(expr_str, mode='eval')
+
+        # 🛡️ Sentinel: Enforce AST depth limit to prevent SymPy DoS via deep nesting (e.g., sin(sin(...)))
+        def check_ast_depth(node, depth=0):
+            if depth > 50:
+                raise ValueError("Unsafe expression: AST depth too high")
+            for child in ast.iter_child_nodes(node):
+                check_ast_depth(child, depth + 1)
+
+        check_ast_depth(tree)
+
         import builtins
         builtin_names = set(dir(builtins))
         ALLOWED_MATH_FUNCS = {
