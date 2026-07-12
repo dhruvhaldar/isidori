@@ -233,7 +233,10 @@ def simulate_system(data: LinearSystemInput):
         d_out = np.sin(time)
 
         # Pre-allocate state array for faster tracking
-        x_out = np.zeros((steps, A.shape[0]))
+        # ⚡ Bolt: Replace np.zeros with np.empty for x_out allocation.
+        # Since every element is explicitly overwritten in the loop, we can bypass
+        # the expensive zero-initialization step, yielding a measurable speedup for long simulations.
+        x_out = np.empty((steps, A.shape[0]))
         
         # ⚡ Bolt: Skip redundant matrix multiplication if feedback F is essentially zero (~30% speedup for open-loop).
         # When DDP is unsolvable or requires no feedback, F is explicitly a matrix of zeros.
