@@ -158,6 +158,22 @@ def safe_sympify(expr_str):
             else:
                 raise ValueError("Unsafe expression: unsupported node type in exponent")
 
+        # Recursively calculate the depth of the AST to prevent chain-rule explosion DoS
+        def get_ast_depth(n):
+            if isinstance(n, (ast.Constant, ast.Name)):
+                return 1
+            elif isinstance(n, ast.UnaryOp):
+                return 1 + get_ast_depth(n.operand)
+            elif isinstance(n, ast.BinOp):
+                return 1 + max(get_ast_depth(n.left), get_ast_depth(n.right))
+            elif isinstance(n, ast.Call):
+                arg_depths = [get_ast_depth(arg) for arg in n.args]
+                return 1 + (max(arg_depths) if arg_depths else 0)
+            return 1
+
+        if get_ast_depth(tree.body) > 50:
+            raise ValueError("Unsafe expression: AST depth too large")
+
         # Check overall polynomial degree to prevent polynomial inflation attacks
         # tree.body is an Expression node when mode='eval'
         if get_poly_degree(tree.body) > 50:
