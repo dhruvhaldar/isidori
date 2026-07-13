@@ -157,3 +157,13 @@ def test_sympify_dos_protection():
     # Unsupported binary operations anywhere in the expression should be rejected
     with pytest.raises(ValueError, match="Unsafe expression: unsupported binary operation"):
         safe_sympify("x << y")
+
+def test_sympify_depth_limit():
+    from api.engine.nonlinear import safe_sympify
+
+    # Valid depth should parse fine
+    safe_sympify("sin(" * 10 + "x" + ")" * 10)
+
+    # Large depth should be rejected
+    with pytest.raises(ValueError, match="Unsafe expression: AST depth too large"):
+        safe_sympify("sin(" * 60 + "x" + ")" * 60)
