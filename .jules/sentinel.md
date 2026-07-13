@@ -43,3 +43,8 @@
 **Vulnerability:** Attackers could bypass the SymPy polynomial degree limits (Application-Layer DoS) by dynamically computing large constants inside exponents paired with variables (e.g., `(y+1)**((x-x) + 5*5*4)`).
 **Learning:** Because `(x-x)` contains a variable, `get_pure_constant_value` returns `None` at the top level of the exponent, falling back to a hardcoded low degree multiplier in `get_poly_degree`. However, SymPy easily simplifies `(x-x) + 100` to `100` and then executes the massive polynomial expansion, leading to CPU exhaustion. The AST size checker missed the `100` because it only checked `ast.Constant` nodes directly inside exponents, missing mathematically evaluated sub-trees.
 **Prevention:** When recursively validating Python AST exponents, always evaluate the true mathematical value of *every sub-node* inside the exponent using a bottom-up evaluator (`get_pure_constant_value`), enforcing the strict constant limit (`<= 5`) on all calculable intermediate values.
+
+## 2024-05-24 - [CRITICAL] Prevent Application-Layer DoS via Deeply Nested AST SymPy Evaluation
+**Vulnerability:** Attackers could submit mathematical expressions with massive AST depth (e.g., `sin(sin(sin...x...)))`), which easily bypassed simple polynomial degree checks.
+**Learning:** Polynomial degree checks are insufficient for validating untrusted input meant for SymPy evaluation. Deeply nested functions cause SymPy chain-rule operations to hang or execute with exponential complexity, leading to an Application-Layer Denial of Service (DoS).
+**Prevention:** Always recursively validate the absolute depth of an Abstract Syntax Tree (AST) (e.g., limiting to 50 nodes deep) before passing evaluating using SymPy.

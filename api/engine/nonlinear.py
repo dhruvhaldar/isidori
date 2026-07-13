@@ -158,6 +158,16 @@ def safe_sympify(expr_str):
             else:
                 raise ValueError("Unsafe expression: unsupported node type in exponent")
 
+        # 🛡️ Sentinel: Enforce overall AST depth limit to prevent deeply nested function calls
+        # (e.g., sin(sin(...))) which can cause SymPy chain-rule differentiation to hang and DOS.
+        def check_ast_depth(n, depth=0):
+            if depth > 50:
+                raise ValueError("Unsafe expression: AST depth too large")
+            for child in ast.iter_child_nodes(n):
+                check_ast_depth(child, depth + 1)
+
+        check_ast_depth(tree.body)
+
         # Check overall polynomial degree to prevent polynomial inflation attacks
         # tree.body is an Expression node when mode='eval'
         if get_poly_degree(tree.body) > 50:
