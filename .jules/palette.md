@@ -17,3 +17,6 @@
 ## 2024-05-18 - Ensuring Keyboard Visual Parity on interactive containers
 **Learning:** Adding hover effects (like `group-hover:translate-x-1`) to internal elements of complex interactive components (like links disguised as cards) is great for mouse users, but leaves keyboard users without the same visual feedback when they focus the component.
 **Action:** Always pair `group-hover` utility classes with their focus equivalents, like `group-focus-visible` (for buttons) or `group-focus-within` (for container cards with inner links), to ensure equal visual feedback for all interaction modes.
+## 2024-05-18 - Ensure Keyboard Visual Parity on interactive containers
+**Learning:** Adding hover effects (like `group-hover:opacity-100`) to internal elements of complex interactive components is great for mouse users, but leaves keyboard users without the same visual feedback when they focus the component.
+**Action:** Always pair `group-hover` utility classes with their focus equivalents, like `group-focus-visible` (for buttons) or `group-focus-within` (for container cards or groups with inner buttons), to ensure equal visual feedback for all interaction modes.
