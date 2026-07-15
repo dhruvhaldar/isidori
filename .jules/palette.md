@@ -20,3 +20,10 @@
 ## 2024-05-18 - Ensure Keyboard Visual Parity on interactive containers
 **Learning:** Adding hover effects (like `group-hover:opacity-100`) to internal elements of complex interactive components is great for mouse users, but leaves keyboard users without the same visual feedback when they focus the component.
 **Action:** Always pair `group-hover` utility classes with their focus equivalents, like `group-focus-visible` (for buttons) or `group-focus-within` (for container cards or groups with inner buttons), to ensure equal visual feedback for all interaction modes.
+## 2024-05-18 - Allow Global Form Shortcuts to Bypass Component Listeners
+**Learning:** Intercepting all `Enter` key presses within custom grid components (like matrix inputs) prevents users from utilizing global form submission shortcuts (like `Cmd/Ctrl + Enter`) while focused on those inputs, disrupting power-user workflows.
+**Action:** When implementing keyboard navigation inside custom components (e.g., using `Enter` to move down rows), explicitly check for modifier keys (`e.metaKey || e.ctrlKey`) and bypass `e.preventDefault()` to ensure global shortcuts can successfully bubble up to the parent form.
+
+## 2024-05-18 - Avoid Shortcut Collisions with Nested Component Patterns
+**Learning:** Assigning `Shift+Enter` to a secondary form action (like "Check DDP") conflicts with the standard interaction pattern of a nested spreadsheet/matrix grid, where `Shift+Enter` is expected to navigate 'up'. This prevents the user from triggering the form action while focused in the grid.
+**Action:** When assigning keyboard shortcuts to form actions, avoid combinations that natively conflict with the expected behavior of inner components. Use alternative modifiers (like `Cmd/Ctrl + Shift + Enter`) to prevent collision and ensure reliable execution.
