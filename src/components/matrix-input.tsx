@@ -73,6 +73,7 @@ const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label, rows, col
         return;
       }
     } else if (e.key === "Enter") {
+      if (e.metaKey || e.ctrlKey) return;
       e.preventDefault();
       targetR = e.shiftKey ? Math.max(0, r - 1) : Math.min(rows - 1, r + 1);
     } else {
