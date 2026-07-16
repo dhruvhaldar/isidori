@@ -27,3 +27,6 @@
 ## 2024-05-18 - Avoid Shortcut Collisions with Nested Component Patterns
 **Learning:** Assigning `Shift+Enter` to a secondary form action (like "Check DDP") conflicts with the standard interaction pattern of a nested spreadsheet/matrix grid, where `Shift+Enter` is expected to navigate 'up'. This prevents the user from triggering the form action while focused in the grid.
 **Action:** When assigning keyboard shortcuts to form actions, avoid combinations that natively conflict with the expected behavior of inner components. Use alternative modifiers (like `Cmd/Ctrl + Shift + Enter`) to prevent collision and ensure reliable execution.
+## 2026-07-07 - Added keyboard visual parity for the Clear matrix button
+**Learning:** Adding hover effects (like `hover:text-destructive`) to secondary/ghost buttons is great for mouse users, but leaves keyboard users without the same visual feedback when they focus the component via tab navigation, leading to an inconsistent accessible experience.
+**Action:** Always pair visual hover state classes (`hover:[state]`) with their corresponding focus equivalent (like `focus-visible:[state]`) to ensure keyboard users receive equal visual context for interactive elements.
