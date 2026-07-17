@@ -30,3 +30,6 @@
 ## 2026-07-07 - Added keyboard visual parity for the Clear matrix button
 **Learning:** Adding hover effects (like `hover:text-destructive`) to secondary/ghost buttons is great for mouse users, but leaves keyboard users without the same visual feedback when they focus the component via tab navigation, leading to an inconsistent accessible experience.
 **Action:** Always pair visual hover state classes (`hover:[state]`) with their corresponding focus equivalent (like `focus-visible:[state]`) to ensure keyboard users receive equal visual context for interactive elements.
+## 2026-07-17 - Ensure Keyboard Visual Parity for Hover States
+**Learning:** Relying solely on `hover:` utility classes for visual feedback (e.g., background color changes, text color changes, or underlines) leaves keyboard users without the same visual context when navigating via `Tab`. This inconsistency degrades the accessible experience and can make it difficult for keyboard users to track focus.
+**Action:** Always pair visual `hover` state classes with their corresponding focus equivalent (e.g., `focus-within:bg-muted/50` for `hover:bg-muted/50` on container elements, `focus-visible:underline` for `hover:underline` on links, and `focus-visible:text-foreground/80` for `hover:text-foreground/80`) to ensure equal visual feedback for all interaction modes.

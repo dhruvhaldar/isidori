@@ -34,7 +34,7 @@ export default function Home() {
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+        <Card className="h-full transition-colors hover:bg-muted/50 focus-within:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Network aria-hidden="true" className="w-5 h-5 text-primary" />
@@ -54,7 +54,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+        <Card className="h-full transition-colors hover:bg-muted/50 focus-within:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
@@ -75,7 +75,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="h-full transition-colors hover:bg-muted/50 cursor-pointer relative group md:col-span-2 lg:col-span-1 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+        <Card className="h-full transition-colors hover:bg-muted/50 focus-within:bg-muted/50 cursor-pointer relative group md:col-span-2 lg:col-span-1 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
