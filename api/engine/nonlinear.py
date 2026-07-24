@@ -64,7 +64,24 @@ def safe_sympify(expr_str):
                             raise ValueError("Unsafe expression: constant exponentiation overflow")
                         except ZeroDivisionError:
                             raise ValueError("Unsafe expression: division by zero in exponentiation")
-            # If the node contains any Name or Call, it's not a pure constant
+            elif isinstance(n, ast.Call):
+                if isinstance(n.func, ast.Name):
+                    func_name = n.func.id
+                    if func_name in {'abs', 'max', 'min', 'round', 'sum', 'complex', 'float', 'int'}:
+                        args = [get_pure_constant_value(arg) for arg in n.args]
+                        if all(arg is not None for arg in args):
+                            try:
+                                if func_name == 'abs': return abs(args[0])
+                                if func_name == 'max': return max(args)
+                                if func_name == 'min': return min(args)
+                                if func_name == 'round': return round(args[0], args[1] if len(args)>1 else None)
+                                if func_name == 'sum': return sum(args[0]) if isinstance(args[0], (list, tuple)) else sum(args)
+                                if func_name == 'complex': return complex(*args)
+                                if func_name == 'float': return float(args[0])
+                                if func_name == 'int': return int(args[0])
+                            except Exception:
+                                pass
+            # If the node contains any Name or other unhandled nodes, it's not a pure constant
             return None
 
         for node in ast.walk(tree):
