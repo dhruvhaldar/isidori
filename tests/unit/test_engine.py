@@ -167,3 +167,21 @@ def test_sympify_depth_limit():
     # Large depth should be rejected
     with pytest.raises(ValueError, match="Unsafe expression: AST depth too large"):
         safe_sympify("sin(" * 60 + "x" + ")" * 60)
+
+
+def test_sympify_dos_ast_call_bypass():
+    from api.engine.nonlinear import safe_sympify
+
+    # Attackers could bypass exponent constant checks by hiding huge constants in ast.Call nodes
+    # For instance: x**((x-x) + abs(-5)*abs(-5)*abs(-5)*abs(-5)*abs(-5)*abs(-5))
+    # which evaluates to x**(15625), causing polynomial inflation DoS.
+
+    # 1. Test using `abs` inside an exponent
+    payload = "x**((x-x) + abs(-5)*abs(-5)*abs(-5)*abs(-5)*abs(-5)*abs(-5))"
+    with pytest.raises(ValueError, match="Unsafe expression: exponent constant too large"):
+        safe_sympify(payload)
+
+    # 2. Test using `int` inside an exponent
+    payload2 = "x**((x-x) + int(5)*int(5)*int(5)*int(5)*int(5)*int(5))"
+    with pytest.raises(ValueError, match="Unsafe expression: exponent constant too large"):
+        safe_sympify(payload2)
