@@ -38,14 +38,14 @@ export default function Home() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Network aria-hidden="true" className="w-5 h-5 text-primary" />
-              <Link href="/linear" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
+              <Link href="/linear" aria-describedby="linear-desc linear-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Linear Systems
               </Link>
               <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
-            <CardDescription>Geometric concepts for linear systems.</CardDescription>
+            <CardDescription id="linear-desc">Geometric concepts for linear systems.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent id="linear-list">
             <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
               <li>Invariance and controlled invariance (V*)</li>
               <li>Disturbance decoupling (DDP)</li>
@@ -58,14 +58,14 @@ export default function Home() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
-              <Link href="/nonlinear" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
+              <Link href="/nonlinear" aria-describedby="nonlinear-desc nonlinear-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Nonlinear Systems
               </Link>
               <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
-            <CardDescription>Tools for nonlinear analysis.</CardDescription>
+            <CardDescription id="nonlinear-desc">Tools for nonlinear analysis.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent id="nonlinear-list">
             <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
               <li>Relative degree</li>
               <li>Lie derivatives</li>
@@ -79,14 +79,14 @@ export default function Home() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
-              <Link href="/simulate" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
+              <Link href="/simulate" aria-describedby="simulate-desc simulate-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Simulation
               </Link>
               <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
-            <CardDescription>Visualize system behavior.</CardDescription>
+            <CardDescription id="simulate-desc">Visualize system behavior.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent id="simulate-list">
             <ul className="list-disc pl-4 space-y-1 text-sm text-muted-foreground">
               <li>Time response simulation</li>
               <li>Disturbance rejection verification</li>
