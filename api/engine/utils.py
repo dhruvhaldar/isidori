@@ -107,7 +107,7 @@ def rank(M, tol=None):
         return 0
     if tol is None:
         tol = max(M.shape) * diag_R[0] * np.finfo(M.dtype).eps
-    return np.sum(diag_R > tol)
+    return np.count_nonzero(diag_R > tol)
 
 def basis(M, tol=None):
     """Returns an orthonormal basis for the range (column space) of M."""
@@ -137,7 +137,7 @@ def basis(M, tol=None):
         return np.zeros((M.shape[0], 0))
     if tol is None:
         tol = max(M.shape) * diag_R[0] * np.finfo(M.dtype).eps
-    r = np.sum(diag_R > tol)
+    r = np.count_nonzero(diag_R > tol)
     return Q[:, :r]
 
 def kernel(M, tol=None):
@@ -161,7 +161,7 @@ def kernel(M, tol=None):
         return np.eye(M.shape[1])
     if tol is None:
         tol = max(M.shape) * diag_R[0] * np.finfo(M.dtype).eps
-    r = np.sum(diag_R > tol)
+    r = np.count_nonzero(diag_R > tol)
     return Q[:, r:]
 
 def intersection(A, B, tol=1e-10):
