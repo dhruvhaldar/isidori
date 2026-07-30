@@ -178,10 +178,10 @@ def test_sympify_dos_ast_call_bypass():
 
     # 1. Test using `abs` inside an exponent
     payload = "x**((x-x) + abs(-5)*abs(-5)*abs(-5)*abs(-5)*abs(-5)*abs(-5))"
-    with pytest.raises(ValueError, match="Unsafe expression: exponent constant too large"):
+    with pytest.raises(ValueError, match="Unsafe expression: exponent (constant too large|too complex)"):
         safe_sympify(payload)
 
     # 2. Test using `int` inside an exponent
     payload2 = "x**((x-x) + int(5)*int(5)*int(5)*int(5)*int(5)*int(5))"
-    with pytest.raises(ValueError, match="Unsafe expression: exponent constant too large"):
+    with pytest.raises(ValueError, match="Unsafe expression: exponent (constant too large|too complex)"):
         safe_sympify(payload2)

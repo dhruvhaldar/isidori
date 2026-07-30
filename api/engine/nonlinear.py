@@ -146,8 +146,9 @@ def safe_sympify(expr_str):
         # We allow constants (<= 100 for bases, <= 5 for exponents), variables, basic arithmetic, function calls (like sin(x)),
         # and even nested powers, provided they do not evaluate to massive constants.
         # The main risk is an attacker providing a huge constant exponent masquerading as a complex AST.
-        def check_exponent_complexity(n, depth=0):
-            if depth > 10:
+        def check_exponent_complexity(n):
+            nodes_count = sum(1 for _ in ast.walk(n))
+            if nodes_count > 15:
                 raise ValueError("Unsafe expression: exponent too complex")
 
             # 🛡️ Sentinel: Evaluate pure constant value of sub-expressions inside exponent
@@ -159,17 +160,17 @@ def safe_sympify(expr_str):
             if isinstance(n, ast.Constant):
                 pass # Already handled by get_pure_constant_value above
             elif isinstance(n, ast.UnaryOp):
-                check_exponent_complexity(n.operand, depth + 1)
+                check_exponent_complexity(n.operand)
             elif isinstance(n, ast.BinOp):
                 if isinstance(n.op, ast.Pow):
                     raise ValueError("Unsafe expression: nested exponentiation is not allowed")
                 if not isinstance(n.op, (ast.Add, ast.Sub, ast.Mult, ast.Div)):
                     raise ValueError(f"Unsafe expression: unsupported binary operation in exponent")
-                check_exponent_complexity(n.left, depth + 1)
-                check_exponent_complexity(n.right, depth + 1)
+                check_exponent_complexity(n.left)
+                check_exponent_complexity(n.right)
             elif isinstance(n, ast.Call):
                 for arg in n.args:
-                    check_exponent_complexity(arg, depth + 1)
+                    check_exponent_complexity(arg)
             elif isinstance(n, ast.Name):
                 pass
             else:
