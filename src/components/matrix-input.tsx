@@ -208,9 +208,12 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
         <div className="flex items-center gap-2">
           <span>{label} ({rows}x{cols})</span>
           {!readOnly && rows > 0 && cols > 0 && (
-            <span className="hidden md:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground font-mono bg-muted/50 px-1.5 py-0.5 rounded border" aria-hidden="true">
-              <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> to navigate
-            </span>
+            <>
+              <span className="sr-only">Use arrow keys to navigate between matrix cells.</span>
+              <span className="hidden md:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground font-mono bg-muted/50 px-1.5 py-0.5 rounded border" aria-hidden="true">
+                <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> to navigate
+              </span>
+            </>
           )}
         </div>
         {readOnly ? (
