@@ -34,14 +34,14 @@ export default function Home() {
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="h-full transition-colors hover:bg-muted/50 focus-within:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+        <Card className="h-full transition-colors hover:bg-muted/50 has-[:focus-visible]:bg-muted/50 cursor-pointer relative group has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Network aria-hidden="true" className="w-5 h-5 text-primary" />
               <Link href="/linear" aria-describedby="linear-desc linear-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Linear Systems
               </Link>
-              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-has-[:focus-visible]:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
             <CardDescription id="linear-desc">Geometric concepts for linear systems.</CardDescription>
           </CardHeader>
@@ -54,14 +54,14 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="h-full transition-colors hover:bg-muted/50 focus-within:bg-muted/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+        <Card className="h-full transition-colors hover:bg-muted/50 has-[:focus-visible]:bg-muted/50 cursor-pointer relative group has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
               <Link href="/nonlinear" aria-describedby="nonlinear-desc nonlinear-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Nonlinear Systems
               </Link>
-              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-has-[:focus-visible]:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
             <CardDescription id="nonlinear-desc">Tools for nonlinear analysis.</CardDescription>
           </CardHeader>
@@ -75,14 +75,14 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="h-full transition-colors hover:bg-muted/50 focus-within:bg-muted/50 cursor-pointer relative group md:col-span-2 lg:col-span-1 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 rounded-xl">
+        <Card className="h-full transition-colors hover:bg-muted/50 has-[:focus-visible]:bg-muted/50 cursor-pointer relative group md:col-span-2 lg:col-span-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
               <Link href="/simulate" aria-describedby="simulate-desc simulate-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Simulation
               </Link>
-              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-focus-within:translate-x-1 motion-reduce:transform-none" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4 ml-auto text-muted-foreground transition-transform group-hover:translate-x-1 group-has-[:focus-visible]:translate-x-1 motion-reduce:transform-none" />
             </CardTitle>
             <CardDescription id="simulate-desc">Visualize system behavior.</CardDescription>
           </CardHeader>
