@@ -219,7 +219,7 @@ export default function NonlinearSystemsPage() {
               </div>
             )}
             
-            {!result && !error && (
+            {!result && (
               <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg text-muted-foreground bg-muted/10 gap-2">
                 {isLoading ? (
                   <>
