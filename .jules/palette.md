@@ -50,3 +50,6 @@
 ## 2024-08-05 - Visual Parity for group focus states
 **Learning:** When trying to ensure equal visual feedback on cards/containers that have `group` and `hover:bg-muted` classes when their nested focusable elements receive focus, using `focus-within:bg-muted` will trigger if *any* inner element receives focus (including clicks). However, `has-[:focus-visible]` correctly matches only when the element is focused via keyboard, ensuring consistent behavior between hover and keyboard navigation without breaking mouse interactions.
 **Action:** Use `has-[:focus-visible]` instead of `focus-within` for matching keyboard focus states in parent containers.
+## 2024-05-18 - Prevent Empty State Layout Shifts on Error
+**Learning:** When displaying an error message (like a banner) inside a card that also has an empty state placeholder (e.g., "Run computation to see results"), hiding the empty state when the error is present causes the card to collapse. This jarring layout shift negatively impacts the user experience.
+**Action:** Always maintain the structural consistency of the UI by leaving the empty state placeholder visible when displaying error messages, unless the error explicitly invalidates the need for the placeholder.

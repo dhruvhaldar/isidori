@@ -230,7 +230,7 @@ export default function LinearSystemsPage() {
                   </p>
                 </div>
               )}
-              {!vStar && !vStarError && (
+              {!vStar && (
                 <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
                   {isComputingVStar ? (
                     <>
@@ -303,7 +303,7 @@ export default function LinearSystemsPage() {
                   )}
                 </div>
               )}
-              {!ddpResult && !ddpError && (
+              {!ddpResult && (
                 <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
                   {isCheckingDDP ? (
                     <>
