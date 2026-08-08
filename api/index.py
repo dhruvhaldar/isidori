@@ -17,7 +17,7 @@ app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 
 # Secure CORS configuration
 # Defaults to localhost for dev, can be configured via environment variable
-origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")]
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -42,7 +42,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.window_seconds = window_seconds
         self.clients = defaultdict(list)
         # 🛡️ Sentinel: Support rate limiting behind reverse proxies
-        self.trusted_proxies = set(os.getenv("TRUSTED_PROXIES", "127.0.0.1").split(","))
+        self.trusted_proxies = set(ip.strip() for ip in os.getenv("TRUSTED_PROXIES", "127.0.0.1").split(","))
 
     async def dispatch(self, request, call_next):
         client_ip = request.client.host if request.client else "unknown"
