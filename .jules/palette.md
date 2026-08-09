@@ -53,3 +53,11 @@
 ## 2024-05-18 - Prevent Empty State Layout Shifts on Error
 **Learning:** When displaying an error message (like a banner) inside a card that also has an empty state placeholder (e.g., "Run computation to see results"), hiding the empty state when the error is present causes the card to collapse. This jarring layout shift negatively impacts the user experience.
 **Action:** Always maintain the structural consistency of the UI by leaving the empty state placeholder visible when displaying error messages, unless the error explicitly invalidates the need for the placeholder.
+
+## 2026-07-20 - Added Focus Ring to Skip Links
+**Learning:** Implementing "skip to main content" links that transition from `sr-only` to `focus:not-sr-only` makes them visible, but without an explicit focus ring (e.g. `focus-visible:ring-2`), keyboard users may not instantly recognize it as the currently focused element, creating a disconnect with standard application focus styles.
+**Action:** When implementing 'skip to main content' links, explicitly apply visual focus ring styles (e.g., `focus-visible:ring-2 focus-visible:ring-offset-2`) to ensure keyboard users see a clear, standard focus indicator when the link appears.
+
+## 2026-07-20 - Added Visual Hint for Cancellation State
+**Learning:** Destructive actions that transform into a confirmation state (like a 'Clear' button turning into 'Sure?') and support keyboard cancellation (like 'Escape') often hide this power-user feature from sighted keyboard and mouse users.
+**Action:** Always provide a subtle visual hint (like a `<kbd>Esc</kbd>` badge) when an action enters a cancelable confirmation state, ensuring the interaction model is discoverable and accessible.
