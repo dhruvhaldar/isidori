@@ -263,6 +263,11 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             </span>
             <Eraser aria-hidden="true" className="w-3 h-3 mr-1" />
             <span aria-hidden="true">{confirmClear ? "Sure?" : "Clear"}</span>
+            {confirmClear && (
+              <kbd aria-hidden="true" className="ml-1.5 hidden md:inline-flex items-center rounded border bg-destructive-foreground/20 border-destructive-foreground/30 px-1 font-mono text-[9px] font-medium text-destructive-foreground opacity-90">
+                Esc
+              </kbd>
+            )}
           </Button>
         )}
       </legend>
