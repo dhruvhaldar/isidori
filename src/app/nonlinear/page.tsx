@@ -98,7 +98,7 @@ export default function NonlinearSystemsPage() {
                 }
               }}
             >
-              <fieldset disabled={isLoading} className="space-y-4 group">
+              <fieldset disabled={isLoading} aria-invalid={!!error} aria-describedby={error ? "nonlinear-error" : undefined} className="space-y-4 group">
               <div className="space-y-2">
                 <Label htmlFor="state-variables">State Variables <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Input id="state-variables" required aria-invalid={!!error} aria-describedby={`state-variables-help ${error ? 'nonlinear-error' : ''}`.trim()} value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" autoComplete="off" />
