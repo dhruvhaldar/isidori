@@ -61,3 +61,6 @@
 ## 2026-07-20 - Added Visual Hint for Cancellation State
 **Learning:** Destructive actions that transform into a confirmation state (like a 'Clear' button turning into 'Sure?') and support keyboard cancellation (like 'Escape') often hide this power-user feature from sighted keyboard and mouse users.
 **Action:** Always provide a subtle visual hint (like a `<kbd>Esc</kbd>` badge) when an action enters a cancelable confirmation state, ensuring the interaction model is discoverable and accessible.
+## 2026-07-20 - Binding Error State to Fieldsets
+**Learning:** When displaying server-returned form errors in a visual banner, sighted users see the error, but assistive technology users navigating through individual inputs may miss it.
+**Action:** Always bind the error state to the associated form controls or `<fieldset>` using `aria-invalid="true"` and programmatically link the error banner's ID using `aria-describedby` to ensure immediate context for screen reader users.
