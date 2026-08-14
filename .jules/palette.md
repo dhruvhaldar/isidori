@@ -64,3 +64,6 @@
 ## 2026-07-20 - Binding Error State to Fieldsets
 **Learning:** When displaying server-returned form errors in a visual banner, sighted users see the error, but assistive technology users navigating through individual inputs may miss it.
 **Action:** Always bind the error state to the associated form controls or `<fieldset>` using `aria-invalid="true"` and programmatically link the error banner's ID using `aria-describedby` to ensure immediate context for screen reader users.
+## 2024-05-18 - Ensure Keyboard Visual Parity on UI Components
+**Learning:** Relying on 'hover' or default focus styles for key interactive UI components (like Buttons or Textareas) leaves keyboard users without the necessary visual cues (like matching hover states or distinct error states) when they focus the component via tab navigation, leading to an inconsistent accessible experience.
+**Action:** Always pair visual 'hover' state classes (e.g. `hover:bg-destructive`) with their corresponding 'focus-visible' equivalents, and ensure consistent 'aria-invalid' styling across similar form elements (like Textareas and Inputs) to ensure equal visual feedback for all interaction modes.
