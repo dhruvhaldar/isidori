@@ -50,7 +50,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         # 🛡️ Sentinel: Safely extract real client IP if request comes from a trusted proxy
         if client_ip in self.trusted_proxies and "X-Forwarded-For" in request.headers:
             forwarded_for = request.headers["X-Forwarded-For"]
-            ips = [ip.strip() for ip in forwarded_for.split(",")]
+            ips = [ip.strip() for ip in forwarded_for.split(",") if ip.strip()]
             # Extract the rightmost IP that is not in the trusted proxies list
             for ip in reversed(ips):
                 if ip not in self.trusted_proxies:

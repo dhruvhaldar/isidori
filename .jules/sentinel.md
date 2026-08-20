@@ -48,3 +48,8 @@
 **Vulnerability:** Attackers could submit mathematical expressions with massive AST depth (e.g., `sin(sin(sin...x...)))`), which easily bypassed simple polynomial degree checks.
 **Learning:** Polynomial degree checks are insufficient for validating untrusted input meant for SymPy evaluation. Deeply nested functions cause SymPy chain-rule operations to hang or execute with exponential complexity, leading to an Application-Layer Denial of Service (DoS).
 **Prevention:** Always recursively validate the absolute depth of an Abstract Syntax Tree (AST) (e.g., limiting to 50 nodes deep) before passing evaluating using SymPy.
+
+## 2024-06-25 - [Rate Limit Bypass via Empty X-Forwarded-For Parts]
+**Vulnerability:** Rate limit bypass / IP spoofing via trailing commas in `X-Forwarded-For`.
+**Learning:** When parsing comma-separated strings for security-critical HTTP headers like `X-Forwarded-For`, splitting the string and stripping whitespace without explicitly filtering out empty strings means a trailing comma (e.g., `1.2.3.4,`) will result in an empty string `""` in the parsed list. An attacker can use this to make the proxy extraction logic pick the empty string as their untrusted IP, successfully bypassing IP-based rate limiting because `""` is recorded instead of their real IP.
+**Prevention:** Always explicitly filter out empty strings after splitting and stripping when extracting security-critical headers (e.g., `[ip.strip() for ip in val.split(',') if ip.strip()]`).
