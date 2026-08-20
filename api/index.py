@@ -272,10 +272,14 @@ def simulate_system(data: LinearSystemInput):
                 x = A_step.dot(x)
                 x_out[i] = x
             
+        # ⚡ Bolt: Slice the C matrix before computation (e.g. C[0]) to extract only the
+        # 1D projection required by the frontend. This avoids computing the full matrix
+        # product for multi-output systems and generates a flat 1D NumPy array instead
+        # of a 2D array, which drastically speeds up JSON serialization and reduces network payload size.
         # Vectorize output computation: y = C @ x
-        # x_out is (steps, dim), C.T is (dim, outputs)
-        # x_out @ C.T is (steps, outputs)
-        y_out = (x_out @ C.T).tolist()
+        # x_out is (steps, dim), C[0] is (dim, )
+        # x_out @ C[0] is (steps, )
+        y_out = (x_out @ C[0]).tolist()
 
         return {
             "time": time.tolist(),
