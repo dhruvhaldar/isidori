@@ -240,7 +240,7 @@ def simulate_system(data: LinearSystemInput):
         # ⚡ Bolt: Skip redundant matrix multiplication if feedback F is essentially zero (~30% speedup for open-loop).
         # When DDP is unsolvable or requires no feedback, F is explicitly a matrix of zeros.
         # Skipping A + B @ F bypasses a O(N^2 * M) multiplication and a O(N^2) addition.
-        if not np.any(F):
+        if np.count_nonzero(F) == 0:
             A_cl = A
         else:
             A_cl = A + B @ F
@@ -251,7 +251,7 @@ def simulate_system(data: LinearSystemInput):
 
         # ⚡ Bolt: Fast path for zero disturbance systems.
         # Bypasses allocating E_d and evaluating E_d[i] addition on every loop iteration.
-        has_disturbance = np.any(E)
+        has_disturbance = np.count_nonzero(E) > 0
         if has_disturbance:
             E_sum = np.sum(E, axis=1)
             E_step = E_sum * dt
