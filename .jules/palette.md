@@ -64,3 +64,6 @@
 ## 2026-07-20 - Binding Error State to Fieldsets
 **Learning:** When displaying server-returned form errors in a visual banner, sighted users see the error, but assistive technology users navigating through individual inputs may miss it.
 **Action:** Always bind the error state to the associated form controls or `<fieldset>` using `aria-invalid="true"` and programmatically link the error banner's ID using `aria-describedby` to ensure immediate context for screen reader users.
+## 2026-07-20 - Consistent Terminology in Component Labels
+**Learning:** Always maintain consistent, descriptive terminology across all pages for identical domain concepts (like matrix definitions). Using "A (System Matrix)" on one page and just "A" on another degrades the accessible experience, as the label propagates down to every individual child cell's `aria-label` (e.g., "A row 1 column 1" vs "A (System Matrix) row 1 column 1").
+**Action:** Ensure that parent components (like MatrixInput) are provided with fully descriptive and consistent labels across all instances in the application to ensure assistive technology users receive maximum context.
