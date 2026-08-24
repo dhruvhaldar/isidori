@@ -164,10 +164,10 @@ export default function SimulatePage() {
                   <div className="space-y-1"><Label htmlFor="disturbances-q">Disturbances (q) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label><Input id="disturbances-q" required type="number" inputMode="numeric" min="1" value={q} onFocus={(e) => e.target.select()} onChange={e => setQ(e.target.value === "" ? "" : parseInt(e.target.value) || 1)} onBlur={() => { if (q === "" || Number(q) < 1) setQ(1); }} autoComplete="off" autoCorrect="off" spellCheck={false} /></div>
                </div>
 
-               <MatrixInput label="A" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
-               <MatrixInput label="B" rows={Number(n) || 1} cols={Number(m) || 1} value={B} onChange={setB} />
-               <MatrixInput label="C" rows={Number(p) || 1} cols={Number(n) || 1} value={C} onChange={setC} />
-               <MatrixInput label="E (Disturbance)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
+               <MatrixInput label="A (System Matrix)" rows={Number(n) || 1} cols={Number(n) || 1} value={A} onChange={setA} />
+               <MatrixInput label="B (Input Matrix)" rows={Number(n) || 1} cols={Number(m) || 1} value={B} onChange={setB} />
+               <MatrixInput label="C (Output Matrix)" rows={Number(p) || 1} cols={Number(n) || 1} value={C} onChange={setC} />
+               <MatrixInput label="E (Disturbance Matrix)" rows={Number(n) || 1} cols={Number(q) || 1} value={E} onChange={setE} />
 
                <div aria-live="polite" className="space-y-4">
                  <Button type="submit" className="w-full relative" disabled={isSimulating} aria-busy={isSimulating} title="Simulate Response (Cmd/Ctrl + Enter)" aria-keyshortcuts="Meta+Enter Control+Enter">
