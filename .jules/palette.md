@@ -67,3 +67,7 @@
 ## 2026-07-20 - Consistent Terminology in Component Labels
 **Learning:** Always maintain consistent, descriptive terminology across all pages for identical domain concepts (like matrix definitions). Using "A (System Matrix)" on one page and just "A" on another degrades the accessible experience, as the label propagates down to every individual child cell's `aria-label` (e.g., "A row 1 column 1" vs "A (System Matrix) row 1 column 1").
 **Action:** Ensure that parent components (like MatrixInput) are provided with fully descriptive and consistent labels across all instances in the application to ensure assistive technology users receive maximum context.
+
+## 2024-05-20 - Expose temporary state keyboard shortcuts to screen readers
+**Learning:** When an interactive element dynamically toggles into a temporary confirmation or cancelable state (e.g., "Sure?") that supports a keyboard shortcut like "Escape" and provides a visual `<kbd>Esc</kbd>` hint, failing to programmatically expose the shortcut leaves screen reader users unaware of the fast path to cancel.
+**Action:** Conditionally apply the `aria-keyshortcuts` attribute (e.g., `aria-keyshortcuts={isConfirming ? "Escape" : undefined}`) so assistive technologies announce the shortcut contextually when the state is active.
