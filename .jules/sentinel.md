@@ -52,3 +52,8 @@
 **Vulnerability:** The rate limit middleware parsed `X-Forwarded-For` using `forwarded_for.split(",")`, but did not filter out empty strings resulting from trailing commas (e.g., `192.168.1.100,`). This meant an empty string could be selected as the `client_ip` to bypass rate limits or spoof requests.
 **Learning:** When parsing comma-separated strings for security-critical lists (like IP addresses, CORS origins, etc.), `split(",")` will produce empty strings for trailing commas. If these lists are iterated over without explicitly ignoring empty elements, those empty elements can be incorrectly evaluated as valid list entries.
 **Prevention:** Always apply `.strip()` and explicitly filter out empty strings (e.g., `[ip.strip() for ip in val.split(',') if ip.strip()]`) when parsing comma-separated security configurations or headers.
+
+## 2024-06-25 - [Application DoS via Jagged Matrix Input]
+**Vulnerability:** Inhomogeneous (jagged) arrays passed to NumPy array initialization throw a `ValueError: setting an array element with a sequence`, which propagates as a 500 Internal Server Error (or app crash) because it bypasses generic try-except blocks expecting validation errors.
+**Learning:** Pydantic `List[List[float]]` types validate the basic nested structure, but they do *not* ensure that the matrix is rectangular (e.g., all inner lists have the exact same length). Passing unvalidated jagged structures directly into `numpy.array()` is an Application-Layer DoS vulnerability.
+**Prevention:** When accepting matrices via Pydantic, always implement an `@model_validator` to explicitly check that the lengths of all rows equal the length of the first row before allowing the structure to reach data processing libraries.
