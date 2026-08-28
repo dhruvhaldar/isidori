@@ -257,6 +257,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             }}
             title={confirmClear ? `Confirm clear ${label} matrix (Esc to cancel)` : `Clear ${label} matrix`}
             aria-live="polite"
+            aria-keyshortcuts={confirmClear ? "Escape" : undefined}
           >
             <span className="sr-only">
               {confirmClear ? `Confirm clear ${label} matrix. Press Escape to cancel.` : `Clear ${label} matrix`}
