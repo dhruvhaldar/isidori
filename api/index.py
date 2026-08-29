@@ -104,6 +104,8 @@ class MatrixInput(BaseModel):
         max_dim = 100
         if len(self.matrix) > max_dim or any(len(row) > max_dim for row in self.matrix):
             raise ValueError(f"Matrix exceeds maximum dimension of {max_dim}x{max_dim}")
+        if self.matrix and any(len(row) != len(self.matrix[0]) for row in self.matrix):
+            raise ValueError("Matrix must be rectangular")
         return self
 
 class LinearSystemInput(BaseModel):
@@ -120,6 +122,8 @@ class LinearSystemInput(BaseModel):
             if mat is not None:
                 if len(mat) > max_dim or any(len(row) > max_dim for row in mat):
                     raise ValueError(f"Matrix {mat_name} exceeds maximum dimension of {max_dim}x{max_dim}")
+                if mat and any(len(row) != len(mat[0]) for row in mat):
+                    raise ValueError(f"Matrix {mat_name} must be rectangular")
         return self
 
 class NonlinearSystemInput(BaseModel):
