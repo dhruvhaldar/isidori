@@ -102,8 +102,13 @@ class MatrixInput(BaseModel):
     @model_validator(mode='after')
     def check_dimensions(self) -> 'MatrixInput':
         max_dim = 100
+        if not self.matrix:
+            return self
         if len(self.matrix) > max_dim or any(len(row) > max_dim for row in self.matrix):
             raise ValueError(f"Matrix exceeds maximum dimension of {max_dim}x{max_dim}")
+        first_row_len = len(self.matrix[0])
+        if any(len(row) != first_row_len for row in self.matrix):
+            raise ValueError("Matrix is not rectangular")
         return self
 
 class LinearSystemInput(BaseModel):
@@ -118,8 +123,13 @@ class LinearSystemInput(BaseModel):
         max_dim = 100
         for mat_name, mat in [('A', self.A), ('B', self.B), ('C', self.C), ('E', self.E)]:
             if mat is not None:
+                if not mat:
+                    continue
                 if len(mat) > max_dim or any(len(row) > max_dim for row in mat):
                     raise ValueError(f"Matrix {mat_name} exceeds maximum dimension of {max_dim}x{max_dim}")
+                first_row_len = len(mat[0])
+                if any(len(row) != first_row_len for row in mat):
+                    raise ValueError(f"Matrix {mat_name} is not rectangular")
         return self
 
 class NonlinearSystemInput(BaseModel):
