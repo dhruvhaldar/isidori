@@ -39,8 +39,8 @@ export const SystemChart = React.memo(function SystemChart({ data }: SystemChart
             />
             <Tooltip formatter={(value: number) => formatScientific(value)} />
             <Legend />
-            <Line type="monotone" dataKey="y" stroke="#2563eb" name="Output y(t)" dot={false} strokeWidth={2} />
-            <Line type="monotone" dataKey="d" stroke="#ef4444" name="Disturbance d(t)" dot={false} strokeDasharray="5 5" />
+            <Line type="monotone" dataKey="y" stroke="#2563eb" name="Output y(t)" dot={false} strokeWidth={2} isAnimationActive={false} />
+            <Line type="monotone" dataKey="d" stroke="#ef4444" name="Disturbance d(t)" dot={false} strokeDasharray="5 5" isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
