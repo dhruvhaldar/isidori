@@ -186,6 +186,12 @@ def safe_sympify(expr_str):
 
         check_ast_depth(tree.body)
 
+        # 🛡️ Sentinel: Enforce maximum total number of AST nodes to prevent wide, shallow trees
+        # (like `max(x, x...)` or chained additions) which bypass depth checks but cause DoS during parsing.
+        total_nodes = sum(1 for _ in ast.walk(tree))
+        if total_nodes > 100:
+            raise ValueError("Unsafe expression: AST node count too large")
+
         # Check overall polynomial degree to prevent polynomial inflation attacks
         # tree.body is an Expression node when mode='eval'
         if get_poly_degree(tree.body) > 50:
