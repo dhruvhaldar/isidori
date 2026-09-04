@@ -71,3 +71,7 @@
 ## 2024-10-27 - Conditionally Apply aria-keyshortcuts for Temporary States
 **Learning:** When an interactive element dynamically toggles into a temporary confirmation or cancelable state (like "Sure?") that supports a keyboard shortcut like "Escape", setting `aria-keyshortcuts` globally causes screen readers to announce the shortcut even when the action isn't available, confusing users.
 **Action:** Conditionally apply the `aria-keyshortcuts` attribute (e.g., `aria-keyshortcuts={isConfirming ? 'Escape' : undefined}`) so assistive technologies only announce the shortcut when the temporary state is active.
+
+## 2026-07-21 - Add tactile feedback to interactive components
+**Learning:** Interactive components like buttons and clickable cards lack a visual "press" state, which can make the application feel unresponsive or flat during rapid interactions.
+**Action:** Add Tailwind's `active:scale-[0.98]` utility class to Buttons and interactive Cards to provide immediate, subtle tactile feedback upon click, enhancing the perceived responsiveness of the UI.
