@@ -75,3 +75,7 @@
 ## 2026-07-21 - Add tactile feedback to interactive components
 **Learning:** Interactive components like buttons and clickable cards lack a visual "press" state, which can make the application feel unresponsive or flat during rapid interactions.
 **Action:** Add Tailwind's `active:scale-[0.98]` utility class to Buttons and interactive Cards to provide immediate, subtle tactile feedback upon click, enhancing the perceived responsiveness of the UI.
+
+## 2024-03-20 - Adding tactile elevation to clickable cards
+**Learning:** Adding a subtle shadow and upward translation (`hover:shadow-md hover:-translate-y-0.5`) on hover makes clickable cards feel more interactive and tactile, improving the micro-UX.
+**Action:** Use these utility classes in combination with `transition-all duration-300` on interactive card components to provide satisfying hover feedback.
