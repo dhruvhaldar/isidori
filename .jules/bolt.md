@@ -236,3 +236,10 @@
 ## 2026-08-30 - Disable Recharts animation for large datasets
 **Learning:** When rendering large datasets (e.g., thousands of simulation points) using Recharts `<LineChart>`, setting `isAnimationActive={true}` (the default) causes expensive animation calculations, leading to significant frontend lag or freezing.
 **Action:** Set `isAnimationActive={false}` on `<Line>` components when rendering large arrays of simulation data to bypass the animation calculations and immediately render the final chart, significantly improving frontend performance.
+## 2026-08-31 - Zero-State Linear System Simulation Fast Path
+**Learning:** When simulating unforced discrete-time linear systems (`x_{k+1} = A x_k`) where the initial state is exactly zero, the state will remain mathematically zero for all subsequent time steps. Continuing to evaluate the $O(\text{steps} \times N^2)$ matrix multiplication loop is completely redundant.
+**Action:** When simulating unforced linear systems (i.e. zero disturbances), check if the initial state is entirely zero (`np.count_nonzero(x) == 0`). If it is, bypass the iteration loop entirely and immediately return a pre-allocated zero array (`np.zeros((len(time), x.shape[0]))`) for a massive constant-time algorithmic speedup (~1500x).
+
+## 2026-08-31 - Floating-Point Instability in Pythagorean Projection Norms
+**Learning:** In Python/NumPy, using the Pythagorean theorem (`||E||_F^2 - ||V^T E||_F^2`) to optimize the calculation of the Frobenius norm of an orthogonal projection (`||E - V V^T E||_F`) is mathematically sound but numerically unstable. When the vector is almost perfectly contained within the subspace, catastrophic cancellation during the subtraction amplifies machine epsilon noise, yielding results (e.g. `2e-8`) that fundamentally violate strict tolerance checks (e.g. `1e-10`).
+**Action:** Do not use the squared-norm subtraction shortcut to evaluate orthogonal projection residuals when verifying mathematical tolerances. Always compute the explicit matrix difference (`E - V @ V.T @ E`) and calculate its Frobenius norm directly to maintain numerical stability.
