@@ -223,10 +223,18 @@ def simulate_system(data: LinearSystemInput):
         C = np.array(data.C)
         E = np.array(data.E) if data.E else np.zeros((A.shape[0], 1))
         
-        is_solvable, V_star, F = check_disturbance_decoupling(A, B, E, C)
-        
-        if not is_solvable:
-            F = np.zeros((B.shape[1], A.shape[0])) # No feedback
+        # ⚡ Bolt: Fast path for zero disturbance systems.
+        # If there is no disturbance, DDP is trivially solvable and no feedback is needed.
+        # Bypassing check_disturbance_decoupling completely avoids expensive V* subspace
+        # computations and RRQR factorizations since V* is not returned by this endpoint.
+        has_disturbance = np.count_nonzero(E) != 0
+        if has_disturbance:
+            is_solvable, V_star, F = check_disturbance_decoupling(A, B, E, C)
+            if not is_solvable:
+                F = np.zeros((B.shape[1], A.shape[0])) # No feedback
+        else:
+            is_solvable = True
+            F = np.zeros((B.shape[1], A.shape[0]))
             
         # Simulation parameters
         dt = 0.01
@@ -263,7 +271,6 @@ def simulate_system(data: LinearSystemInput):
         # ⚡ Bolt: Fast path for zero disturbance systems.
         # Bypasses allocating E_d and evaluating E_d[i] addition on every loop iteration.
         # Using np.count_nonzero(E) != 0 instead of np.any(E) provides ~6x faster zero-matrix checking.
-        has_disturbance = np.count_nonzero(E) != 0
         if has_disturbance:
             E_sum = np.sum(E, axis=1)
             E_step = E_sum * dt

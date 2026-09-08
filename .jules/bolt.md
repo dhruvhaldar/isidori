@@ -243,3 +243,7 @@
 ## 2026-08-31 - Floating-Point Instability in Pythagorean Projection Norms
 **Learning:** In Python/NumPy, using the Pythagorean theorem (`||E||_F^2 - ||V^T E||_F^2`) to optimize the calculation of the Frobenius norm of an orthogonal projection (`||E - V V^T E||_F`) is mathematically sound but numerically unstable. When the vector is almost perfectly contained within the subspace, catastrophic cancellation during the subtraction amplifies machine epsilon noise, yielding results (e.g. `2e-8`) that fundamentally violate strict tolerance checks (e.g. `1e-10`).
 **Action:** Do not use the squared-norm subtraction shortcut to evaluate orthogonal projection residuals when verifying mathematical tolerances. Always compute the explicit matrix difference (`E - V @ V.T @ E`) and calculate its Frobenius norm directly to maintain numerical stability.
+
+## 2026-09-08 - Bypass redundant subspace calculations in API endpoints
+**Learning:** In endpoints like `/api/simulate`, calling complex subspace analysis functions (like `check_disturbance_decoupling`) is unnecessary when the inputs (e.g., a zero disturbance matrix `E`) mathematically guarantee a trivial solution and the intermediate results (like `V*`) are not returned or used.
+**Action:** When an endpoint uses heavy analysis functions to compute a final state or check, identify if specific input conditions (like `E = 0`) make the result trivial. If so, implement an early fast-path return (e.g., `is_solvable = True, F = 0`) to bypass the expensive computations completely.
