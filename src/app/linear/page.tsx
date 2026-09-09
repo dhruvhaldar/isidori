@@ -195,7 +195,7 @@ export default function LinearSystemsPage() {
                     {isComputingVStar ? "Computing V*..." : "Compute V*"}
                   </div>
                   {!isComputingVStar && (
-                    <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                    <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-primary-foreground/20 border-primary-foreground/30 px-1.5 font-mono text-[10px] font-medium text-primary-foreground opacity-100">
                       <span className="text-xs">⌘</span>↵
                     </kbd>
                   )}
@@ -263,7 +263,7 @@ export default function LinearSystemsPage() {
                     {isCheckingDDP ? "Checking DDP..." : "Check DDP Solvability"}
                   </div>
                   {!isCheckingDDP && (
-                    <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                    <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-secondary-foreground/20 border-secondary-foreground/30 px-1.5 font-mono text-[10px] font-medium text-secondary-foreground opacity-100">
                       <span className="text-xs">⌘⇧</span>↵
                     </kbd>
                   )}
