@@ -82,3 +82,7 @@
 ## 2024-05-18 - Contextual styling for nested visual hints
 **Learning:** Hardcoding generic utility classes like `bg-muted` and `text-muted-foreground` for visual hints (like `<kbd>`) nested inside colored components (like primary buttons) creates stark visual contrast clashes.
 **Action:** Always use context-aware opacity classes based on the parent component's text color (e.g., `bg-primary-foreground/20 text-primary-foreground`) to ensure nested visual hints adapt harmoniously to their surrounding context.
+
+## 2026-09-10 - Make Interactive Visualizations Keyboard Focusable
+**Learning:** Semantic grouping containers (like `role="group"`) that wrap complex visual elements (like charts) and have descriptive `aria-label`s are skipped by keyboard navigation if they lack `tabIndex={0}` and focusable children. This prevents screen reader users navigating via Tab from discovering the visualization's context.
+**Action:** Always add `tabIndex={0}` and explicit visual focus rings (e.g., `focus-visible:ring-2`) to visualization containers to ensure they serve as an accessible landmark in the keyboard navigation flow.
