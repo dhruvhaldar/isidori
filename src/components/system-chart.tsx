@@ -19,7 +19,7 @@ export const SystemChart = React.memo(function SystemChart({ data }: SystemChart
   const accessibleData = data.length > 50 ? data.slice(0, 50) : data;
 
   return (
-    <div className="relative w-full" role="group" aria-label="System simulation response chart">
+    <div className="relative w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl" tabIndex={0} role="group" aria-label="System simulation response chart">
       <div style={{ width: '100%', height: 400 }} aria-hidden="true">
         <ResponsiveContainer>
           <LineChart
