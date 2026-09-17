@@ -221,7 +221,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             type="button"
             variant="ghost"
             size="sm"
-            className="h-6 px-2 text-xs"
+            className="h-6 px-2 text-xs group"
             onClick={handleCopy}
             aria-live="polite"
             title={copied ? `Copied ${label} matrix` : `Copy ${label} matrix to clipboard`}
@@ -231,12 +231,12 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             </span>
             {copied ? (
               <>
-                <Check aria-hidden="true" className="w-3 h-3 mr-1" />
-                <span aria-hidden="true">Copied</span>
+                <Check aria-hidden="true" className="w-3 h-3 mr-1 text-emerald-600 dark:text-emerald-400" />
+                <span aria-hidden="true" className="text-emerald-600 dark:text-emerald-400">Copied</span>
               </>
             ) : (
               <>
-                <Copy aria-hidden="true" className="w-3 h-3 mr-1" />
+                <Copy aria-hidden="true" className="w-3 h-3 mr-1 transition-transform group-hover:scale-110 group-focus-visible:scale-110" />
                 <span aria-hidden="true">Copy</span>
               </>
             )}

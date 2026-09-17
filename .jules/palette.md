@@ -86,3 +86,7 @@
 ## 2026-09-10 - Make Interactive Visualizations Keyboard Focusable
 **Learning:** Semantic grouping containers (like `role="group"`) that wrap complex visual elements (like charts) and have descriptive `aria-label`s are skipped by keyboard navigation if they lack `tabIndex={0}` and focusable children. This prevents screen reader users navigating via Tab from discovering the visualization's context.
 **Action:** Always add `tabIndex={0}` and explicit visual focus rings (e.g., `focus-visible:ring-2`) to visualization containers to ensure they serve as an accessible landmark in the keyboard navigation flow.
+
+## 2024-11-20 - Semantic Clipboard Feedback
+**Learning:** Relying solely on an icon change (like `Copy` turning into `Check`) to indicate successful clipboard copying provides weak feedback. In dense UIs, this subtle swap can easily be missed, leaving the user uncertain if the action succeeded.
+**Action:** Always provide distinct, semantic color reinforcement (e.g., `text-emerald-600 dark:text-emerald-400`) to the success icon and text, and include a tactile hover micro-interaction (`hover:scale-110`) before clicking to create a satisfying and clear feedback loop.

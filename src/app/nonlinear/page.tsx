@@ -181,9 +181,9 @@ export default function NonlinearSystemsPage() {
                        >
                          {result.Lg_Lf_h}
                        </div>
-                       <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity" onClick={() => handleCopy(result.Lg_Lf_h)} title={copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}>
+                       <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity group/btn" onClick={() => handleCopy(result.Lg_Lf_h)} title={copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}>
                          <span className="sr-only">{copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}</span>
-                         {copiedText === result.Lg_Lf_h ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
+                         {copiedText === result.Lg_Lf_h ? <Check aria-hidden="true" className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> : <Copy aria-hidden="true" className="h-3 w-3 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" />}
                        </Button>
                      </div>
                   </div>
@@ -203,9 +203,9 @@ export default function NonlinearSystemsPage() {
                           >
                             <span>k={i}: {expr}</span>
                           </div>
-                          <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity" onClick={() => handleCopy(expr)} title={copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}>
+                          <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity group/btn" onClick={() => handleCopy(expr)} title={copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}>
                             <span className="sr-only">{copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}</span>
-                            {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3" /> : <Copy aria-hidden="true" className="h-3 w-3" />}
+                            {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> : <Copy aria-hidden="true" className="h-3 w-3 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" />}
                           </Button>
                         </li>
                       ))}
