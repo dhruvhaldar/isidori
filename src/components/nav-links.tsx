@@ -23,7 +23,7 @@ export function NavLinks() {
             key={link.href}
             href={link.href}
             aria-current={isActive ? "page" : undefined}
-            className={`inline-flex items-center gap-2 transition-colors hover:text-foreground/80 focus-visible:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md px-3 py-2 ${
+            className={`inline-flex items-center gap-2 transition-colors active:scale-[0.98] hover:text-foreground/80 focus-visible:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md px-3 py-2 ${
               isActive ? "font-bold text-accent-foreground bg-accent" : "text-foreground/60 hover:bg-accent/50 focus-visible:bg-accent/50"
             }`}
           >

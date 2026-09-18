@@ -24,9 +24,9 @@ export default function Home() {
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" className="gap-2">
+            <Link href="https://github.com/dhruvhaldar/isidori" target="_blank" rel="noopener noreferrer" className="gap-2 group">
               GitHub
-              <ExternalLink aria-hidden="true" className="w-4 h-4" />
+              <ExternalLink aria-hidden="true" className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5 motion-reduce:transform-none" />
               <span className="sr-only">(opens in a new tab)</span>
             </Link>
           </Button>

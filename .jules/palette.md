@@ -90,3 +90,7 @@
 ## 2024-11-20 - Semantic Clipboard Feedback
 **Learning:** Relying solely on an icon change (like `Copy` turning into `Check`) to indicate successful clipboard copying provides weak feedback. In dense UIs, this subtle swap can easily be missed, leaving the user uncertain if the action succeeded.
 **Action:** Always provide distinct, semantic color reinforcement (e.g., `text-emerald-600 dark:text-emerald-400`) to the success icon and text, and include a tactile hover micro-interaction (`hover:scale-110`) before clicking to create a satisfying and clear feedback loop.
+
+## 2026-10-25 - Dynamic affordance for External Links
+**Learning:** External links identified by an icon (like `ExternalLink`) can feel static and disjointed if the icon doesn't respond to interaction, reducing the perceived clickability of the element.
+**Action:** Always add tactile hover and focus transforms (e.g. `transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5`) to the external link icon, combined with a `group` class on the parent link, so it visually moves "up and out" when interacted with, providing clear, dynamic affordance that the link opens in a new context.
