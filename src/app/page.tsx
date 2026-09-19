@@ -37,7 +37,7 @@ export default function Home() {
         <Card className="h-full transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:bg-muted/50 active:scale-[0.98] has-[:focus-visible]:bg-muted/50 has-[:focus-visible]:shadow-md has-[:focus-visible]:-translate-y-0.5 cursor-pointer relative group has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Network aria-hidden="true" className="w-5 h-5 text-primary" />
+              <Network aria-hidden="true" className="w-5 h-5 text-primary transition-transform duration-300 group-hover:scale-110 group-has-[:focus-visible]:scale-110" />
               <Link href="/linear" aria-describedby="linear-desc linear-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Linear Systems
               </Link>
@@ -57,7 +57,7 @@ export default function Home() {
         <Card className="h-full transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:bg-muted/50 active:scale-[0.98] has-[:focus-visible]:bg-muted/50 has-[:focus-visible]:shadow-md has-[:focus-visible]:-translate-y-0.5 cursor-pointer relative group has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary" />
+              <FunctionSquare aria-hidden="true" className="w-5 h-5 text-primary transition-transform duration-300 group-hover:scale-110 group-has-[:focus-visible]:scale-110" />
               <Link href="/nonlinear" aria-describedby="nonlinear-desc nonlinear-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Nonlinear Systems
               </Link>
@@ -78,7 +78,7 @@ export default function Home() {
         <Card className="h-full transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:bg-muted/50 active:scale-[0.98] has-[:focus-visible]:bg-muted/50 has-[:focus-visible]:shadow-md has-[:focus-visible]:-translate-y-0.5 cursor-pointer relative group md:col-span-2 lg:col-span-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <LineChart aria-hidden="true" className="w-5 h-5 text-primary" />
+              <LineChart aria-hidden="true" className="w-5 h-5 text-primary transition-transform duration-300 group-hover:scale-110 group-has-[:focus-visible]:scale-110" />
               <Link href="/simulate" aria-describedby="simulate-desc simulate-list" className="focus-visible:outline-none before:absolute before:inset-0 before:z-10">
                 Simulation
               </Link>

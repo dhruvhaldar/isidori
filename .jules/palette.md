@@ -94,3 +94,7 @@
 ## 2026-10-25 - Dynamic affordance for External Links
 **Learning:** External links identified by an icon (like `ExternalLink`) can feel static and disjointed if the icon doesn't respond to interaction, reducing the perceived clickability of the element.
 **Action:** Always add tactile hover and focus transforms (e.g. `transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5`) to the external link icon, combined with a `group` class on the parent link, so it visually moves "up and out" when interacted with, providing clear, dynamic affordance that the link opens in a new context.
+
+## 2026-10-26 - Dynamic affordance for internal anchor icons
+**Learning:** Interactive UI cards and navigation links that rely heavily on a leading icon for visual identification (like the Network, FunctionSquare, or LineChart icons) can feel static if the icon doesn't respond to user interaction. This reduces the perceived "liveliness" and overall micro-UX of the application.
+**Action:** Always add tactile hover and focus transforms (e.g. `transition-transform duration-300 group-hover:scale-110 group-has-[:focus-visible]:scale-110`) to the primary leading icons inside interactive components. This ensures the icon visually scales up slightly when the parent component is interacted with, providing clear, dynamic affordance that the entire element is actionable.
