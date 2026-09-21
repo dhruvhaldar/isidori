@@ -98,3 +98,6 @@
 ## 2026-10-26 - Dynamic affordance for internal anchor icons
 **Learning:** Interactive UI cards and navigation links that rely heavily on a leading icon for visual identification (like the Network, FunctionSquare, or LineChart icons) can feel static if the icon doesn't respond to user interaction. This reduces the perceived "liveliness" and overall micro-UX of the application.
 **Action:** Always add tactile hover and focus transforms (e.g. `transition-transform duration-300 group-hover:scale-110 group-has-[:focus-visible]:scale-110`) to the primary leading icons inside interactive components. This ensures the icon visually scales up slightly when the parent component is interacted with, providing clear, dynamic affordance that the entire element is actionable.
+## 2026-03-01 - Consistent micro-interactions across action buttons
+**Learning:** Interactive elements within the same component (like 'Copy' and 'Clear' buttons) can easily fall out of sync visually if micro-interactions are added to one but not the other. In this case, the `Eraser` icon missed the tactile `group-hover:scale-110` effect that the `Copy` icon had.
+**Action:** When auditing or implementing interactive buttons, always check sibling or related actions in the same context to ensure they share consistent tactile feedback (like scaling, opacity changes, or transforms on focus/hover).
