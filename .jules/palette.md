@@ -101,3 +101,6 @@
 ## 2026-03-01 - Consistent micro-interactions across action buttons
 **Learning:** Interactive elements within the same component (like 'Copy' and 'Clear' buttons) can easily fall out of sync visually if micro-interactions are added to one but not the other. In this case, the `Eraser` icon missed the tactile `group-hover:scale-110` effect that the `Copy` icon had.
 **Action:** When auditing or implementing interactive buttons, always check sibling or related actions in the same context to ensure they share consistent tactile feedback (like scaling, opacity changes, or transforms on focus/hover).
+## 2026-11-20 - Prevent Virtual Keyboard on Read-Only Inputs
+**Learning:** When using `<input>` fields to display read-only numeric data (like calculated matrix results), mobile and screen reader users can accidentally trigger the on-screen virtual keyboard when tapping or focusing on the cell, obscuring the screen unnecessarily.
+**Action:** Always dynamically set `inputMode="none"` on input elements when they are in a `readOnly` state (e.g., `inputMode={readOnly ? "none" : "decimal"}`). This explicitly instructs the mobile browser to suppress the virtual keyboard, significantly improving the micro-UX for touch users interacting with read-only results.
