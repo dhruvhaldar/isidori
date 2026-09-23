@@ -19,6 +19,19 @@ app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 # Defaults to localhost for dev, can be configured via environment variable
 origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if origin.strip()]
 
+# 🛡️ Sentinel: Prevent Memory Exhaustion / DoS via massive payloads
+class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, max_upload_size: int):
+        super().__init__(app)
+        self.max_upload_size = max_upload_size
+
+    async def dispatch(self, request, call_next):
+        if request.method in ["POST", "PUT", "PATCH"]:
+            content_length = request.headers.get("content-length")
+            if content_length and int(content_length) > self.max_upload_size:
+                return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
+        return await call_next(request)
+
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         response = await call_next(request)
@@ -84,7 +97,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 # ⚡ Bolt: Added GZip compression middleware to reduce the payload size of large simulation responses
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# 🛡️ Sentinel: Reordered middleware to ensure CORS and Security headers are applied to RateLimit 429 responses
+# 🛡️ Sentinel: Reordered middleware to ensure CORS and Security headers are applied to early exits
+app.add_middleware(RequestSizeLimitMiddleware, max_upload_size=1048576) # 1MB limit
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
