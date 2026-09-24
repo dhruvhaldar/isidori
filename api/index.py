@@ -30,6 +30,22 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
             content_length = request.headers.get("content-length")
             if content_length and int(content_length) > self.max_upload_size:
                 return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
+
+            # Wrap request._receive to track chunked transfer encoding size
+            receive_ = request._receive
+            total_size = 0
+
+            async def receive():
+                nonlocal total_size
+                message = await receive_()
+                if message["type"] == "http.request":
+                    total_size += len(message.get("body", b""))
+                    if total_size > self.max_upload_size:
+                        raise HTTPException(status_code=413, detail="Request payload too large")
+                return message
+
+            request._receive = receive
+
         return await call_next(request)
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
