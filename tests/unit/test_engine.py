@@ -185,3 +185,17 @@ def test_sympify_dos_ast_call_bypass():
     payload2 = "x**((x-x) + int(5)*int(5)*int(5)*int(5)*int(5)*int(5))"
     with pytest.raises(ValueError, match="Unsafe expression: exponent (constant too large|too complex)"):
         safe_sympify(payload2)
+
+def test_sympify_call_dos_bypass():
+    from api.engine.nonlinear import safe_sympify
+
+    # Test that ast.Call producing large constants is caught in the main loop
+    # e.g., complex(1e100, 1e100) evaluates to a massive complex number that could cause issues
+    payload = "x * complex(1e100, 1e100)"
+
+    with pytest.raises(ValueError, match="Unsafe expression: constant sub-expression evaluates to a large number"):
+        safe_sympify(payload)
+
+    payload2 = "x + float(1e200)"
+    with pytest.raises(ValueError, match="Unsafe expression: constant sub-expression evaluates to a large number"):
+        safe_sympify(payload2)

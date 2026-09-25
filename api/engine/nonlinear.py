@@ -207,7 +207,7 @@ def safe_sympify(expr_str):
                 if val is not None and abs(val) > 5:
                     raise ValueError("Unsafe expression: exponent sub-expression evaluates to a large number")
 
-            if isinstance(node, (ast.BinOp, ast.UnaryOp, ast.Constant)):
+            if isinstance(node, (ast.BinOp, ast.UnaryOp, ast.Constant, ast.Call)):
                 val = get_pure_constant_value(node)
                 # Note: This checks general constants, so we leave it at 100.
                 if val is not None and abs(val) > 100:
