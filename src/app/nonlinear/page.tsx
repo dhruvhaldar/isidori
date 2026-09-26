@@ -100,25 +100,25 @@ export default function NonlinearSystemsPage() {
             >
               <fieldset disabled={isLoading} aria-invalid={!!error} aria-describedby={error ? "nonlinear-error" : undefined} className="space-y-4 group">
               <div className="space-y-2">
-                <Label htmlFor="state-variables">State Variables <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
+                <Label htmlFor="state-variables">State Variables <span className="text-destructive" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Input id="state-variables" required aria-invalid={!!error} aria-describedby={`state-variables-help ${error ? 'nonlinear-error' : ''}`.trim()} value={variables} onChange={(e) => setVariables(e.target.value)} placeholder="x1, x2, x3" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" autoComplete="off" />
                 <p id="state-variables-help" className="text-xs text-muted-foreground">Example: x1, x2, x3</p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="vector-field-f">Vector Field f(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
+                <Label htmlFor="vector-field-f">Vector Field f(x) <span className="text-destructive" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Textarea id="vector-field-f" required aria-invalid={!!error} aria-describedby={`vector-field-f-help ${error ? 'nonlinear-error' : ''}`.trim()} value={f} onChange={(e) => setF(e.target.value)} placeholder="x2, -sin(x1) - x2" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" autoComplete="off" />
                 <p id="vector-field-f-help" className="text-xs text-muted-foreground">Example: x2, -sin(x1) - x2</p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="vector-field-g">Vector Field g(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
+                <Label htmlFor="vector-field-g">Vector Field g(x) <span className="text-destructive" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Textarea id="vector-field-g" required aria-invalid={!!error} aria-describedby={`vector-field-g-help ${error ? 'nonlinear-error' : ''}`.trim()} value={g} onChange={(e) => setG(e.target.value)} placeholder="0, 1" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" autoComplete="off" />
                 <p id="vector-field-g-help" className="text-xs text-muted-foreground">Example: 0, 1</p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="output-function-h">Output Function h(x) <span className="text-red-500" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
+                <Label htmlFor="output-function-h">Output Function h(x) <span className="text-destructive" aria-hidden="true">*</span><span className="sr-only">(required)</span></Label>
                 <Input id="output-function-h" required aria-invalid={!!error} aria-describedby={`output-function-h-help ${error ? 'nonlinear-error' : ''}`.trim()} value={h} onChange={(e) => setH(e.target.value)} placeholder="x1" className="font-mono" spellCheck={false} autoCapitalize="none" autoCorrect="off" autoComplete="off" />
                 <p id="output-function-h-help" className="text-xs text-muted-foreground">Example: x1</p>
               </div>

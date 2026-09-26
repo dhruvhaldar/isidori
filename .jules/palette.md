@@ -104,3 +104,12 @@
 ## 2026-11-20 - Prevent Virtual Keyboard on Read-Only Inputs
 **Learning:** When using `<input>` fields to display read-only numeric data (like calculated matrix results), mobile and screen reader users can accidentally trigger the on-screen virtual keyboard when tapping or focusing on the cell, obscuring the screen unnecessarily.
 **Action:** Always dynamically set `inputMode="none"` on input elements when they are in a `readOnly` state (e.g., `inputMode={readOnly ? "none" : "decimal"}`). This explicitly instructs the mobile browser to suppress the virtual keyboard, significantly improving the micro-UX for touch users interacting with read-only results.
+
+
+## 2026-09-26 - Semantic colors for required indicators
+**Learning:** Hardcoding specific tailwind colors like `text-red-500` for form required indicators (`*`) can create contrast issues in dark mode and violates the design system's semantic intent.
+**Action:** Always use semantic design tokens (like `text-destructive`) for error and required indicators. This guarantees accessible contrast in both light and dark themes as defined by the application's core theme.
+
+## 2026-09-26 - Tactile Keyboard Shortcut Hints
+**Learning:** Grouping multiple `<kbd>` elements (like arrow keys) into a single flat background block reduces their visual affordance as individual keys, making the UI feel less polished.
+**Action:** Style visual keyboard hints (especially directional arrows or modifier combinations) as individual, distinct keycaps using a combination of border, background, and shadow (e.g., `rounded border bg-background px-1 shadow-sm font-sans`). This provides a satisfying, tactile micro-UX that users instantly recognize.
