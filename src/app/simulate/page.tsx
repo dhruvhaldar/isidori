@@ -182,7 +182,7 @@ export default function SimulatePage() {
                    )}
                  </Button>
                  {simError && (
-                   <div id="sim-error" className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                   <div id="sim-error" className="flex items-center gap-2 p-3 text-sm text-destructive rounded-md bg-destructive/10 dark:bg-destructive/20 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                      <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                      <span>{simError}</span>
                    </div>
@@ -208,13 +208,13 @@ export default function SimulatePage() {
               {simData.length > 0 ? (
                 <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isSimulating ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                    {isStale && (
-                     <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                     <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                        <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                        <span>Parameters changed. Run simulation again to update plot.</span>
                      </div>
                    )}
                    <SystemChart data={simData} />
-                   <div className={`flex items-center justify-center gap-2 p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"}`}>
+                   <div className={`flex items-center justify-center gap-2 p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400" : "bg-amber-500/10 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400"}`}>
                      {ddpStatus ? <CheckCircle aria-hidden="true" className="w-4 h-4" /> : <AlertTriangle aria-hidden="true" className="w-4 h-4" />}
                      {ddpStatus ? "DDP Solved & Applied" : "DDP Not Solvable (Open Loop / Best Effort)"}
                    </div>

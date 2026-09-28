@@ -201,7 +201,7 @@ export default function LinearSystemsPage() {
                   )}
                 </Button>
                 {vStarError && (
-                  <div id="vstar-error" className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                  <div id="vstar-error" className="flex items-center gap-2 p-3 text-sm text-destructive rounded-md bg-destructive/10 dark:bg-destructive/20 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                     <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>{vStarError}</span>
                   </div>
@@ -213,7 +213,7 @@ export default function LinearSystemsPage() {
               {vStar && (
                 <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : isVStarStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                   {isVStarStale && (
-                    <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                    <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                       <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                       <span>Matrices changed. Recompute to update V*.</span>
                     </div>
@@ -269,7 +269,7 @@ export default function LinearSystemsPage() {
                   )}
                 </Button>
                 {ddpError && (
-                  <div id="ddp-error" className="flex items-center gap-2 p-3 text-sm text-red-800 rounded-md bg-red-50 dark:bg-red-900/20 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                  <div id="ddp-error" className="flex items-center gap-2 p-3 text-sm text-destructive rounded-md bg-destructive/10 dark:bg-destructive/20 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                     <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>{ddpError}</span>
                   </div>
@@ -281,12 +281,12 @@ export default function LinearSystemsPage() {
               {ddpResult && (
                 <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : isDDPStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                   {isDDPStale && (
-                    <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                    <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                       <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                       <span>Matrices changed. Check DDP again to update results.</span>
                     </div>
                   )}
-                  <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"}`}>
+                  <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400" : "bg-destructive/10 text-destructive dark:bg-destructive/20"}`}>
                     {ddpResult.is_solvable ? <CheckCircle aria-hidden="true" className="w-5 h-5" /> : <XCircle aria-hidden="true" className="w-5 h-5" />}
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}
                   </div>
