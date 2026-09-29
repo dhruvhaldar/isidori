@@ -91,7 +91,8 @@ def rank(M, tol=None):
     # ⚡ Bolt: Early return for mathematically zero matrices (~20x-50x speedup)
     # Using the computationally cheap Frobenius norm check prevents running expensive
     # RRQR factorizations on matrices that are effectively zero (e.g. from iterative projections).
-    if M.size == 0:
+    # ⚡ Bolt: Further bypass the Frobenius norm calculation for exact zero matrices using fast C-level counting.
+    if M.size == 0 or np.count_nonzero(M) == 0:
         return 0
     # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
     norm_M = np.linalg.norm(M, ord='fro')
@@ -121,7 +122,8 @@ def basis(M, tol=None):
     # ⚡ Bolt: Early return for mathematically zero matrices (~20x-50x speedup)
     # Using the computationally cheap Frobenius norm check prevents running expensive
     # RRQR factorizations on matrices that are effectively zero (e.g. from iterative projections).
-    if M.size == 0:
+    # ⚡ Bolt: Further bypass the Frobenius norm calculation for exact zero matrices using fast C-level counting.
+    if M.size == 0 or np.count_nonzero(M) == 0:
         return np.zeros((M.shape[0], 0))
     # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
     norm_M = np.linalg.norm(M, ord='fro')
@@ -157,7 +159,8 @@ def kernel(M, tol=None):
     # ⚡ Bolt: Early return for mathematically zero matrices (~20x-50x speedup)
     # Using the computationally cheap Frobenius norm check prevents running expensive
     # RRQR factorizations on matrices that are effectively zero (e.g. from iterative projections).
-    if M.size == 0:
+    # ⚡ Bolt: Further bypass the Frobenius norm calculation for exact zero matrices using fast C-level counting.
+    if M.size == 0 or np.count_nonzero(M) == 0:
         return np.eye(M.shape[1])
     # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
     norm_M = np.linalg.norm(M, ord='fro')
