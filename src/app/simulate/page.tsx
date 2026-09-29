@@ -176,9 +176,10 @@ export default function SimulatePage() {
                      {isSimulating ? "Simulating..." : "Simulate Response"}
                    </div>
                    {!isSimulating && (
-                     <kbd aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 rounded border bg-primary-foreground/20 border-primary-foreground/30 px-1.5 font-mono text-[10px] font-medium text-primary-foreground opacity-100">
-                       <span className="text-xs">⌘</span>↵
-                     </kbd>
+                     <span aria-hidden="true" className="absolute right-4 hidden md:inline-flex items-center gap-1 opacity-100">
+                       <kbd className="rounded border bg-primary-foreground/20 border-primary-foreground/30 px-1.5 font-mono text-xs font-medium text-primary-foreground">⌘</kbd>
+                       <kbd className="rounded border bg-primary-foreground/20 border-primary-foreground/30 px-1.5 font-mono text-[10px] font-medium text-primary-foreground">↵</kbd>
+                     </span>
                    )}
                  </Button>
                  {simError && (

@@ -117,3 +117,6 @@
 ## 2026-11-20 - Semantic colors for alert banners
 **Learning:** Hardcoding specific Tailwind colors like `bg-red-50` or `text-green-800` for alert and status banners can cause accessibility issues such as poor contrast in dark mode, and breaks the visual harmony of the application's core theme.
 **Action:** Always use semantic design tokens (like `bg-destructive/10`, `text-destructive`, `bg-emerald-500/10`) for error, warning, and success banners to ensure accessible contrast and consistency across light and dark themes.
+## 2024-05-19 - Keyboard Hint Micro-UX
+**Learning:** Grouped `<kbd>` tags (like `<kbd>⌘⇧</kbd>`) fail to communicate the discrete tactile nature of multi-key shortcuts. Visually separating them into individual keycaps (`<kbd>⌘</kbd> <kbd>⇧</kbd>`) significantly improves readibility and aligns with standard UI affordances for keyboard shortcuts.
+**Action:** When styling keyboard shortcuts, always wrap individual character glyphs or keys in separate `<kbd>` tags inside a flex container with a small gap (`gap-1`), rather than placing multiple keys into a single `<kbd>` element.
