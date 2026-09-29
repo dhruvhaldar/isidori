@@ -146,7 +146,7 @@ export default function NonlinearSystemsPage() {
           <CardContent>
             <div aria-live="polite">
               {error && (
-                 <div id="nonlinear-error" className="flex items-center gap-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
+                 <div id="nonlinear-error" className="flex items-center gap-2 p-4 mb-4 text-sm text-destructive rounded-lg bg-destructive/10 dark:bg-destructive/20 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1" role="alert">
                    <AlertCircle aria-hidden="true" className="w-4 h-4 shrink-0" />
                    <span>{error}</span>
                  </div>
@@ -159,7 +159,7 @@ export default function NonlinearSystemsPage() {
             {result && (
               <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                 {isStale && (
-                  <div className="flex items-center gap-2 p-3 text-sm text-amber-800 rounded-md bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                  <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                     <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>Parameters changed. Recompute to update results.</span>
                   </div>

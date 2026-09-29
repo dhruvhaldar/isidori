@@ -113,3 +113,7 @@
 ## 2026-09-26 - Tactile Keyboard Shortcut Hints
 **Learning:** Grouping multiple `<kbd>` elements (like arrow keys) into a single flat background block reduces their visual affordance as individual keys, making the UI feel less polished.
 **Action:** Style visual keyboard hints (especially directional arrows or modifier combinations) as individual, distinct keycaps using a combination of border, background, and shadow (e.g., `rounded border bg-background px-1 shadow-sm font-sans`). This provides a satisfying, tactile micro-UX that users instantly recognize.
+
+## 2026-11-20 - Semantic colors for alert banners
+**Learning:** Hardcoding specific Tailwind colors like `bg-red-50` or `text-green-800` for alert and status banners can cause accessibility issues such as poor contrast in dark mode, and breaks the visual harmony of the application's core theme.
+**Action:** Always use semantic design tokens (like `bg-destructive/10`, `text-destructive`, `bg-emerald-500/10`) for error, warning, and success banners to ensure accessible contrast and consistency across light and dark themes.
