@@ -1,6 +1,17 @@
 import numpy as np
 import functools
 from scipy import linalg
+import math
+
+def fast_fro_norm(M):
+    """
+    ⚡ Bolt: Compute Frobenius norm using np.vdot directly for a ~2x speedup.
+    np.linalg.norm(..., ord='fro') has high dispatch overhead.
+    np.vdot operates instantly on flattened arrays in C.
+    """
+    if M.size == 0:
+        return 0.0
+    return math.sqrt(np.vdot(M, M).real)
 
 
 def is_orthonormal(M, tol=1e-8):
@@ -30,7 +41,7 @@ def is_orthonormal(M, tol=1e-8):
     if np.count_nonzero(np.abs(col_sq_norms - 1.0) >= tol) > 0:
         return False
 
-    return np.linalg.norm(M.T @ M - np.eye(M.shape[1]), ord='fro') < tol
+    return fast_fro_norm(M.T @ M - np.eye(M.shape[1])) < tol
 
 
 def hashable_cache(func):
@@ -83,7 +94,7 @@ def tolerance(M, norm_M=None):
     # Since ||M||_2 <= ||M||_F <= sqrt(r) ||M||_2, Frobenius norm provides a safe,
     # extremely fast upper bound for rank tolerances without computing an SVD.
     if norm_M is None:
-        norm_M = np.linalg.norm(M, 'fro')
+        norm_M = fast_fro_norm(M)
     return max(M.shape) * norm_M * np.finfo(M.dtype).eps
 
 def rank(M, tol=None):
@@ -95,7 +106,7 @@ def rank(M, tol=None):
     if M.size == 0 or np.count_nonzero(M) == 0:
         return 0
     # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
-    norm_M = np.linalg.norm(M, ord='fro')
+    norm_M = fast_fro_norm(M)
     tol_val = tol if tol is not None else tolerance(M, norm_M)
     if norm_M <= tol_val:
         return 0
@@ -126,7 +137,7 @@ def basis(M, tol=None):
     if M.size == 0 or np.count_nonzero(M) == 0:
         return np.zeros((M.shape[0], 0))
     # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
-    norm_M = np.linalg.norm(M, ord='fro')
+    norm_M = fast_fro_norm(M)
     tol_val = tol if tol is not None else tolerance(M, norm_M)
     if norm_M <= tol_val:
         return np.zeros((M.shape[0], 0))
@@ -163,7 +174,7 @@ def kernel(M, tol=None):
     if M.size == 0 or np.count_nonzero(M) == 0:
         return np.eye(M.shape[1])
     # ⚡ Bolt: Cache Frobenius norm to prevent redundant O(N*M) calculation when tol=None
-    norm_M = np.linalg.norm(M, ord='fro')
+    norm_M = fast_fro_norm(M)
     tol_val = tol if tol is not None else tolerance(M, norm_M)
     if norm_M <= tol_val:
         return np.eye(M.shape[1])
@@ -212,7 +223,7 @@ def intersection(A, B, tol=1e-10):
         if A_is_ortho:
             # ⚡ Bolt: If A is orthonormal and B is not, swap roles (~2.5x speedup)
             proj_B_perp = B - A @ (A.T @ B)
-            if np.linalg.norm(proj_B_perp, ord='fro') < tol * max(B.shape) * max(1.0, np.linalg.norm(B, ord='fro')):
+            if fast_fro_norm(proj_B_perp) < tol * max(B.shape) * max(1.0, fast_fro_norm(B)):
                 return basis(B, tol)
             K = kernel(proj_B_perp, tol)
             if K.size == 0:
@@ -227,7 +238,7 @@ def intersection(A, B, tol=1e-10):
     # ⚡ Bolt: Early return if A is fully contained in B (~35% speedup)
     # If the orthogonal projection is approximately zero, A is a subset of B.
     # Return A's basis immediately to bypass expensive RRQR kernel computations.
-    if np.linalg.norm(proj_A_perp, ord='fro') < tol * max(A.shape) * max(1.0, np.linalg.norm(A, ord='fro')):
+    if fast_fro_norm(proj_A_perp) < tol * max(A.shape) * max(1.0, fast_fro_norm(A)):
         return basis(A, tol)
 
     K = kernel(proj_A_perp, tol)
@@ -261,7 +272,7 @@ def sum_spaces(A, B, tol=1e-10):
         # ⚡ Bolt: Early return if B is fully contained in A (~2.4x speedup for subset case)
         # If the orthogonal projection is approximately zero, B is a subset of A.
         # Return A immediately to bypass RRQR basis computation on a near-zero matrix.
-        if np.linalg.norm(B_perp, ord='fro') < tol * max(B.shape) * max(1.0, np.linalg.norm(B, ord='fro')):
+        if fast_fro_norm(B_perp) < tol * max(B.shape) * max(1.0, fast_fro_norm(B)):
             return A
 
         B_new = basis(B_perp, tol)
@@ -276,7 +287,7 @@ def sum_spaces(A, B, tol=1e-10):
     if B_is_ortho:
         A_perp = A - B @ (B.T @ A)
 
-        if np.linalg.norm(A_perp, ord='fro') < tol * max(A.shape) * max(1.0, np.linalg.norm(A, ord='fro')):
+        if fast_fro_norm(A_perp) < tol * max(A.shape) * max(1.0, fast_fro_norm(A)):
             return B
 
         A_new = basis(A_perp, tol)
@@ -314,7 +325,7 @@ def inverse_image(A, S, tol=1e-10):
 
     # ⚡ Bolt: Early return if Im(A) is fully contained in S (~3x speedup)
     # If the projection is zero, A^{-1}(S) is the entire domain.
-    if np.linalg.norm(proj_A_perp, ord='fro') < tol * max(A.shape) * max(1.0, np.linalg.norm(A, ord='fro')):
+    if fast_fro_norm(proj_A_perp) < tol * max(A.shape) * max(1.0, fast_fro_norm(A)):
         return np.eye(A.shape[1])
 
     return kernel(proj_A_perp, tol)

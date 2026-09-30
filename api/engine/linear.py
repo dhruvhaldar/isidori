@@ -1,5 +1,5 @@
 import numpy as np
-from .utils import hashable_cache, basis, kernel, intersection, sum_spaces, inverse_image, rank, is_orthonormal
+from .utils import hashable_cache, basis, kernel, intersection, sum_spaces, inverse_image, rank, is_orthonormal, fast_fro_norm
 
 @hashable_cache
 def compute_v_star(A, B, C, tol=1e-10):
@@ -75,7 +75,7 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     V_star = compute_v_star(A, B, C, tol)
     
     # If E is zero, it's always solvable
-    norm_E = np.linalg.norm(E, ord='fro') if E.size > 0 else 0
+    norm_E = fast_fro_norm(E) if E.size > 0 else 0
     if E.size == 0 or E.shape[1] == 0 or norm_E < tol:
         return True, V_star, np.zeros((B.shape[1], A.shape[0])) # F is dummy
 
@@ -89,7 +89,7 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     # perfectly recovers E avoids computing two expensive SVDs (for ImE and [V* ImE]).
     # This yields a ~2x performance speedup for DDP check loops.
     projection = V_star @ (V_star.T @ E)
-    diff_norm = np.linalg.norm(E - projection, ord='fro')
+    diff_norm = fast_fro_norm(E - projection)
     
     # Use consistent tolerance bounds
     tolerance_val = tol * max(E.shape) * max(1, norm_E)
@@ -178,7 +178,7 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     # If the orthogonal projection of A V_star onto V_star's complement is zero,
     # then A V_star is fully contained in V_star. The least-squares problem
     # B_proj Y = 0 trivially yields Y = 0, so we can return F = 0 and bypass lstsq.
-    if np.linalg.norm(A_proj, ord='fro') < tol:
+    if fast_fro_norm(A_proj) < tol:
         return np.zeros((B.shape[1], A.shape[0]))
 
     B_proj = B - V_star @ (V_star.T @ B)
