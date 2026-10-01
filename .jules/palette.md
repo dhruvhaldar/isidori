@@ -120,3 +120,7 @@
 ## 2024-05-19 - Keyboard Hint Micro-UX
 **Learning:** Grouped `<kbd>` tags (like `<kbd>⌘⇧</kbd>`) fail to communicate the discrete tactile nature of multi-key shortcuts. Visually separating them into individual keycaps (`<kbd>⌘</kbd> <kbd>⇧</kbd>`) significantly improves readibility and aligns with standard UI affordances for keyboard shortcuts.
 **Action:** When styling keyboard shortcuts, always wrap individual character glyphs or keys in separate `<kbd>` tags inside a flex container with a small gap (`gap-1`), rather than placing multiple keys into a single `<kbd>` element.
+
+## 2026-11-20 - Add tactile feedback to site brand links
+**Learning:** The main site brand link (logo) in the navigation header often lacks interactive feedback, making it feel static compared to other active elements on the page.
+**Action:** Always add tactile feedback classes (like `transition-transform active:scale-[0.98]`) to the main brand link to improve perceived responsiveness and consistency with other interactive navigation elements.
