@@ -29,7 +29,7 @@ export default function RootLayout({
               role="group"
               aria-label="Scrollable navigation container"
             >
-              <Link className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm shrink-0" href="/">
+              <Link className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm shrink-0 transition-transform active:scale-[0.98]" href="/">
                 <span className="font-bold inline-block">Isidori</span>
               </Link>
               <nav aria-label="Main navigation" className="flex items-center space-x-6 text-sm font-medium">
