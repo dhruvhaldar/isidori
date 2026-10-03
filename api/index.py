@@ -28,8 +28,12 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         if request.method in ["POST", "PUT", "PATCH"]:
             content_length = request.headers.get("content-length")
-            if content_length and int(content_length) > self.max_upload_size:
-                return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
+            if content_length:
+                try:
+                    if int(content_length) > self.max_upload_size:
+                        return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
+                except ValueError:
+                    return JSONResponse(status_code=400, content={"detail": "Invalid content-length header"})
 
             # Wrap request._receive to track chunked transfer encoding size
             receive_ = request._receive
