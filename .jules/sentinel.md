@@ -79,3 +79,8 @@
 **Vulnerability:** Empty nested lists `[]` or `[[]]` in Pydantic models for matrix inputs bypass implicit validation skips (`if not mat: continue`) and cause unhandled exceptions when parsed by `numpy.array()`, leading to an Application-Layer Denial of Service (DoS) attack.
 **Learning:** Pydantic validators should explicitly reject empty nested structures intended for strict mathematical operations, rather than silently skipping them, because downstream tools like NumPy expect precise dimensional shapes.
 **Prevention:** Always use `not mat or not mat[0]` in validators to explicitly block and raise `ValueError` for empty matrices.
+
+## 2024-10-31 - [CRITICAL] Prevent Application-Layer DoS via Unhandled Middleware Exceptions
+**Vulnerability:** The custom `RequestSizeLimitMiddleware` parsed the `content-length` header directly using `int(content_length)`. If an attacker sent a request with a non-numeric `content-length` header (e.g., `content-length: abc`), it caused an unhandled `ValueError` at the ASGI middleware level, bypassing standard exception handlers and potentially leading to Application-Layer DoS.
+**Learning:** Type conversions of user-supplied HTTP headers in ASGI middleware must always be properly handled to prevent unhandled exceptions.
+**Prevention:** Always wrap type conversions of user-supplied HTTP headers (e.g., `int(content_length)`) in a `try...except ValueError` block and return an appropriate HTTP response (like 400 Bad Request) within custom FastAPI/Starlette middlewares.
