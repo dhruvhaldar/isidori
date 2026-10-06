@@ -203,8 +203,8 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
   }
 
   return (
-    <fieldset className="space-y-2 relative min-w-0">
-      <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none">
+    <fieldset className="space-y-2 relative min-w-0 group">
+      <legend className="w-full flex items-center justify-between mb-2 text-sm font-medium leading-none group-disabled:opacity-70 group-disabled:cursor-not-allowed">
         <div className="flex items-center gap-2">
           <span>{label} ({rows}x{cols})</span>
           {!readOnly && rows > 0 && cols > 0 && (
