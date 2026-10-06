@@ -124,3 +124,7 @@
 ## 2026-11-20 - Tactile Feedback for Brand Logos
 **Learning:** Main site brand links (logos) often lack the tactile feedback provided to other interactive elements (like nav links or buttons). This creates a disjointed experience where the primary interaction point of the site header feels static and less responsive.
 **Action:** To improve perceived responsiveness and consistency with other interactive elements, always apply tactile feedback utility classes (e.g., `transition-transform active:scale-[0.98]`) to the main site brand link (logo) in the navigation header.
+
+## 2026-10-06 - Consistent disabled states for Labels and Legends
+**Learning:** When using `<fieldset className="group" disabled>` to disable a block of inputs, child `<label>` and `<legend>` elements may not correctly dim (opacity change) like the actual `<input>` elements do. This creates a disjointed UI state where inputs appear disabled but their labels look fully active.
+**Action:** Always append `group-disabled:opacity-70 group-disabled:cursor-not-allowed` utility classes to `<label>` and `<legend>` components so they receive the same visual dimming and pointer treatments as the disabled form controls they describe.
