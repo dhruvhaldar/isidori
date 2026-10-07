@@ -258,3 +258,6 @@
 ## 2024-05-27 - Use math.sqrt(np.vdot(M, M).real) instead of np.linalg.norm(M, ord='fro')
 **Learning:** In NumPy, the generalized `np.linalg.norm(..., ord='fro')` has a high Python dispatch overhead. For computing the Frobenius norm of a matrix (or Euclidean norm of a vector), `math.sqrt(np.vdot(M, M).real)` operates instantly on flattened arrays at the C level, avoiding intermediate allocations. Benchmarks show a ~2x performance speedup.
 **Action:** Replace `np.linalg.norm(M, ord='fro')` with a helper like `math.sqrt(np.vdot(M, M).real)` when computing Frobenius norms in hot loops or frequent calculations.
+## 2026-11-20 - Fast Orthonormality Column Unit Length Heuristic Optimization
+**Learning:** In NumPy geometric operations, using `np.einsum('ij,ij->j', M, M)` to compute squared column Euclidean norms is slower than `(M * M).sum(axis=0)` for computing column norms across various matrix sizes.
+**Action:** When calculating squared column norms for heuristic checks (like checking if matrix columns are unit length for orthonormality), replace `np.einsum('ij,ij->j', M, M)` with `(M * M).sum(axis=0)`.
