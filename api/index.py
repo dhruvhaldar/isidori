@@ -45,10 +45,31 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
                 if message["type"] == "http.request":
                     total_size += len(message.get("body", b""))
                     if total_size > self.max_upload_size:
-                        raise HTTPException(status_code=413, detail="Request payload too large")
+                        from starlette.requests import ClientDisconnect
+                        raise ClientDisconnect()
                 return message
 
             request._receive = receive
+
+            try:
+                return await call_next(request)
+            except Exception as e:
+                from starlette.requests import ClientDisconnect
+                from fastapi.responses import JSONResponse
+                if isinstance(e, ClientDisconnect):
+                    return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
+
+                # In Starlette 0.28+ (with AnyIO 4+), the exception is wrapped in an ExceptionGroup
+                # when raised inside the receive stream.
+                # Handle it safely for Python versions prior to 3.11
+                try:
+                    if isinstance(e, ExceptionGroup):
+                        for sub_exc in e.exceptions:
+                            if isinstance(sub_exc, ClientDisconnect):
+                                return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
+                except NameError:
+                    pass
+                raise
 
         return await call_next(request)
 
