@@ -128,3 +128,7 @@
 ## 2026-10-06 - Consistent disabled states for Labels and Legends
 **Learning:** When using `<fieldset className="group" disabled>` to disable a block of inputs, child `<label>` and `<legend>` elements may not correctly dim (opacity change) like the actual `<input>` elements do. This creates a disjointed UI state where inputs appear disabled but their labels look fully active.
 **Action:** Always append `group-disabled:opacity-70 group-disabled:cursor-not-allowed` utility classes to `<label>` and `<legend>` components so they receive the same visual dimming and pointer treatments as the disabled form controls they describe.
+
+## 2026-11-20 - Smooth Focus Ring Transitions
+**Learning:** Form controls like `<input>` and `<textarea>` that instantly snap to their focused state (with a solid ring and border color change) can feel slightly jarring during rapid keyboard navigation, reducing the overall micro-UX polish.
+**Action:** To provide a smoother visual experience, always add tactile transition classes (like `transition-colors duration-200`) to form elements. This allows the focus ring and border color to smoothly glow into existence when focused, matching the polished transitions of adjacent buttons and links.
