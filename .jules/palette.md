@@ -128,3 +128,6 @@
 ## 2026-10-06 - Consistent disabled states for Labels and Legends
 **Learning:** When using `<fieldset className="group" disabled>` to disable a block of inputs, child `<label>` and `<legend>` elements may not correctly dim (opacity change) like the actual `<input>` elements do. This creates a disjointed UI state where inputs appear disabled but their labels look fully active.
 **Action:** Always append `group-disabled:opacity-70 group-disabled:cursor-not-allowed` utility classes to `<label>` and `<legend>` components so they receive the same visual dimming and pointer treatments as the disabled form controls they describe.
+## 2024-05-18 - Smooth focus rings on form elements
+**Learning:** Tailwind CSS uses box-shadows to implement focus rings (`ring-2`, `ring-offset-2`). If these are applied without transitions, the focus state snaps on immediately, which can feel jarring and reduces the polish of the keyboard navigation micro-UX.
+**Action:** Always apply tactile transition classes like `transition-shadow duration-200` (or the broader `transition` class) to elements like `<Input>` and `<Textarea>` that receive focus rings. This creates a smooth visual glow when elements are focused, improving the overall interaction feel.
