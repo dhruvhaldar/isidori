@@ -252,7 +252,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             type="button"
             variant={confirmClear ? "destructive" : "ghost"}
             size="sm"
-            className={`h-6 px-2 text-xs transition-colors group ${!confirmClear ? "text-muted-foreground hover:text-destructive focus-visible:text-destructive" : ""}`}
+            className={`h-6 px-2 text-xs transition group ${!confirmClear ? "text-muted-foreground hover:text-destructive focus-visible:text-destructive" : ""}`}
             onClick={handleClearClick}
             onBlur={() => setConfirmClear(false)}
             onKeyDown={(e) => {
