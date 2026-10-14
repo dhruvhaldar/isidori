@@ -131,3 +131,6 @@
 ## 2024-05-18 - Smooth focus rings on form elements
 **Learning:** Tailwind CSS uses box-shadows to implement focus rings (`ring-2`, `ring-offset-2`). If these are applied without transitions, the focus state snaps on immediately, which can feel jarring and reduces the polish of the keyboard navigation micro-UX.
 **Action:** Always apply tactile transition classes like `transition-shadow duration-200` (or the broader `transition` class) to elements like `<Input>` and `<Textarea>` that receive focus rings. This creates a smooth visual glow when elements are focused, improving the overall interaction feel.
+## 2024-05-18 - Smooth focus rings and active scale states
+**Learning:** Using Tailwind's `transition-colors` on interactive elements (like buttons or links) fails to animate `box-shadow` (used by `focus-visible:ring-2`) and `transform` (used by `active:scale-[0.98]`). This causes focus states and tactile press interactions to snap instantly, which creates a jarring micro-UX.
+**Action:** Always use the broader `transition` or `transition-all` class instead of `transition-colors` on interactive components that feature tactile feedback like scaling or focus rings.
