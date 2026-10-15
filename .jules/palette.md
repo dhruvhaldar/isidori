@@ -134,3 +134,6 @@
 ## 2024-05-18 - Smooth focus rings and active scale states
 **Learning:** Using Tailwind's `transition-colors` on interactive elements (like buttons or links) fails to animate `box-shadow` (used by `focus-visible:ring-2`) and `transform` (used by `active:scale-[0.98]`). This causes focus states and tactile press interactions to snap instantly, which creates a jarring micro-UX.
 **Action:** Always use the broader `transition` or `transition-all` class instead of `transition-colors` on interactive components that feature tactile feedback like scaling or focus rings.
+## 2026-11-20 - Semantic Colors for Chart Visualizations
+**Learning:** Hardcoding specific hex colors (like `#2563eb` or `#ef4444`) for chart lines or visualization elements causes contrast issues in dark mode and breaks the visual harmony of the application's core theme.
+**Action:** Always use semantic design tokens (like `hsl(var(--primary))` or `hsl(var(--destructive))`) for stroke and fill colors in visualizations (such as Recharts). This guarantees accessible contrast in both light and dark themes as defined by the application's core theme.
