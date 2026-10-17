@@ -137,3 +137,7 @@
 ## 2026-11-20 - Semantic Colors for Chart Visualizations
 **Learning:** Hardcoding specific hex colors (like `#2563eb` or `#ef4444`) for chart lines or visualization elements causes contrast issues in dark mode and breaks the visual harmony of the application's core theme.
 **Action:** Always use semantic design tokens (like `hsl(var(--primary))` or `hsl(var(--destructive))`) for stroke and fill colors in visualizations (such as Recharts). This guarantees accessible contrast in both light and dark themes as defined by the application's core theme.
+
+## 2026-11-20 - Semantic Colors for Chart Grids and Axes
+**Learning:** By default, data visualization libraries like Recharts often use hardcoded, non-thematic colors (like `#666` or `#ccc`) for structural elements such as grid lines, axes, and ticks. In custom themes, especially dark modes, these defaults create stark contrast clashes and break the cohesive visual language of the application.
+**Action:** Always explicitly override the default `stroke` and `fill` colors of structural chart components (e.g., `<CartesianGrid>`, `<XAxis>`, `<YAxis>`) using semantic design tokens (like `hsl(var(--border))` and `hsl(var(--muted-foreground))`). This ensures all parts of the visualization adapt harmoniously to the active theme.

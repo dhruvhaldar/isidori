@@ -31,11 +31,12 @@ export const SystemChart = React.memo(function SystemChart({ data }: SystemChart
               bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" label={{ value: 'Time (s)', position: 'insideBottomRight', offset: -5 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <XAxis dataKey="time" label={{ value: 'Time (s)', position: 'insideBottomRight', offset: -5 }} stroke="hsl(var(--muted-foreground))" />
             <YAxis
               tickFormatter={formatScientific}
               label={{ value: 'Value', angle: -90, position: 'insideLeft' }}
+              stroke="hsl(var(--muted-foreground))"
             />
             <Tooltip formatter={(value: number) => formatScientific(value)} />
             <Legend />
