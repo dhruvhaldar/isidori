@@ -237,7 +237,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
             </span>
             {copied ? (
               <>
-                <Check aria-hidden="true" className="w-3 h-3 mr-1 text-emerald-600 dark:text-emerald-400" />
+                <Check aria-hidden="true" className="w-3 h-3 mr-1 text-emerald-600 dark:text-emerald-400 transition-transform group-hover:scale-110 group-focus-visible:scale-110" />
                 <span aria-hidden="true" className="text-emerald-600 dark:text-emerald-400">Copied</span>
               </>
             ) : (
