@@ -185,6 +185,19 @@ class LinearSystemInput(BaseModel):
                 first_row_len = len(mat[0])
                 if any(len(row) != first_row_len for row in mat):
                     raise ValueError(f"Matrix {mat_name} is not rectangular")
+
+        # 🛡️ Sentinel: Enforce mathematical compatibility of matrix dimensions to prevent
+        # downstream Application-Layer DoS via NumPy ValueError during geometric operations.
+        n = len(self.A)
+        if len(self.A[0]) != n:
+            raise ValueError("Matrix A must be a square matrix")
+        if len(self.B) != n:
+            raise ValueError(f"Matrix B must have exactly {n} rows to match Matrix A")
+        if len(self.C[0]) != n:
+            raise ValueError(f"Matrix C must have exactly {n} columns to match Matrix A")
+        if self.E is not None and len(self.E) != n:
+            raise ValueError(f"Matrix E must have exactly {n} rows to match Matrix A")
+
         return self
 
 class NonlinearSystemInput(BaseModel):
