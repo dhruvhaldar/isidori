@@ -285,7 +285,7 @@ export const MatrixInput = React.memo(function MatrixInput({ label, rows, cols, 
         </div>
       ) : (
         <div
-          className="w-full overflow-x-auto pb-2 -mx-1 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+          className="w-full overflow-x-auto pb-2 -mx-1 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm transition-shadow duration-200"
           tabIndex={0}
           role="group"
           aria-label={`${label} matrix container`}
