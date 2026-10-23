@@ -175,7 +175,7 @@ export default function NonlinearSystemsPage() {
                      <h3 className="text-sm font-medium leading-none">L_g L_f^(r-1) h (Decoupling Matrix):</h3>
                      <div className="relative group">
                        <div
-                         className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                         className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 transition-shadow duration-200"
                          tabIndex={0}
                          role="group"
                          aria-label="Decoupling Matrix"
@@ -197,7 +197,7 @@ export default function NonlinearSystemsPage() {
                       {result.Lie_derivatives.map((expr: string, i: number) => (
                         <li key={i} className="relative group">
                           <div
-                            className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                            className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 transition-shadow duration-200"
                             tabIndex={0}
                             role="group"
                             aria-label={`Lie derivative k=${i}`}

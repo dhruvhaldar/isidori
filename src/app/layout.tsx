@@ -24,7 +24,7 @@ export default function RootLayout({
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-14 items-center">
             <div
-              className="mr-4 flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+              className="mr-4 flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm transition-shadow duration-200"
               tabIndex={0}
               role="group"
               aria-label="Scrollable navigation container"
