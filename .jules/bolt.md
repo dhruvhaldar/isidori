@@ -267,3 +267,7 @@
 ## 2026-11-20 - Fast Array Diagonal Extraction
 **Learning:** In NumPy, when extracting the diagonal of a 2D array (e.g., from a QR decomposition `R` matrix), using `np.diag(R)` forces NumPy to create a new array and copy the diagonal elements into it, leading to $O(N)$ memory allocation overhead. Replacing it with the `R.diagonal()` method is significantly faster because it returns a read-only view of the diagonal elements without any new memory allocation. Benchmarks show `R.diagonal()` provides a ~3x performance speedup.
 **Action:** When extracting the diagonal from a 2D NumPy array in hot loops or frequent calculations, always use the `.diagonal()` method instead of the `np.diag()` function to bypass memory allocation overhead.
+
+## 2023-10-24 - [Optimize NumPy Array Aggregation]
+**Learning:** `np.sum(ndarray)` adds Python-level dispatching overhead and is noticeably slower than calling the `ndarray.sum()` method directly in performance-critical code.
+**Action:** When working with known `ndarray` objects, always use their built-in aggregation methods (like `.sum()`) instead of the module-level NumPy functions to avoid coercion overhead.
