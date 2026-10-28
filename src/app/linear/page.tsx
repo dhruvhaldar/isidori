@@ -212,13 +212,14 @@ export default function LinearSystemsPage() {
                 )}
               </div>
               {vStar && (
-                <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : isVStarStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                <>
                   {isVStarStale && (
-                    <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                    <div className="flex items-center gap-2 p-3 mt-4 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                       <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                       <span>Matrices changed. Recompute to update V*.</span>
                     </div>
                   )}
+                  <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isComputingVStar ? "opacity-50 pointer-events-none" : isVStarStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                   <MatrixInput
                     label="V* Basis Matrix"
                     rows={vStar.length}
@@ -230,6 +231,7 @@ export default function LinearSystemsPage() {
                     Columns represent basis vectors for V*. If empty, V* is trivial or zero.
                   </p>
                 </div>
+                </>
               )}
               {!vStar && (
                 <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
@@ -282,13 +284,14 @@ export default function LinearSystemsPage() {
                 )}
               </div>
               {ddpResult && (
-                <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : isDDPStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                <>
                   {isDDPStale && (
-                    <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                    <div className="flex items-center gap-2 p-3 mt-4 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                       <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                       <span>Matrices changed. Check DDP again to update results.</span>
                     </div>
                   )}
+                  <div className={`mt-4 space-y-2 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isCheckingDDP ? "opacity-50 pointer-events-none" : isDDPStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                   <div className={`flex items-center justify-center gap-2 p-2 rounded-md font-bold text-center ${ddpResult.is_solvable ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400" : "bg-destructive/10 text-destructive dark:bg-destructive/20"}`}>
                     {ddpResult.is_solvable ? <CheckCircle aria-hidden="true" className="w-5 h-5" /> : <XCircle aria-hidden="true" className="w-5 h-5" />}
                     {ddpResult.is_solvable ? "Solvable" : "Not Solvable"}
@@ -305,6 +308,7 @@ export default function LinearSystemsPage() {
                     </div>
                   )}
                 </div>
+                </>
               )}
               {!ddpResult && (
                 <div className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg text-muted-foreground mt-4 bg-muted/10 gap-2">
