@@ -207,13 +207,14 @@ export default function SimulatePage() {
             </CardHeader>
             <CardContent>
               {simData.length > 0 ? (
-                <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isSimulating ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                <div className="space-y-4">
                    {isStale && (
                      <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                        <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                        <span>Parameters changed. Run simulation again to update plot.</span>
                      </div>
                    )}
+                   <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isSimulating ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                    <SystemChart data={simData} />
                    <div className={`flex items-center justify-center gap-2 p-2 rounded text-center text-sm font-semibold ${ddpStatus ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400" : "bg-amber-500/10 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400"}`}>
                      {ddpStatus ? <CheckCircle aria-hidden="true" className="w-4 h-4" /> : <AlertTriangle aria-hidden="true" className="w-4 h-4" />}
@@ -222,6 +223,7 @@ export default function SimulatePage() {
                    <p className="text-xs text-muted-foreground">
                      If DDP is solvable, the output should remain close to zero despite the disturbance.
                    </p>
+                   </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg text-muted-foreground bg-muted/10 gap-2">
