@@ -92,3 +92,8 @@
 **Vulnerability:** The Pydantic model for linear system inputs verified that matrices were rectangular and non-empty, but failed to verify that their dimensions were mathematically compatible (e.g. `B` having the same number of rows as `A`). Submitting incompatible matrices caused unhandled `ValueError` exceptions deep within the NumPy C-engine during geometric operations (like `A @ V`), which bypassed `422 Unprocessable Entity` handling and resulted in Application-Layer DoS via server errors.
 **Learning:** Checking that individual matrices are valid (rectangular, within bounds) is insufficient when those matrices will be used together in linear algebra operations. Mathematical compatibility must be verified at the input boundary.
 **Prevention:** Always enforce mathematical compatibility of matrix dimensions (e.g. `len(A) == len(A[0])`, `len(B) == len(A)`) in a `@model_validator` before allowing the data to reach computational functions.
+
+## 2024-10-31 - [Middleware UnboundLocalError DoS]
+**Vulnerability:** Application-Layer DoS due to `UnboundLocalError` in FastAPI middleware on requests with oversized payloads.
+**Learning:** Python treats variables imported locally (e.g., `from fastapi.responses import JSONResponse`) inside nested blocks (like `except` handlers) as local variables for the entire function scope. If that variable is referenced earlier in the function (e.g., to conditionally return a 413 Payload Too Large response before the exception block), it raises an `UnboundLocalError`. This causes an unhandled 500 server error, creating a DoS vulnerability.
+**Prevention:** Always place imports for objects used throughout a function at the top level of the file, not inside local exception handlers or nested blocks.
