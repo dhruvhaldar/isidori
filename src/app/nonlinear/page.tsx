@@ -158,65 +158,67 @@ export default function NonlinearSystemsPage() {
             </div>
             
             {result && (
-              <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+              <div>
                 {isStale && (
-                  <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
+                  <div className="mb-4 flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                     <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>Parameters changed. Recompute to update results.</span>
                   </div>
                 )}
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <span className="font-semibold">Relative Degree (r):</span>
-                  <span className="text-2xl font-bold">{result.relative_degree !== null ? result.relative_degree : "Undefined"}</span>
-                </div>
-                
-                {result.Lg_Lf_h && (
-                  <div className="space-y-2">
-                     <h3 className="text-sm font-medium leading-none">L_g L_f^(r-1) h (Decoupling Matrix):</h3>
-                     <div className="relative group">
-                       <div
-                         className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 transition-shadow duration-200"
-                         tabIndex={0}
-                         role="group"
-                         aria-label="Decoupling Matrix"
-                       >
-                         {result.Lg_Lf_h}
+                <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <span className="font-semibold">Relative Degree (r):</span>
+                    <span className="text-2xl font-bold">{result.relative_degree !== null ? result.relative_degree : "Undefined"}</span>
+                  </div>
+
+                  {result.Lg_Lf_h && (
+                    <div className="space-y-2">
+                       <h3 className="text-sm font-medium leading-none">L_g L_f^(r-1) h (Decoupling Matrix):</h3>
+                       <div className="relative group">
+                         <div
+                           className="p-3 pr-10 bg-secondary rounded-md font-mono text-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 transition-shadow duration-200"
+                           tabIndex={0}
+                           role="group"
+                           aria-label="Decoupling Matrix"
+                         >
+                           {result.Lg_Lf_h}
+                         </div>
+                         <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity group/btn" onClick={() => handleCopy(result.Lg_Lf_h)} title={copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}>
+                           <span className="sr-only">{copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}</span>
+                           {copiedText === result.Lg_Lf_h ? <Check aria-hidden="true" className="h-3 w-3 text-emerald-600 dark:text-emerald-400 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" /> : <Copy aria-hidden="true" className="h-3 w-3 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" />}
+                         </Button>
                        </div>
-                       <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity group/btn" onClick={() => handleCopy(result.Lg_Lf_h)} title={copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}>
-                         <span className="sr-only">{copiedText === result.Lg_Lf_h ? "Copied decoupling matrix" : "Copy decoupling matrix"}</span>
-                         {copiedText === result.Lg_Lf_h ? <Check aria-hidden="true" className="h-3 w-3 text-emerald-600 dark:text-emerald-400 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" /> : <Copy aria-hidden="true" className="h-3 w-3 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" />}
-                       </Button>
-                     </div>
-                  </div>
-                )}
-                
-                {result.Lie_derivatives && (
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium leading-none">Lie Derivatives (L_f^k h):</h3>
-                    <ul className="space-y-1">
-                      {result.Lie_derivatives.map((expr: string, i: number) => (
-                        <li key={i} className="relative group">
-                          <div
-                            className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 transition-shadow duration-200"
-                            tabIndex={0}
-                            role="group"
-                            aria-label={`Lie derivative k=${i}`}
-                          >
-                            <span>k={i}: {expr}</span>
-                          </div>
-                          <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity group/btn" onClick={() => handleCopy(expr)} title={copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}>
-                            <span className="sr-only">{copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}</span>
-                            {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3 text-emerald-600 dark:text-emerald-400 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" /> : <Copy aria-hidden="true" className="h-3 w-3 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" />}
-                          </Button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                {result.message && (
-                  <p className="text-muted-foreground">{result.message}</p>
-                )}
+                    </div>
+                  )}
+
+                  {result.Lie_derivatives && (
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium leading-none">Lie Derivatives (L_f^k h):</h3>
+                      <ul className="space-y-1">
+                        {result.Lie_derivatives.map((expr: string, i: number) => (
+                          <li key={i} className="relative group">
+                            <div
+                              className="p-2 pr-10 bg-secondary/50 rounded text-sm font-mono overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 transition-shadow duration-200"
+                              tabIndex={0}
+                              role="group"
+                              aria-label={`Lie derivative k=${i}`}
+                            >
+                              <span>k={i}: {expr}</span>
+                            </div>
+                            <Button variant="ghost" size="icon" aria-live="polite" className="absolute right-1 top-1 h-6 w-6 md:opacity-0 md:group-hover:opacity-100 md:group-has-[:focus-visible]:opacity-100 focus-visible:opacity-100 transition-opacity group/btn" onClick={() => handleCopy(expr)} title={copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}>
+                              <span className="sr-only">{copiedText === expr ? `Copied Lie derivative k=${i}` : `Copy Lie derivative k=${i}`}</span>
+                              {copiedText === expr ? <Check aria-hidden="true" className="h-3 w-3 text-emerald-600 dark:text-emerald-400 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" /> : <Copy aria-hidden="true" className="h-3 w-3 transition-transform group-hover/btn:scale-110 group-focus-visible/btn:scale-110" />}
+                            </Button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {result.message && (
+                    <p className="text-muted-foreground">{result.message}</p>
+                  )}
+                </div>
               </div>
             )}
             
