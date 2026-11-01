@@ -40,7 +40,8 @@ def compute_v_star(A, B, C, tol=1e-10):
         # Instead of finding the full preimage of S across R^n and intersecting with V,
         # restrict the domain of A to V, find the preimage Y, and map it back to R^n.
         # This bypasses the expensive intersection algorithm completely.
-        Y = inverse_image(A @ V, S, tol)
+        # ⚡ Bolt: Use .dot() instead of @ to reduce python dispatcher overhead
+        Y = inverse_image(A.dot(V), S, tol)
         
         if Y.size == 0:
             return np.zeros((n, 0))
@@ -48,14 +49,14 @@ def compute_v_star(A, B, C, tol=1e-10):
         # ⚡ Bolt: Fast convergence check (~1.5x speedup in final iteration)
         # If the preimage Y has the same dimension as V, then V_next will have the
         # same dimension as V. Since V_next is a subspace of V, they must be the same space.
-        # We can return V directly, completely bypassing the V @ Y matrix multiplication
+        # We can return V directly, completely bypassing the V.dot(Y) matrix multiplication
         # and the subsequent basis() orthonormalization.
         if Y.shape[1] == V.shape[1]:
             return V
 
         # V_next is the basis of V mapped by Y.
         # We use basis() to ensure strict orthonormality to prevent regressions.
-        V_next = basis(V @ Y, tol)
+        V_next = basis(V.dot(Y), tol)
         
         # Check convergence
         # If dimensions are same, we are done (since V_next is subset of V)
@@ -88,7 +89,7 @@ def check_disturbance_decoupling(A, B, E, C, tol=1e-10):
     # ⚡ Bolt: V* is an orthonormal basis. Projecting E onto V* and checking if it
     # perfectly recovers E avoids computing two expensive SVDs (for ImE and [V* ImE]).
     # This yields a ~2x performance speedup for DDP check loops.
-    projection = V_star @ (V_star.T @ E)
+    projection = V_star.dot(V_star.T.dot(E))
     diff_norm = fast_fro_norm(E - projection)
     
     # Use consistent tolerance bounds
@@ -171,8 +172,8 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     if not is_orthonormal(V_star, tol=1e-8):
         V_star = basis(V_star, tol)
 
-    A_V_star = A @ V_star
-    A_proj = A_V_star - V_star @ (V_star.T @ A_V_star)
+    A_V_star = A.dot(V_star)
+    A_proj = A_V_star - V_star.dot(V_star.T.dot(A_V_star))
 
     # ⚡ Bolt: Fast path if V_star is A-invariant (~4x speedup)
     # If the orthogonal projection of A V_star onto V_star's complement is zero,
@@ -181,7 +182,7 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     if fast_fro_norm(A_proj) < tol:
         return np.zeros((B.shape[1], A.shape[0]))
 
-    B_proj = B - V_star @ (V_star.T @ B)
+    B_proj = B - V_star.dot(V_star.T.dot(B))
 
     # Solve B_proj Y = A_proj for Y, which has size (m, k).
     # ⚡ Bolt: Fast-path for single-input systems (~4x speedup)
@@ -192,7 +193,7 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
         if b_sq_norm == 0:
             sol_Y = np.zeros((1, A_proj.shape[1]))
         else:
-            sol_Y = (B_proj.T @ A_proj) / b_sq_norm
+            sol_Y = (B_proj.T.dot(A_proj)) / b_sq_norm
         # Dummy variables to match lstsq signature if they are used elsewhere
         residuals, rank_M, s = [], 1, np.array([np.sqrt(b_sq_norm)])
     else:
@@ -209,6 +210,6 @@ def compute_feedback_matrix(A, B, V_star, tol=1e-10):
     U_mat = F_part
     
     # Since V* has orthonormal columns, (V*)^+ = (V*)^T
-    F = U_mat @ V_star.T
+    F = U_mat.dot(V_star.T)
     
     return F

@@ -271,3 +271,7 @@
 ## 2023-10-24 - [Optimize NumPy Array Aggregation]
 **Learning:** `np.sum(ndarray)` adds Python-level dispatching overhead and is noticeably slower than calling the `ndarray.sum()` method directly in performance-critical code.
 **Action:** When working with known `ndarray` objects, always use their built-in aggregation methods (like `.sum()`) instead of the module-level NumPy functions to avoid coercion overhead.
+
+## 2024-05-28 - Fast matrix multiplication
+**Learning:** In NumPy, using the `.dot()` method instead of the `@` operator for matrix multiplications can be roughly ~2x faster due to less python dispatcher overhead. When calculating `A @ B` or `A @ (A.T @ B)`, `A.dot(B)` and `A.dot(A.T.dot(B))` are noticeably faster.
+**Action:** Use `.dot()` instead of `@` for performance critical loops, especially for matrix multiplications in geometric subspace calculations.
