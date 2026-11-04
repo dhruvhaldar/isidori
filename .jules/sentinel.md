@@ -92,3 +92,13 @@
 **Vulnerability:** The Pydantic model for linear system inputs verified that matrices were rectangular and non-empty, but failed to verify that their dimensions were mathematically compatible (e.g. `B` having the same number of rows as `A`). Submitting incompatible matrices caused unhandled `ValueError` exceptions deep within the NumPy C-engine during geometric operations (like `A @ V`), which bypassed `422 Unprocessable Entity` handling and resulted in Application-Layer DoS via server errors.
 **Learning:** Checking that individual matrices are valid (rectangular, within bounds) is insufficient when those matrices will be used together in linear algebra operations. Mathematical compatibility must be verified at the input boundary.
 **Prevention:** Always enforce mathematical compatibility of matrix dimensions (e.g. `len(A) == len(A[0])`, `len(B) == len(A)`) in a `@model_validator` before allowing the data to reach computational functions.
+
+## 2026-11-20 - [CRITICAL] Prevent Application-Layer DoS via UnboundLocalError in Middleware
+**Vulnerability:** The `RequestSizeLimitMiddleware` correctly attempted to catch invalid `content-length` headers (via `except ValueError`) and early-return a 400 Bad Request using `JSONResponse`. However, because `JSONResponse` was imported locally inside an `except Exception as e:` block further down in the same function, Python treated it as an unassigned local variable. The early return raised an `UnboundLocalError`, causing an unhandled 500 error and creating an Application-Layer DoS vulnerability.
+**Learning:** Python's scoping rules treat names imported inside nested blocks (like `except`) as local variables for the entire function scope. If that name is referenced before the import executes, it raises an `UnboundLocalError`.
+**Prevention:** Always place `import` statements at the top level of the file, especially in ASGI middleware where unhandled exceptions crash the server.
+
+## 2026-11-20 - Add Referrer-Policy and Permissions-Policy Headers
+**Vulnerability:** The API lacked modern privacy-preserving and feature-restricting headers (`Referrer-Policy` and `Permissions-Policy`).
+**Learning:** Defense-in-depth requires explicitly configuring browser behaviors to minimize attack surface and data leakage.
+**Prevention:** When configuring HTTP security headers in FastAPI/Starlette middleware, always include `Referrer-Policy: strict-origin-when-cross-origin` and `Permissions-Policy: geolocation=(), camera=(), microphone=()` alongside standard headers (like CSP and HSTS) to prevent cross-origin information leakage and disable unauthorized access to browser features.
