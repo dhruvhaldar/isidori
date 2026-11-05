@@ -158,13 +158,14 @@ export default function NonlinearSystemsPage() {
             </div>
             
             {result && (
-              <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
+              <div className="space-y-4">
                 {isStale && (
                   <div className="flex items-center gap-2 p-3 text-sm text-amber-700 dark:text-amber-400 rounded-md bg-amber-500/10 dark:bg-amber-500/20 motion-safe:animate-in motion-safe:fade-in" role="alert">
                     <AlertTriangle aria-hidden="true" className="w-4 h-4 shrink-0" />
                     <span>Parameters changed. Recompute to update results.</span>
                   </div>
                 )}
+                <div className={`space-y-4 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-300 ${isLoading ? "opacity-50 pointer-events-none" : isStale ? "opacity-70 grayscale-[0.5]" : ""}`}>
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <span className="font-semibold">Relative Degree (r):</span>
                   <span className="text-2xl font-bold">{result.relative_degree !== null ? result.relative_degree : "Undefined"}</span>
@@ -217,6 +218,7 @@ export default function NonlinearSystemsPage() {
                 {result.message && (
                   <p className="text-muted-foreground">{result.message}</p>
                 )}
+                </div>
               </div>
             )}
             
