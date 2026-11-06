@@ -330,7 +330,7 @@ def simulate_system(data: LinearSystemInput):
         if np.count_nonzero(F) == 0:
             A_cl = A
         else:
-            A_cl = A + B @ F
+            A_cl = A + B.dot(F)
         
         # ⚡ Bolt: Precompute Euler step matrices to avoid matrix additions and
         # scalar multiplications inside the loop (~1.7x speedup)
@@ -372,7 +372,7 @@ def simulate_system(data: LinearSystemInput):
         # Vectorize output computation: y = C @ x
         # x_out is (steps, dim), C[0] is (dim, )
         # x_out @ C[0] is (steps, )
-        y_out = (x_out @ C[0]).tolist()
+        y_out = (x_out.dot(C[0])).tolist()
 
         return {
             "time": time.tolist(),

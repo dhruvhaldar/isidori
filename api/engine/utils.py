@@ -41,7 +41,7 @@ def is_orthonormal(M, tol=1e-8):
     if np.count_nonzero(np.abs(col_sq_norms - 1.0) >= tol) > 0:
         return False
 
-    return fast_fro_norm(M.T @ M - np.eye(M.shape[1])) < tol
+    return fast_fro_norm(M.T.dot(M) - np.eye(M.shape[1])) < tol
 
 
 def hashable_cache(func):
@@ -228,18 +228,18 @@ def intersection(A, B, tol=1e-10):
 
         if A_is_ortho:
             # ⚡ Bolt: If A is orthonormal and B is not, swap roles (~2.5x speedup)
-            proj_B_perp = B - A @ (A.T @ B)
+            proj_B_perp = B - A.dot(A.T.dot(B))
             if fast_fro_norm(proj_B_perp) < tol * max(B.shape) * max(1.0, fast_fro_norm(B)):
                 return basis(B, tol)
             K = kernel(proj_B_perp, tol)
             if K.size == 0:
                 return np.zeros((B.shape[0], 0))
-            return basis(B @ K, tol)
+            return basis(B.dot(K), tol)
 
         # Ensure B is orthonormal
         B = basis(B, tol)
 
-    proj_A_perp = A - B @ (B.T @ A)
+    proj_A_perp = A - B.dot(B.T.dot(A))
 
     # ⚡ Bolt: Early return if A is fully contained in B (~35% speedup)
     # If the orthogonal projection is approximately zero, A is a subset of B.
@@ -253,7 +253,7 @@ def intersection(A, B, tol=1e-10):
         return np.zeros((A.shape[0], 0))
         
     # Intersection basis in original coordinates
-    Int = A @ K
+    Int = A.dot(K)
     
     return basis(Int, tol) # Orthonormalize
 
@@ -273,7 +273,7 @@ def sum_spaces(A, B, tol=1e-10):
     A_is_ortho = is_orthonormal(A)
 
     if A_is_ortho:
-        B_perp = B - A @ (A.T @ B)
+        B_perp = B - A.dot(A.T.dot(B))
 
         # ⚡ Bolt: Early return if B is fully contained in A (~2.4x speedup for subset case)
         # If the orthogonal projection is approximately zero, B is a subset of A.
@@ -291,7 +291,7 @@ def sum_spaces(A, B, tol=1e-10):
     B_is_ortho = is_orthonormal(B)
 
     if B_is_ortho:
-        A_perp = A - B @ (B.T @ A)
+        A_perp = A - B.dot(B.T.dot(A))
 
         if fast_fro_norm(A_perp) < tol * max(A.shape) * max(1.0, fast_fro_norm(A)):
             return B
@@ -327,7 +327,7 @@ def inverse_image(A, S, tol=1e-10):
     if not S_is_ortho:
         S = basis(S, tol)
 
-    proj_A_perp = A - S @ (S.T @ A)
+    proj_A_perp = A - S.dot(S.T.dot(A))
 
     # ⚡ Bolt: Early return if Im(A) is fully contained in S (~3x speedup)
     # If the projection is zero, A^{-1}(S) is the entire domain.
