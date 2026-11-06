@@ -9,6 +9,8 @@ import numpy as np
 import sympy as sp
 import logging
 from .engine.linear import compute_v_star, check_disturbance_decoupling, compute_feedback_matrix
+from starlette.requests import ClientDisconnect
+from fastapi.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 from .engine.nonlinear import compute_relative_degree
@@ -45,7 +47,6 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
                 if message["type"] == "http.request":
                     total_size += len(message.get("body", b""))
                     if total_size > self.max_upload_size:
-                        from starlette.requests import ClientDisconnect
                         raise ClientDisconnect()
                 return message
 
@@ -54,8 +55,6 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
             try:
                 return await call_next(request)
             except Exception as e:
-                from starlette.requests import ClientDisconnect
-                from fastapi.responses import JSONResponse
                 if isinstance(e, ClientDisconnect):
                     return JSONResponse(status_code=413, content={"detail": "Request payload too large"})
 
@@ -81,11 +80,12 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Content-Security-Policy"] = "default-src 'self'"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "geolocation=(), camera=(), microphone=()"
         return response
 
 import time
 from collections import defaultdict
-from fastapi.responses import JSONResponse
 
 import random
 
