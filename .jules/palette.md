@@ -147,3 +147,7 @@
 ## 2026-11-22 - Smooth focus rings on custom interactive containers
 **Learning:** Applying Tailwind CSS focus rings (`focus-visible:ring-2`) to custom interactive or scrollable containers (like `div` with `tabIndex={0}`) without transition utility classes causes the focus state to snap on instantaneously. While form elements like inputs often have these transitions baked in, custom containers are easily missed, resulting in a disjointed and jarring micro-UX for keyboard users.
 **Action:** Always apply tactile transition classes like `transition-shadow duration-200` to *any* custom container or element that receives focus rings (`focus-visible:ring-2`), not just standard form inputs. This ensures a consistent, smooth visual glow when navigating via keyboard across the entire application.
+
+## 2024-05-18 - Extract Alert Banners from Dimmed Loading/Stale States
+**Learning:** Placing contextual alert or warning banners inside dimmed semantic containers (e.g., those using `opacity-70 grayscale-[0.5]` for stale states or loading states) inadvertently suppresses the banner's visibility and degrades its text contrast, actively hiding critical status information from the user.
+**Action:** When dimming UI containers to indicate a stale or loading state, always render contextual alert or warning banners *outside* (usually immediately above) the dimmed wrapper.
