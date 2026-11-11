@@ -115,7 +115,7 @@ const MatrixCell = React.memo(({ r, c, val, readOnly, onChange, label, rows, col
         }
       }}
       readOnly={readOnly}
-      className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${readOnly ? "bg-muted cursor-default" : ""}`}
+      className={`text-center h-8 px-1 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none transition-all duration-200 focus:bg-accent/50 ${readOnly ? "bg-muted cursor-default focus:bg-muted" : "hover:bg-accent/30"}`}
       aria-label={`${label} row ${r + 1} column ${c + 1}`}
       title={`${label} row ${r + 1} column ${c + 1}`}
       data-row={r}
